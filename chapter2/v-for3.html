@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        .division {
+            height: 2px;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+    <table id="example10">
+        <tbody>
+            <template v-for="(person, index) in infoList">
+                <tr :key="person.no">
+                    <td>{{person.no}}</td>
+                    <td>{{person.name}}</td>
+                    <td>{{person.tel}}</td>
+                    <td>{{person.address}}</td>
+                </tr>
+                <tr v-if="(index % 5 == 4)" class="division">
+                    <td colspan="4"></td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+    <script>
+        var model10 = {
+            "infoList" : [
+                {"no" : 1, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 2, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 3, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 4, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 5, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 6, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 7, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 8, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+                {"no" : 9, "name" : "신지은", "tel" : "010299999", "address" : "안산"},
+            ]
+        }
+        var sample10 = new Vue({
+            el : "#example10",
+            data: model10
+        })
+    </script>
+</body>
+</html>

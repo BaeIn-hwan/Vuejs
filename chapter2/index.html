@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+    <div id="simple">
+        <h2>{{message}}</h2>
+    </div>
+    <div id="simple2">
+        <h2 v-text="message"></h2>
+    </div>
+    <div id="simple3">
+        <input type="text" id="a" v-bind:value="message">
+        <img :src="imagePath">
+    </div>
+    <div id="simple4">
+        <input type="text" v-model="name" v-bind:placeholder="message">
+        <br>
+        <!--<input type="text" v-bind:value="name">-->
+        <label for="">
+            <input type="checkbox" v-bind:value="name">
+            <span v-html="name"></span>
+            <span v-for="" ></span>
+        </label>
+    </div>
+    <div id="simple5">
+        <div>좋아하는 과일을 모두 골라주세요</div>
+        <input type="checkbox" value="사과" v-model="fruits">사과,
+        <input type="checkbox" value="키위" v-model="fruits">키위,
+        <input type="checkbox" value="포도" v-model="fruits">포도,
+        <input type="checkbox" value="수박" v-model="fruits">수박,
+        <input type="checkbox" value="참외" v-model="fruits">참외,
+    </div>
+    <hr/>
+    <div id="simple5_1">
+        선택한과일들: <span v-html="fruits"></span>
+    </div>
+    <div id="checkboxTest">
+        <label for="f1">사과</label>
+        <input type="checkbox" name="f1" value="사과" v-model="fruits">
+        <label for="f2">키위</label>
+        <input type="checkbox" name="f2" value="키위" v-model="fruits">
+        <label for="f3">포도</label>
+        <input type="checkbox" name="f3" value="포도" v-model="fruits">
+        <label for="f4">수박</label>
+        <input type="checkbox" name="f4" value="수박" v-model="fruits">
+        <label for="f5">참외</label>
+        <input type="checkbox" name="f5" value="참외" v-model="fruits">
+        <span v-html="fruits"></span>
+    </div>
+    <div id="account">
+        예금액: <input type="text" v-model="amount">
+        <img v-show="amount < 0" src="images/error.png"
+             title="마이너스는 허용하지 않습니다."
+             style="width: 15px; height: 15px; vertical-align: middle;">
+    </div>
+    <div id="simple7">
+        잔고: <input type="text" v-model="balance">
+        <br>
+        회원님의 등급:
+        <span v-if="balance >= 100000">Gold</span>
+        <span v-else-if="balance >= 50000">Silver</span>
+        <span v-else-if="balance >= 20000">Bronze</span>
+        <span v-else>Basic</span>
+    </div>
+    <div id="simple11">
+        <span v-pre>{{message}}</span>
+    </div>
+    <div id="simple12">
+        <span v-once>{{message}}</span>
+    </div>
+    <script>
+        var checkboxTest = new Vue ({
+            el: "#checkboxTest",
+            data: {
+                fruits:[]
+            }
+        })
+
+        var model = {
+            message: "Hola ~ Hello ~~"
+        };
+        var sample1 = new Vue ({
+            el: "#simple",
+            data: model
+        });
+
+        var sample2 = new Vue({
+            el: "#simple2",
+            data: model
+        });
+
+        var model3 = {
+            message: 'v-bind 디렉티브사용',
+            imagePath: '../images/sample.jpg'
+        }
+        var sample3 = new Vue({
+            el: "#simple3",
+            data: model3
+        });
+
+        var model4 = {
+            name: '',
+            message: '이름을 입력해주세요'
+        };
+        //양방향 통신
+        var sample4 = new Vue({
+            el: "#simple4",
+            data: model4,
+        })
+
+        //양방향통신 checkbox
+        var model5 = {
+            fruits: []
+        }
+        var sample5 = new Vue({
+            el: "#simple5",
+            data: model5
+        })
+        var sample5_1 = new Vue({
+            el: "#simple5_1",
+            data: model5
+        });
+
+        var sample6 = new Vue({
+            el: "#account",
+            data: {
+                amount: 0
+            }
+        });
+
+        var sample7 = new Vue({
+            el: "#simple7",
+            data: {
+                balance: 0
+            }
+        })
+
+        var sample11 = new Vue({
+            el: "#simple11",
+            data: {
+                message: "hello world"
+            }
+        })
+
+        var sample12 = new Vue({
+            el: "#simple12",
+            data: {
+                message: "HELLO WORLD"
+            }
+        })
+    </script>
+</body>
+</html>

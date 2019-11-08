@@ -2,7 +2,7 @@
 
 ```
 
-CHAPTER 02 Vue.js 기초 - ㅇㅇㅇ(2019/00/00)
+CHAPTER 02 Vue.js 기초 - 신지은 (2019/11/11)
 
 CHAPTER 03 Vue 인스턴스 - ㅇㅇㅇ(2019/00/00)
 
@@ -27,3 +27,20 @@ CHAPTER 12 vue-router를 이용한 라우팅 - ㅇㅇㅇ(2019/00/00)
 CHAPTER 13 트랜지션 효과 - ㅇㅇㅇ(2019/00/00)
 
 ```
+
+각 chapter 폴더 
+[FILE] index.md (설명)
+[FILE] test.  (문제)
+[DIR] answer (답 올리는 폴더) 
+
+
+vue js 세팅방법
+1. node.js LTS 버전 다운로드
+2. 크롬에서 Vue.js devtools 설치
+3. Vuejs 폴더에서 커맨드 창 켜서 npm으로 Vue-CLI 설치하기
+npm install -g yarn @vue/cli (windows)
+sudo spm install -g yarn @vue/cli (macOS)
+
+4. head안에는 
+<script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+를 추가해 주세요.
