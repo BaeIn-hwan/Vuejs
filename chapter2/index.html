@@ -72,7 +72,23 @@
     <div id="simple12">
         <span v-once>{{message}}</span>
     </div>
+    <div id="exampleSum">
+        <input type="text" v-model="num">
+        1부터 입력된 수까지의 합 : <span>{{sumSum}}</span>
+    </div>
     <script>
+        //1부터 입력된 수까지의 합구하기
+        var vmSum12 = new Vue({
+            el: "#exampleSum",
+            data: { num: 0 },
+            computed: {
+                sumSum: function(){
+                    var num = Number(this.num);
+                    if (Number.isNaN(num) || num < 1)  return 0;
+                    return ((1+num) * num) / 2;
+                }
+            }
+        })
         var checkboxTest = new Vue ({
             el: "#checkboxTest",
             data: {
