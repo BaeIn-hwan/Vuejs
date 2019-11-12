@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>챕터 2</title>
+        <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+        <style>
+            *{padding: 0; margin: 0; line-height: 1.4;}
+            body {
+                padding-bottom: 500px;
+            }
+            article > p:first-child {
+                font-weight: bold;
+                font-size: 20px;
+            }
+            em {
+                font-style: normal;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <article id="test1">
+            <p> 1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번 화면에 자신의 이름을 나오게 하세요.</p>
+            <span>{{name}}</span>
+            <span v-html="name"></span>
+        </article>
+        <article id="test2">
+            <p>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</p>
+            <input type="text" v-model="team">
+            <span>저는 <em v-html="team">***</em>소속입니다.</span>
+        </article>
+        <article id="test3">
+            <p>
+            3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면
+            "우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.
+            </p>
+            <label>
+                <input type="radio" name="likeFood" value="팀장님" v-model="person">
+                <span>팀장님</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="민수대리님" v-model="person">
+                <span>민수대리님</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="팀장님" v-model="person">
+                <span>나</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="혜진주임님" v-model="person">
+                <span>혜진주임님</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="경아사원님" v-model="person">
+                <span>경아사원님</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="동엽주임님" v-model="person">
+                <span>동엽주임님</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="영희사원님" v-model="person">
+                <span>영희사원님</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="인환주임님" v-model="person">
+                <span>인환주임님</span>
+            </label>
+            <label>
+                <input type="radio" name="likeFood" value="원석대리님" v-model="person">
+                <span>원석대리님</span>
+            </label>
+            <p style="color: mediumpurple;">우리 중 제일 잘 먹는 사람은 <em v-html="person" style="font-weight: bold; font-size: 15px;">***</em>입니다.</p>
+        </article>
+        <article id="test3_2">
+            <label>
+                <input type="checkbox" value="나" v-model="personList">
+                <span>나</span>
+            </label>
+            <label>
+                <input type="checkbox" value="경아씨" v-model="personList">
+                <span>경아씨</span>
+            </label>
+            <label>
+                <input type="checkbox" value="혜진주임님" v-model="personList">
+                <span>혜진주임님</span>
+            </label>
+            <p>이 중 초콜릿을 좋아하는 사람은 <span v-html="personList"></span>입니다.</p>
+        </article>
+        <article id="test4">
+            <p>
+                4. v-if / v-else-if
+                몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.
+                ** 계산법 >>>   BMI = 체중(Kg) / ( 신장(m) * 신장(m) )
+                ** 결과 텍스트
+                18.5 이하  >> 많이 드세요.
+                18.5 ~ 23 >> 적당히 드세요.
+                23 ~ 25   >> 먹는 양을 조금 줄이세요.
+                25 ~ 30   >> 그만 드세요.
+                30이상     >> 우리 중에는 이런사람이 없어요.
+            </p>
+            <input type="text" v-model="height" placeholder="키를 입력하세요.">
+            <input type="text" v-model="weight" placeholder="몸무게를 입력하세요.">
+            <!--<p>{{bmi}}</p>-->
+            <p v-if="bmi == 0 || bmi == NaN"> 당신의 비만도는...?</p>
+            <p v-else-if="bmi <= 18.5"> 많이 드세요.</p>
+            <p v-else-if="bmi >= 18.5 && bmi < 23">적당히 드세요.</p>
+            <p v-else-if="bmi >= 23 && bmi < 25">먹는 양을 조금 줄이세요.</p>
+            <p v-else-if="bmi >= 25 && bmi < 30">그만 드세요.</p>
+            <p v-else-if="bmi >= 30">우리 중에는 이런 사람이 없어요.</p>
+        </article>
+        <article id="test5">
+            <p>
+                5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.
+                예) 민수대리님 - 참새
+                동엽주임님 - 시바견
+                혜진주임님 - 앵무새
+                인환주임님 - 햄토리
+            </p>
+            <input type="text" v-model="name" :placeholder="inputMsg">
+            <p v-show="name.indexOf('민수') != -1">참새</p>
+            <p v-show="name.indexOf('인환') != -1">햄토리</p>
+        </article>
+        <article>
+            <p></p>
+        </article>
+        <article>
+            <p></p>
+        </article>
+        <script>
+            var model1 = {
+                name: "신지은"
+            }
+            var answer1 = new Vue({
+                el: "#test1",
+                data: model1
+            })
+
+            var answer2 = new Vue({
+                el: "#test2",
+                data: {
+                    team: "",
+                }
+            })
+
+            var answer3 = new Vue({
+                el: "#test3",
+                data: {
+                    person: ""
+                }
+            })
+
+            var answer3_2 = new Vue({
+                el: "#test3_2",
+                data: {
+                    personList: [],
+                }
+            })
+            var answer4 = new Vue({
+                el: "#test4",
+                data: {
+                    weight: '',
+                    height: '',
+                },
+                computed: {
+                    bmi: function () {
+                        let _weight = Number(this.weight);
+                        let _height = Number(this.height);
+                        console.log(_weight, _height)
+                        let result = (_weight * _weight) / _height;
+                        return result;
+                    }
+                }
+            });
+            var model5 = {
+                inputMsg: "이름을 입력하세요",
+                name: ""
+            }
+            var answer5 = new Vue({
+                el: "#test5",
+                data: model5
+            })
+        </script>
+    </body>
+</html>
+
+6. v-show와 v-if는 무슨 차이점이 있을까요?
+
+7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?
+
+8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
+정보 (이름 소속팀 나이)
+
+예시)
+신지은 입력시  >> 신지은 프론트엔드팀 27
+주영희 입력시  >> 주영희 기술연구소팀 27
+
+9. 현재 스터디하는 9명의 이름, 성별, 휴대폰 번호를 입력한 뒤 5번째 사람의 정보에는 노란색을 칠해주세요.
+
+10. 숫자를 입력받고, 1부터 입력된 수까지의 짝수의 합을 구하시오.
+
+11. 지하철 역을 입력하면 해당 지하철의 정보가 나오도록 하세요.
+정보 : 번호 /  지하철 역 이름 / 지하철역 지역 / 지하철 역 호선
+예시 : 1 / 중앙역 / 수도권 / 4
+2 / 신도림역 / 수도권 / 2
