@@ -121,9 +121,34 @@
             <input type="text" v-model="name" :placeholder="inputMsg">
             <p v-show="name.indexOf('민수') != -1">참새</p>
             <p v-show="name.indexOf('인환') != -1">햄토리</p>
+            <p v-show="name.indexOf('정호') != -1">개구리</p>
+            <p v-show="name.indexOf('혜진') != -1">앵무새</p>
+            <p v-show="name.indexOf('동엽') != -1">시바견</p>
         </article>
-        <article>
-            <p></p>
+        <article id="test6">
+            <p>
+                6. v-show와 v-if는 무슨 차이점이 있을까요?
+            </p>
+            <p>
+                렌더링의 차이가 있다.<br><br>
+                v-show 는 일단 html렌더링을 시켜놓고 조건에 맞지 않으면 display: none을 시키고, 조건에 맞으면 display: block을 시킨다.<br>
+                (예제 5번 확인)<br><br>
+                반면에 v-if 는 조건에 맞지 않으면 html렌더링 자체를 시키지 않는다.<br>
+                (예제 4번 확인)<br>
+            </p>
+        </article>
+        <article id="test7">
+            <p>
+                7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?
+            </p>
+            <dl>
+                <dt>v-pre</dt>
+                <dd>v-pre는 기존 자바스크립트의 pre태그와 같이 태그를 번역하지 않고 그대로 찍는다.</dd>
+            </dl>
+            <dl>
+                <dt>v-once</dt>
+                <dd>v-once는 한번만 렌더링을 시킨다. 예를들어 v-model과 같이 양방향 렌더링을 하더라도 한번만 렌더링을 시킨다.</dd>
+            </dl>
         </article>
         <article>
             <p></p>
@@ -185,9 +210,6 @@
     </body>
 </html>
 
-6. v-show와 v-if는 무슨 차이점이 있을까요?
-
-7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?
 
 8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
 정보 (이름 소속팀 나이)
