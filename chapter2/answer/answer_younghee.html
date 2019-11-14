@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+    #num{
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding-bottom: 50px;
+    }
+    #list {width: 400px; border: 1px solid black; border-collapse: collapse;}
+    #list td, #list th {border: 1px solid black; text-align: center;}
+    #list > thead > tr {color: white; background-color: green;}
+    .yellow{background-color: yellow;}
+</style>
+</head>
+<body>
+    <section id="num">
+        <h5>1.</h5>
+        <div id="name">
+            <h3>{{message}}</h3>
+        </div>
+        <div id="name2">
+            <h3 v-text="message"></h3>
+        </div>
+    </section>
+    <section id="num">
+        <h5>2.</h5>
+        <div id="name3">
+            <input v-model="team" v-bind:placeholder="message">
+            <p>"저는 <span v-text="team"></span>팀 소속입니다."</p>
+        </div>
+    </section>
+    <section id="num">
+        <h5>3.</h5>
+        <div id="people">
+            <div>@제일 잘먹는 사람을 뽑아주세요.</div>
+            <br>
+            <input type="checkbox" value="양원석" v-model="people">양원석
+            <input type="checkbox" value="전정호" v-model="people">전정호
+            <input type="checkbox" value="김민수" v-model="people">김민수
+            <input type="checkbox" value="유혜진" v-model="people">유혜진
+            <input type="checkbox" value="전동엽" v-model="people">전동엽
+            <input type="checkbox" value="배인환" v-model="people">배인환
+            <input type="checkbox" value="신지은" v-model="people">신지은
+            <input type="checkbox" value="윤경아" v-model="people">윤경아
+            <input type="checkbox" value="주영희" v-model="people">주영희
+        </div>
+            <hr/>
+            <div id="people_1">
+                "우리 중 제일 잘 먹는 사람은 <span v-text="people"></span> 입니다."
+            </div>
+    </section>
+    <section id="num">
+        <h5>4.</h5>
+        <div id="BMI">
+            신장(m): <input type="text" v-model="h">
+            몸무게(kg): <input type="text" v-model="w">
+            
+            
+        <br>
+            <div id="bmi_text">
+                <span v-if="bmi_txt <= 0">정확하게 입력해주세요.</span>
+                <span v-else-if="bmi_txt <= 18.5">많이 드세요.</span>
+                <span v-else-if="bmi_txt > 18.5 || bmi_txt < 23">적당히 드세요.</span>
+                <span v-else-if="bmi_txt > 23 || bmi_txt < 25">먹는 양을 조금 줄이세요.</span>
+                <span v-else-if="bmi_txt > 25 || bmi_txt < 30">그만 드세요.</span>
+                <span v-else="">우리 중에는 이런사람이 없어요.</span>
+            </div>
+        </div>       
+    </section>    
+    <section id="num">
+        <h5>5.</h5>
+        <div id="animal">
+            김민수,전동엽,김인환,유혜진 중 한 명의 이름을 입력하세요.<br><br>
+            <input type="text" placeholder="이름을 입력하세요." v-model="name2"><br><br>
+            <div>결과:
+                <div v-show="name2 =='김민수'" style="display: inline-block;">참새</div>
+                <div v-show="name2 =='전동엽'" style="display: inline-block;">시바견</div>
+                <div v-show="name2 =='김인환'" style="display: inline-block;">앵무새</div>
+                <div v-show="name2 =='유혜진'" style="display: inline-block;">햄토리</div>
+            </div>
+             
+        </div>
+    </section>
+    <section id="num">
+        <h5>6. v-show와 v-if는 무슨 차이점이 있을까요?</h5>
+        <div>
+            v-if 는 조건에 따라 컴포넌트가 실제로 제거되고 생성되지만,<br>
+            v-show는 단순하게 css의 display 속성만 변경된다.<br>
+            자주 '보였다','안보였다' 즉 자주 토글되어야 할 땐 v-show를 사용하는 것이 좋다.
+        </div>
+        
+    </section>
+    <section id="num">
+        <h5>7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?</h5>
+        <div>
+            v-pre는 특정 엘리먼트를 무시할 때 사용되어 지시문이 없다고 인식하게 되어 컴파일 속도가 빨라진다.<br>
+            v-once 디렉티브는 HTML코드로 출력이 된 이후에 어떤 후처리가 있더라도 처음에 출력한 값을 유지시킬 때 사용된다.
+        </div>
+    </section>
+    <section id="num">
+        <h5>8. 이름을 입력하면 정보가 나옵니다.</h5>
+        <div id="personInfo">
+            <p>
+                이름 : <input type="text" v-model="person" placeholder="이름을 입력하세요" @input="infoChange">
+            </p>
+            <table id="list">
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>소속</th>
+                        <th>출생국가</th>
+                    </tr>
+                </thead>
+                <tbody id="persontable">
+                    <tr v-for="p in filtered">
+                        <td>{{p.name}}</td>
+                        <td>{{p.team}}</td>
+                        <td>{{p.nation}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section id="num">
+        <h5>9.5번째 사람의 정보에는 노란색이 표시됩니다. </h5>
+        <div id="phone">
+           <table>
+            <tbody>
+                <template v-for="(phonenum, index) in phonelist">
+                    <tr>
+                        <td>{{phonenum.no}}</td>
+                        <td>{{phonenum.name}}</td>
+                        <td>{{phonenum.sex}}</td>
+                        <td>{{phonenum.phone}}</td>
+                    </tr>
+                    <tr class="yellow" v-if="index % 5 == 4">
+                        <td colspan=4></td>
+                    </tr>
+                </template>
+            </tbody>
+            </table>
+            
+            <!--<template v-for="(phonenum, index) in phonelist">
+                <tr class="yellow" v-if="index % 5 == 4">
+                    <td>{{phonenum.no}}</td>
+                    <td>{{phonenum.name}}</td>
+                    <td>{{phonenum.sex}}</td>
+                    <td>{{phonenum.phone}}</td>
+                </tr>
+            </template>-->
+        </div>
+    </section>
+    <section id="num">
+        <h5>10.숫자를 입력받고, 1부터 입력된 수까지의 짝수의 합을 구하시오.</h5>
+        <div id="Sum">
+            <input type="text" v-model="n">
+            결과: <span>{{sumSum}}</span>
+        </div>
+    </section>
+    <section id="num">
+        <h5>
+            11.지하철 역을 입력하면 해당 지하철의 정보가 나옵니다.<br>
+            (단, 양재 강남 동천역 사당 서울역 수서역 정보만 있습니다.)        
+        </h5>
+        <div id="metroline">
+            <p>
+                <input type="text" v-model="metroinfo" placeholder="지하철역을 입력하세요" @input="metroChange">
+            </p>
+            
+            <table id="list">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>지하철역</th>
+                        <th>지역</th>
+                        <th>노선</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="metro in filtered">
+                        <td>{{metro.no}}</td>
+                        <td>{{metro.name}}</td>
+                        <td>{{metro.region}}</td>
+                        <td>{{metro.line}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+
+<script>
+    //1번
+    var model = {
+        message: "주영희"
+    };
+    var name = new Vue ({
+        el: "#name",
+        data: model
+    });
+    var name2 = new Vue({
+        el: "#name2",
+        data: model
+    });
+    //2번
+    var model4 = {
+        name: '',
+        message: '팀을 입력해주세요'
+    }
+    var name3 = new Vue({
+        el: "#name3",
+        data: {
+            team:''
+        }
+    })
+    //3번
+    var model5 = {
+        people: []
+    }
+    var people = new Vue({
+        el: "#people",
+        data: model5
+    })
+    var people_1 = new Vue({
+        el: "#people_1",
+        data: model5
+    });
+    //4번
+    var model6 = new Vue({
+        el:"#BMI",
+        data:{
+           w:0,h:0
+        },
+        computed : {
+            bmi_txt : function() {
+                var result = Number(this.w) / Number(this.h) / Number(this.h) *10000 ;
+                
+                if (isNaN(result)) return  0;
+                else return result;
+            }
+        }
+    });
+    var model7 = new Vue({
+        el:"#bmi_txt",
+        data:{
+            bmi_txt:0
+        }
+    });
+    //5번
+    var model8 = new Vue({
+        el:"#animal",
+        data:{
+            name2: ''
+        }
+    });
+    //8번
+    var model10 = {
+        person : "",
+        infolist : [
+            { name : "양원석", team : "기술연구소", nation: "한국"},
+            { name : "전정호", team : "프론트엔드", nation: "한국"},
+            { name : "김민수", team : "프론트엔드", nation: "한국"},
+            { name : "유혜진", team : "프론트엔드", nation: "한국"},
+            { name : "전동엽", team : "프론트엔드", nation: "한국"},
+            { name : "배인환", team : "프론트엔드", nation: "한국"},
+            { name : "신지은", team : "프론트엔드", nation: "한국"},
+            { name : "윤경아", team : "프론트엔드", nation: "한국"},
+            { name : "주영희", team : "기술연구소", nation: "한국"}
+        ]
+    };
+    var personinfolist = new Vue({
+        el: "#personInfo",
+        data : model10,
+        computed : {
+            filtered : function() {
+                var cname = this.person.trim();
+                return this.infolist.filter(function(item, index) {
+                    if(item.name.indexOf(cname) > -1) {
+                        return true;
+                    }
+                });
+            }
+        },
+        methods: {
+            infoChange: function(e) {
+                this.person = e.target.value;
+            }
+        }
+    });
+    //9번
+     var model11 = {
+        phonelist: [
+            {no:1, name : "양원석", sex : "남", phone: "010-111-0000"},
+            {no:2, name : "전정호", sex : "남", phone: "010-222-0000"},
+            {no:3, name : "김민수", sex : "남", phone: "010-333-0000"},
+            {no:4, name : "유혜진", sex : "여", phone: "010-444-0000"},
+            {no:5, name : "전동엽", sex : "남", phone: "010-000-0000"},
+            {no:6, name : "배인환", sex : "남", phone: "010-666-0000"},
+            {no:7, name : "신지은", sex : "여", phone: "010-000-0000"},
+            {no:8, name : "윤경아", sex : "여", phone: "010-000-0000"},
+            {no:9, name : "주영희", sex : "여", phone: "010-000-0000"}
+        ]
+    };
+
+    var list = new Vue({
+        el : "#phone",
+        data: model11
+    });
+    //10번
+    var Sum = new Vue({
+        el: "#Sum",
+        data: { 
+            n: 0 
+        },
+        computed: {
+            sumSum: function(){
+            var n = Number(this.n);
+            if (Number.isNaN(n) || n < 1) {
+                return 0;
+            }
+            return ((1+n) * n) / 2;
+            }
+        }
+    });
+    //11번
+    var metromodel = {
+        metroinfo : "",
+        metrolist : [
+            {no:1, name : "양재역", region : "서울", line: "3호선,신분당선"},
+            {no:2, name : "강남역", region : "서울", line: "2호선,3호선"},
+            {no:3, name : "동천역", region : "경기", line: "신분당선"},
+            {no:4, name : "사당역", region : "서울", line: "2호선,4호선"},
+            {no:5, name : "서울역", region : "서울", line: "1호선,4호선,경의중앙,공항철도"},
+            {no:6, name : "수서역", region : "서울", line: "3호선,분당선"}
+        ]
+    };
+    var personinfolist = new Vue({
+        el: "#metroline",
+        data : metromodel,
+        computed : {
+            filtered : function() {
+                var cname = this.metroinfo.trim();
+                return this.metrolist.filter(function(item, index) {
+                    if(item.name.indexOf(cname) > -1) {
+                        return true;
+                    }
+                });
+            }
+        },
+        methods: {
+            metroChange: function(e) {
+                this.metroinfo = e.target.value;
+            }
+        }
+    });
+
+</script>
+</html>
