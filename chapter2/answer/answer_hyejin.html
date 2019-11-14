@@ -2,48 +2,47 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Chapter02</title>
         <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
         
     </head>
     <body>
-        <section id="practice">
-            <!-- 콧수염 모델, v-text/v-html 디렉티브 사용하여 이름 출력 -->
-            <div id="name">
-                <h2>{{name}}</h2>
-                <h2 v-text="name"></h2>
-                <h2 v-html="name"></h2>
-            </div>
+        <div id="chapter02">
+            <section id="task01">
+                <h2>1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번 화면에 자신의 이름을 나오게 하세요.</h2>
+                <p>{{task01.nameType1}}</i></p>
+                <p v-text="task01.nameType2"></p>
+                <p v-html="task01.nameType3"></p>
+            </section>
 
-            <!-- 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요 -->
-            <div>
+            <section id="task02">
+                <h2>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</h2>
                 <label for="inputTeamName">
-                    소속 팀: <input type="text" id="inputTeamName" v-model="teamName" placeholder="팀명을 입력하세요.">
+                    소속 팀: <input type="text" id="inputTeamName" v-model="task02.teamName" placeholder="팀명을 입력하세요.">
                 </label>
-                <p v-if="teamName != ''">저는 <span v-html="teamName"></span>팀 소속입니다.</p>
-            </div>
+                <p v-if="task02.teamName != ''">저는 <span v-html="task02.teamName"></span>팀 소속입니다.</p>
+            </section>
 
-            <!-- 체크박스 value 값 반영하여 텍스트 출력 -->
-            <div>
-                <p>가장 잘 먹는 사람을 선택해주세요.</p>
-                <label for="member1"><input type="radio" name="member" id="member1" v-model="member" value="유혜진">유혜진</label>
-                <label for="member2"><input type="radio" name="member" id="member2" v-model="member" value="전동엽">전동엽</label>
-                <label for="member3"><input type="radio" name="member" id="member3" v-model="member" value="전정호">전정호</label>
-                <label for="member4"><input type="radio" name="member" id="member4" v-model="member" value="신지은">신지은</label>
-                <label for="member5"><input type="radio" name="member" id="member5" v-model="member" value="배인환">배인환</label>
-                <label for="member6"><input type="radio" name="member" id="member6" v-model="member" value="윤경아">윤경아</label>
-                <label for="member7"><input type="radio" name="member" id="member7" v-model="member" value="김민수">김민수</label>
-                <p v-if="member != ''">우리 중 제일 잘 먹는 사람은 <span v-html="member"></span> 입니다.</p>
-            </div>   
+            <section id="task03">
+                <h2>3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면 "우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.</h2>
+                <label for="member1"><input type="radio" name="member" id="member1" v-model="task03.member" value="유혜진">유혜진</label>
+                <label for="member2"><input type="radio" name="member" id="member2" v-model="task03.member" value="전동엽">전동엽</label>
+                <label for="member3"><input type="radio" name="member" id="member3" v-model="task03.member" value="전정호">전정호</label>
+                <label for="member4"><input type="radio" name="member" id="member4" v-model="task03.member" value="신지은">신지은</label>
+                <label for="member5"><input type="radio" name="member" id="member5" v-model="task03.member" value="배인환">배인환</label>
+                <label for="member6"><input type="radio" name="member" id="member6" v-model="task03.member" value="윤경아">윤경아</label>
+                <label for="member7"><input type="radio" name="member" id="member7" v-model="task03.member" value="김민수">김민수</label>
+                <p v-if="task03.member != ''">우리 중 제일 잘 먹는 사람은 <span v-html="task03.member"></span> 입니다.</p>
+            </section>   
 
             <!-- v-if / v-else-if / 계산형 속성(Computed Property) 사용하여 조건에 부합하는 결과값 출력하기 -->
-            <div>
-                <p>몸무게와 키를 입력해주세요.</p>
+            <section id="task04">
+                <h2>4. 몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.</h2>
                 <label for="inputWeight">
-                    몸무게: <input type="text" id="inputWeight" v-model="weight">
+                    몸무게: <input type="text" id="inputWeight" v-model="task04.weight">
                 </label>
                 <label for="inputHeight">
-                    키: <input type="text" id="inputHeight" v-model="height">
+                    키: <input type="text" id="inputHeight" v-model="task04.height">
                 </label>
                 <p>
                     <span v-if="BMI <= 18.5">많이 드세요</span>
@@ -52,56 +51,92 @@
                     <span v-else-if="BMI < 30">그만 드세요</span>
                     <span v-else-if="BMI >= 30">우리 중에는 이런 사람이 없어요</span>
                 </p>
-            </div>
+            </section>
 
             <!-- 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트 출력 -->
-            <div>
-                <label for="memberinfo">
-                    <input type="text" id="memberinfo" v-model="memberinfo.name" placeholder="이름을 입력하세요.">
-                </label>
-                <p v-if="" v-html="memberinfo.engName"></p>
-            </div>
+            <section id="task05">
+                <h4>5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.</h4>
+                <input type="text" id="memberinfo" v-model="task05.name" placeholder="이름을 입력하세요.">
+                <p v-if="task05.name" v-html="task05.name">{{task05Result}}</p>
+            </section>
 
             <!-- v-if / v-show 차이점 -->
-            <div>
+            <section class="task06">
                 <p>v-if : v-if 디렉티브를 사용한 element의 event listener와 자식 컴포넌트들이 DOM에 제거되거나 삽입되는 진짜 조건부 렌더링</p>
                 <p>v-show : DOM에 항상 삽입되고 display style을 통해 화면에 그려지거나 그려지지 않는 조건부 렌더링</p>    
-            </div>
+            </section>
            
-        </section>
+        </div>
+
+        <style>
+            section + section {margin-top: 50px;}
+            section h2 {font-size: 16px; font-weight: bold;}
+        </style>
 
         <script>
 
             var model = {
-                name : "<i>유혜진</i>",
-                teamName : "", 
-                member : "",
-                weight : "",
-                height : "",
-                koreanName : "",
-                memberinfo : [
-                    { name : "유혜진", engName : "YooHyejin"},
-                    { name : "김민수", engName : "KimMinsoo"},
-                    { name : "신지은", engName : "ShinJieun"}
-                ]
+
+                task01: {
+                    nameType1 : "유혜진 <i>콧수염 템플릿</i>",
+                    nameType2 : "유혜진 <i>v-text</i>",
+                    nameType3 : "유혜진 <i>v-html</i>",
+                },
+
+                task02: {
+                    teamName : "", 
+                },   
+
+                task03: {
+                    member : "",
+                },
+
+                task04: {
+                    weight : "",
+                    height : "",
+                },
+
+                task05: {
+                    name : "",
+                    infoList : [
+                        { korName : "유혜진", engName : "YooHyejin"},
+                        { korName : "김민수", engName : "KimMinsoo"},
+                        { korName : "신지은", engName : "ShinJieun"}
+                    ]
+                },
+
             };
 
-            var practice = new Vue({
-                el : "#practice",
+            var chapter02 = new Vue({
+                el : "#chapter02",
                 data : model,
                 computed : {
                     
                     BMI() {
-                        console.log(this);
-                        if(this.weight > 0 && this.height > 0) {
-                            return this.weight / (this.height * this.height / 10000);
-                            //this는 Vue 객체 
+                        console.log(this); //this는 Vue 객체 
+                        const task04 = this.task04;
+                        const _weight = task04.weight;
+                        const _height = task04.height;
+
+                        if(_weight > 0 && _height > 0) {
+                            return _weight / (_height * _height / 10000);
                         }                        
+                    },
+
+                    task05Result() {
+                        const task05 = this.task05;
+                        const name = task05.name;
+                        const korName = task05.korName;
+                        const engName = task05.engName;
+
+                        if(name === korName) {
+                            return engName;
+                        }
                     }
                 },
             });
             
-            console.log(document.getElementById("name").innerHTML);
+            console.log(document.getElementById("task01").innerHTML);
             
     
         
