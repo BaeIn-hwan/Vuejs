@@ -11,8 +11,7 @@
 <body>
     <div>
         <div id="test1">
-            <h3>1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번
-                화면에 자신의 이름을 나오게 하세요.</h3>
+            <h3>1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번 화면에 자신의 이름을 나오게 하세요.</h3>
             <p v-text="name"></p>
             <p>{{name}}</p>
         </div>
@@ -20,7 +19,7 @@
         <div id="test2">
             <h3>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</h3>
             <input type="text" v-model="teamName">
-            <p>저는 {{teamName}}팀 소속입니다.</p>
+            <p v-if="teamName != ''">저는 {{teamName}}팀 소속입니다.</p>
         </div>
         <br>
         <div id="test3">
@@ -66,7 +65,7 @@
             <input type="text" v-model="height" placeholder="키를 입력해주세요.">
             <input type="text" v-model="weight" placeholder="몸무게를 입력해주세요.">
 
-            <div>
+            <div v-if="bmi > 0">
                 <p v-if="bmi <= 18.5">많이 드세요.</p>
                 <p v-else-if="18.5 < bmi && bmi <= 23">적당히 드세요.</p>
                 <p v-else-if="23 < bmi && bmi <= 25">먹는 양을 조금 줄이세요.</p>
@@ -77,7 +76,7 @@
         <br>
         <div id="test5"> 
             <h3>5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.</h3>
-            <input type="text" v-model="inputName">
+             <label>이름:  <input type="text" v-model="inputName"></label>
             <div>
                 <p>참새</p>
                 <p>시바견</p>
@@ -154,10 +153,15 @@
                 }
             }
         });
-        var test5 = new Vue ({
-            el: '#test5',
+        var test8 = new Vue ({
+            el: '#test8',
             data: {
-                inputName:  []
+                member : [
+                    {name:'윤경아', gender:'여자', team:'프론트엔드침'},
+                    {name:'신지은', gender:'여자', team:'프론트엔드팀'},
+                    {name:'주영희', gender:'여자', team:'기술연구소 개발팀'},
+                    {name:'유혜진', gender:'여자', team:'프론트엔드팀'}
+                ]
             }
 
     
