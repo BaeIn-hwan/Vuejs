@@ -11,17 +11,24 @@
 <body>
     <div>
         <div id="test1">
-            <h3>1번</h3>
+            <h3>1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번
+                화면에 자신의 이름을 나오게 하세요.</h3>
             <p v-text="name"></p>
             <p>{{name}}</p>
         </div>
+        <br>
         <div id="test2">
-            <h3>2번</h3>
+            <h3>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</h3>
             <input type="text" v-model="teamName">
             <p>저는 {{teamName}}팀 소속입니다.</p>
         </div>
+        <br>
         <div id="test3">
-            <h3>3번</h3>
+            <h3>3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면 "우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.</h3>
+            <label>
+                <input type="checkbox" id="1" value="전정호" v-model="people">
+                <span>양원석</span>
+            </label>
             <label>
                 <input type="checkbox" id="1" value="전정호" v-model="people">
                 <span>전정호</span>
@@ -46,20 +53,67 @@
                 <input type="checkbox" id="6" value="신지은" v-model="people">
                 <span>신지은</span>
             </label>
+            <label>
+                <input type="checkbox" id="6" value="신지은" v-model="people">
+                <span>주영희</span>
+            </label>
             </br>
             <p>우리 중 제일 잘 먹는 사람은 {{people}} 입니다.</p>
         </div>
+        <br>
         <div id="test4">
-            <label>
-                <input type="text" v-model="weight">
-                <span>몸무게를 입력해 주세요.</span>
-            </label>
-            <label>
-                <input type="number" v-model="height">
-                <span>키를 입력해 주세요.</span>
-            </label>
-            <p>{{resultMsg}}</p>
+            <h3>4. v-if / v-else-if 몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.</h3>
+            <input type="text" v-model="height" placeholder="키를 입력해주세요.">
+            <input type="text" v-model="weight" placeholder="몸무게를 입력해주세요.">
+
+            <div>
+                <p v-if="bmi <= 18.5">많이 드세요.</p>
+                <p v-else-if="18.5 < bmi && bmi <= 23">적당히 드세요.</p>
+                <p v-else-if="23 < bmi && bmi <= 25">먹는 양을 조금 줄이세요.</p>
+                <p v-else-if="25 < bmi && bmi <= 30">그만 드세요.</p>
+                <p v-else-if="30 <= bmi">우리 중에는 이런사람이 없어요.</p>
+            </div>
         </div>
+        <br>
+        <div id="test5"> 
+            <h3>5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.</h3>
+            <input type="text" v-model="inputName">
+            <div>
+                <p>참새</p>
+                <p>시바견</p>
+                <p>앵무새</p>
+                <p>햄토리</p>
+            </div>
+        </div>
+        <br>
+        <div id="test6"> 
+            <h3>6. v-show와 v-if는 무슨 차이점이 있을까요?</h3>
+            <p>
+                v-show와 v-if는 둘다 조건부 렌더링을 할 때 사용되는 디렉티브이다.</br>
+                v-if는 값이 참이면 yes가 렌더링, 거짓이면 no가 렌더링 된다. </br>
+                v-show는 값이 참이면 화면에 표시된다.
+                <p style="color: rgb(80, 19, 177); font-weight: bold;">
+                        *차이점 
+                        v-if는 조건에 따라 컴포넌트가 실제로 제거되고 생성된다.(html에 렌더링 되지 않음) </br>
+                        반면에 v-show는 단순히 css의 display 속성만 변경이 된다.(display: none)
+                </p>  
+            </p>
+        </div>
+        <br>
+        <div id="test7"> 
+            <h3>7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?</h3>
+            <p>
+                v-pre는 특정 엘리먼트를 무시하는데에 사용된다. (컴파일 속도가 빨라짐)</br>
+                v-once는 html 코드로 출력이 된 이후에 어떤 후처리가 있더라도 처음에 출력한 값을 유지시킬 때 사용된다.</br>
+            </p>
+        </div>
+        <br>
+        <div id="test8"> 
+            <h3>8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.) 정보 (이름 소속팀 나이)?</h3>
+            <span style="display:block;">이름을 입력해주세요.</span>
+            <input type="text" v-model="personInfo">
+        </div>
+        </br>
     </div>
     <!-- 스크립트 -->
     <script>
@@ -86,24 +140,32 @@
         var test4 = new Vue ({
             el: '#test4',
             data: {
-                weight: '',
-                height: ''
+                weight:  '',
+                height:  ''
             },
             computed: {
-                resultMsg: function() {
-                    var bmi = weight / (height * height);
-                    if(bmi <= 18.5) {
-                        return "많이 드세요";
-                    } else if ( 18.5 < bmi <= 23) {
-                        return "적당히 드세요";
-                    } else if ( 24 < bmi <= 26) {
-                        return "먹는 양을 조금 줄이세요";
-                    } else if ( 27 < bmi <= 29) {
-                        return "그만 드세요";
-                    } else {
-                        return "우리 중에는 이런사람이 없어요.";
-                    }  
+                bmi: function() {
+                    var weight = Number(this.weight);
+                    var height = Number(this.height) / 100;
+                    var result = weight / (height * height);
+                    
+                    return result; 
+                
                 }
+            }
+        });
+        var test5 = new Vue ({
+            el: '#test5',
+            data: {
+                inputName:  []
+            }
+
+    
+        });
+        var test8 = new Vue ({
+            el: '#test8',
+            data: {
+                personInfo:  ''
             }
         });
     </script>
