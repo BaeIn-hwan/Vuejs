@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>챕터 2</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,input,button,textarea,option,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video { padding:0; font:inherit; outline: 0 none; }
+
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {display:block;}
+
+
+
+
+        body {position:relative;}
+        body,input,button,textarea,select,option {}
+        h1,h2,h3,h4,h5,h6 {}
+
+        table {table-layout:fixed; border-collapse:unset;border-spacing:0;}
+        caption {display:none;}
+        img, fieldset{border:0;}
+        ul,ol,li{list-style:none}
+        a, img, input {}
+        img {vertical-align:top;}
+        a {color:#656565; text-decoration:none;}
+        em, i, address{font-style:normal}
+        input, textarea {box-sizing:border-box; -webkit-box-sizing:border-box; border-radius:0; -webkit-border-radius:0;}
+        input.txt-box {padding:0 10px;border:1px solid #ddd;line-height:38px;}
+        input.aright {text-align:right;}
+        input[type="text"][disabled="disabled"] {background:#f2f2f2;}
+        input[type=text]::-ms-clear{display: none;}
+        textarea {padding:10px; resize:none;}
+
+        input[type="text"]{
+            padding:5px;
+            border:1px solid #333;
+        }
+        .division td{
+            background: yellow;
+        }
+
+        article{padding:30px 10px;border-bottom:2px solid #ddd;}
+    </style>
+</head>
+
+<body>
+    <section>
+        <article id="test01">
+            <h2>
+                1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번
+                화면에 자신의 이름을 나오게 하세요.
+            </h2>
+            <div id="simple">
+                <h2>{{name}}</h2>
+            </div>
+            <div id="simple2">
+                <h2 v-text="name"></h2>
+            </div>
+            <div id="simple3">
+                <h2 v-html="name"></h2>
+            </div>
+            <script>
+
+                //Model
+                var model = {
+                    name: "양원석"
+                };
+                //View Model
+                var simple = new Vue ({
+                    el: "#simple",
+                    data: model
+                });
+
+                var sample2 = new Vue({
+                    el: "#simple2",
+                    data: model
+                });
+
+                var simple3 = new Vue({
+                    el: "#simple3",
+                    data: model
+                });
+            </script>
+        </article>
+        <article id="test02">
+            <h2>
+                2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.
+            </h2>
+            <div id="simple4">
+                <input type="text" v-model="name" placeholder="소속을 입력하세요">
+                <br>
+                <p>저는 <span v-html="name"></span> 소속입니다.</p>
+            </div>
+            <script>
+                //양방향 통신
+                var sample4 = new Vue({
+                    el: "#simple4",
+                    data: {
+                        name: ''
+                    }
+                })
+            </script>
+        </article>
+        <article id="test03">
+            <h2>
+                3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면
+                "우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.
+            </h2>
+            <div id="simple5">
+                <div>먹보를 골라주세요.</div>
+                <label>
+                    <input type="checkbox" value="츤데레 전" v-model="meogbo"> <span>츤데레 전,</span>
+                </label>
+                <label>
+                    <input type="checkbox" value="민수대리" v-model="meogbo"> <span>민수대리,</span>
+                </label>
+                <label>
+                    <input type="checkbox" value="엽쥠" v-model="meogbo"> <span>엽쥠,</span>
+                </label>
+                <label>
+                    <input type="checkbox" value="혜진쥠" v-model="meogbo"> <span>혜진쥠,</span>
+                </label>
+                <label>
+                    <input type="checkbox" value="인환쥠" v-model="meogbo"> <span>인환쥠,</span>
+                </label>
+                <label>
+                    <input type="checkbox" value="조애나 신" v-model="meogbo"> <span>조애나 신,</span>
+                </label>
+                <label>
+                    <input type="checkbox" value="경아사원" v-model="meogbo"> <span>경아사원,</span>
+                </label>
+                <label>
+                    <input type="checkbox" value="영희사원" v-model="meogbo"> <span>영희사원</span>
+                </label>
+            </div>
+            <div id="simple5_1">
+                우리 중 제일 잘 먹는 사람은 <span v-html="meogbo"></span> 입니다.
+            </div>
+            <script>
+                //양방향통신 checkbox
+                var model5 = {
+                    meogbo: []
+                }
+
+                var sample5 = new Vue({
+                    el: "#simple5",
+                    data: model5
+                })
+
+                var sample5_1 = new Vue({
+                    el: "#simple5_1",
+                    data: model5
+                })
+            </script>
+        </article>
+        <article id="test04">
+            <h2>
+                4. v-if / v-else-if
+                몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.
+            </h2>
+            <h3>
+                18.5 이하 >> 많이 드세요. 18.5 ~ 23 >> 적당히 드세요. 23 ~ 25 >> 먹는 양을 조금 줄이세요. 25 ~ 30 >> 그만 드세요. 30이상 >> 우리 중에는 이런사람이 없어요.
+            </h3>
+            <div id="simple7">
+                몸무게: <input type="text" v-model="weight"> <em v-if="weight < 0" >마이너스는 허용하지 않습니다.</em>
+                키: <input type="text" v-model="height"> <em v-show="height < 0" >마이너스는 허용하지 않습니다.</em>
+                <br>
+
+                <span v-if="bmi <= 18.5">많이 드세요.</span>
+                <span v-else-if="bmi <= 18.5 && bmi < 23">적당히 드세요.</span>
+                <span v-else-if="bmi >= 23 && bmi < 25">먹는 양을 조금 줄이세요.</span>
+                <span v-else-if="bmi >= 25 && bmi < 30">그만 드세요.</span>
+                <span v-else-if="bmi >= 30">우리 중에는 이런사람이 없어요.</span>
+            </div>
+            <script>
+                var sample7 = new Vue({
+                    el: "#simple7",
+                    data: {
+                        weight: '',
+                        height: '',
+                    },
+                    computed: {
+                        bmi: function(){
+                            var weight = Number(this.weight);
+                            var height = Number(this.height);
+                            return weight / (height * height);
+                        }
+                    }
+                })
+            </script>
+        </article>
+        <article id="test05">
+            <h2>
+                5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.
+            </h2>
+            <div id="simple8">
+                <span>
+                    이름 : <input type="text" v-model="name" placeholder="이름" >
+                </span>
+                <em v-show="name === '전정호'">사회적 위치와 지위가 있는분</em>
+                <em v-show="name === '전동엽'">시바견</em>
+                <em v-show="name === '신지은'">존나신</em>
+                <em v-show="name === '유혜진'">앵무새</em>
+                <em v-show="name === '배인환'">햄토리</em>
+                <em v-show="name === '주영희'">술영희</em>
+                <em v-show="name === '김민수'">참새</em>
+                <em v-show="name === '윤경아'">친하게지내요~</em>
+            </div>
+            <script>
+                var sample8 = new Vue({
+                    el: "#simple8",
+                    data: {
+                        name: ''
+                    }
+                })
+            </script>
+        </article>
+        <article id="test06">
+            <h2>
+                6. v-show와 v-if는 무슨 차이점이 있을까요?
+            </h2>
+            <blockquote>
+            <p>
+                v-if : 실제 코드가 삽입되지 않아 랜더링 되지 않음
+            </p>
+            <p>
+                v-show : 실제 코드는 삽입되었으나 display:none 으로 처리됨
+            </p>
+            </blockquote>
+        </article>
+        <article id="test07">
+            <h2>
+                7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?
+            </h2>
+            <blockquote>
+                <p>
+                    v-pre : 콧수염 모델({...})을 그대로 보여줌, 엘리먼트를 무시하고 자식요소를 신경안쓰고 건너뛰기 때문에 컴파일 속도가 빨라지는 효과를 볼 수 있다고 한다.
+                </p>
+                <p>
+                    v-once : HTML코드로 출력이 된 이후에 어떤 후처리가 있더라도 처음에 출력한 값을 유지시킬 때 사용
+                </p>
+            </blockquote>
+        </article>
+        <article id="test08">
+            <h2>
+                8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
+                정보 (이름 소속팀 전화번호 뒷자리)
+            </h2>
+            <div id="simple9">
+                <p>
+                    이름 : <input type="text" :value="membername" placeholder="팀원명" @input="memberChanged">
+                </p>
+                <table id="list" v-show="membername != ''">
+                    <tbody id="contacts">
+                        <tr v-for="m in filtered">
+                            <td> &nbsp; {{m.name}} &nbsp; </td>
+                            <td> &nbsp; {{m.team}} &nbsp; </td>
+                            <td> &nbsp; {{m.phone}} &nbsp; </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <script>
+                var model19 = {
+                    membername : "",
+                    members : [
+                        { no:1, name : "전정호", team : "프론트엔드", phone: "9518"},
+                        { no:2, name : "전동엽", team : "프론트엔드", phone: "5215"},
+                        { no:3, name : "신지은", team : "프론트엔드", phone: "5593"},
+                        { no:4, name : "유혜진", team : "프론트엔드", phone: "8486"},
+                        { no:5, name : "배인환", team : "프론트엔드", phone: "0308"},
+                        { no:6, name : "주영희", team : "기술연구소", phone: "0963"},
+                        { no:7, name : "김민수", team : "프론트엔드", phone: "3327"},
+                        { no:8, name : "윤경아", team : "프론트엔드", phone: "3554"}
+                    ]
+                }
+
+                var clist = new Vue({
+                    el: "#simple9",
+                    data : model19,
+                    computed : {
+                        filtered : function() {
+                            var mname = this.membername.trim();
+                            return this.members.filter(function(member, index) {
+                                if(member.name.indexOf(mname) > -1) {
+                                    return true;
+                                }
+                            })
+                        }
+                    },
+                    methods: {
+                        memberChanged: function(e) {
+                            this.membername = e.target.value;
+                        }
+                    }
+                })
+            </script>
+        </article>
+        <article id="test09">
+            <h2>
+                9. 현재 스터디하는 9명의 이름, 성별, 휴대폰 번호를 입력한 뒤 5번째 사람의 정보에는 노란색을 칠해주세요.
+            </h2>
+            <table id="example10">
+                <tbody>
+                <template v-for="(person, index) in infoList">
+                    <tr :class="{ 'division': index == 4 }">
+                        <td>{{person.no}}</td>
+                        <td>{{person.name}}</td>
+                        <td>{{person.tel}}</td>
+                    </tr>
+                </template>
+                </tbody>
+            </table>
+            <script>
+                var model10 = {
+                    "infoList" : [
+                        {"no" : 1, "name" : "전정호", "tel" : "9518"},
+                        {"no" : 2, "name" : "전동엽", "tel" : "5215"},
+                        {"no" : 3, "name" : "신지은", "tel" : "5593"},
+                        {"no" : 4, "name" : "유혜진", "tel" : "8486"},
+                        {"no" : 5, "name" : "배인환", "tel" : "0308"},
+                        {"no" : 6, "name" : "주영희", "tel" : "0963"},
+                        {"no" : 7, "name" : "김민수", "tel" : "3327"},
+                        {"no" : 8, "name" : "윤경아", "tel" : "3554"},
+                        {"no" : 9, "name" : "양원석", "tel" : "3687"}
+                    ]
+                }
+                var sample10 = new Vue({
+                    el : "#example10",
+                    data: model10
+                })
+            </script>
+        </article>
+        <article id="test10">
+            <h2>
+                10. 숫자를 입력받고, 1부터 입력된 수까지의 짝수의 합을 구하시오.
+            </h2>
+            <p>죄송합니다. ㅜㅜ</p>
+        </article>
+        <article id="test01">
+            <h2>
+                11. 지하철 역을 입력하면 해당 지하철의 정보가 나오도록 하세요.
+                정보 : 번호 /  지하철 역 이름 / 지하철역 지역 / 지하철 역 호선
+            </h2>
+            <p>죄송합니다. ㅜㅜ</p>
+        </article>
+    </section>
+
+</body>
+</html>

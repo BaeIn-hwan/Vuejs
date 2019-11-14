@@ -4,155 +4,333 @@
         <meta charset="utf-8">
         <title>챕터 2</title>
         <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <style>
-            *{padding: 0; margin: 0; line-height: 1.4;}
+            *{padding: 0; margin: 0; font-size: 20px; line-height: 1.4;}
             body {
-                padding-bottom: 500px;
+                padding: 50px;
             }
-            article > p:first-child {
-                font-weight: bold;
+            h2 {
+                font-size: 30px;
+            }
+            pre {
+                font-weight: 500;
+                line-height: 1.3;
+            }
+            dl {
+                padding: 15px;
+                margin-top: 30px;
+                background: #f2f2f2;
+                border: 1px solid #ddd;
+            }
+            dt {
+                padding-bottom: 10px;
+                font-weight: 600;
                 font-size: 20px;
             }
             em {
                 font-style: normal;
                 font-weight: bold;
             }
+            input {
+                line-height: 40px;
+                padding-left: 20px;
+            }
+            ul, li {
+                list-style-type: none;
+            }
+            .info__table dt:after,
+            .info__table dd:after {
+                display: block;
+                clear: both;
+                content: "";
+            }
+            .info__table dt span,
+            .info__table dd span {
+                display: inline-block;
+                float: left;
+                width: 20%;
+                background: white;
+                border-right: 1px solid #ddd;
+                text-align: center;
+            }
+            .info__table .bg--yellow span {
+                background: yellow!important;
+            }
         </style>
     </head>
     <body>
-        <article id="test1">
-            <p> 1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번 화면에 자신의 이름을 나오게 하세요.</p>
-            <span>{{name}}</span>
-            <span v-html="name"></span>
-        </article>
-        <article id="test2">
-            <p>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</p>
-            <input type="text" v-model="team">
-            <span>저는 <em v-html="team">***</em>소속입니다.</span>
-        </article>
-        <article id="test3">
-            <p>
-            3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면
-            "우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.
-            </p>
-            <label>
-                <input type="radio" name="likeFood" value="팀장님" v-model="person">
-                <span>팀장님</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="민수대리님" v-model="person">
-                <span>민수대리님</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="팀장님" v-model="person">
-                <span>나</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="혜진주임님" v-model="person">
-                <span>혜진주임님</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="경아사원님" v-model="person">
-                <span>경아사원님</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="동엽주임님" v-model="person">
-                <span>동엽주임님</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="영희사원님" v-model="person">
-                <span>영희사원님</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="인환주임님" v-model="person">
-                <span>인환주임님</span>
-            </label>
-            <label>
-                <input type="radio" name="likeFood" value="원석대리님" v-model="person">
-                <span>원석대리님</span>
-            </label>
-            <p style="color: mediumpurple;">우리 중 제일 잘 먹는 사람은 <em v-html="person" style="font-weight: bold; font-size: 15px;">***</em>입니다.</p>
-        </article>
-        <article id="test3_2">
-            <label>
-                <input type="checkbox" value="나" v-model="personList">
-                <span>나</span>
-            </label>
-            <label>
-                <input type="checkbox" value="경아씨" v-model="personList">
-                <span>경아씨</span>
-            </label>
-            <label>
-                <input type="checkbox" value="혜진주임님" v-model="personList">
-                <span>혜진주임님</span>
-            </label>
-            <p>이 중 초콜릿을 좋아하는 사람은 <span v-html="personList"></span>입니다.</p>
-        </article>
-        <article id="test4">
-            <p>
-                4. v-if / v-else-if
-                몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.
-                ** 계산법 >>>   BMI = 체중(Kg) / ( 신장(m) * 신장(m) )
-                ** 결과 텍스트
-                18.5 이하  >> 많이 드세요.
-                18.5 ~ 23 >> 적당히 드세요.
-                23 ~ 25   >> 먹는 양을 조금 줄이세요.
-                25 ~ 30   >> 그만 드세요.
-                30이상     >> 우리 중에는 이런사람이 없어요.
-            </p>
-            <input type="text" v-model="height" placeholder="키를 입력하세요.">
-            <input type="text" v-model="weight" placeholder="몸무게를 입력하세요.">
-            <!--<p>{{bmi}}</p>-->
-            <p v-if="bmi == 0 || bmi == NaN"> 당신의 비만도는...?</p>
-            <p v-else-if="bmi <= 18.5"> 많이 드세요.</p>
-            <p v-else-if="bmi >= 18.5 && bmi < 23">적당히 드세요.</p>
-            <p v-else-if="bmi >= 23 && bmi < 25">먹는 양을 조금 줄이세요.</p>
-            <p v-else-if="bmi >= 25 && bmi < 30">그만 드세요.</p>
-            <p v-else-if="bmi >= 30">우리 중에는 이런 사람이 없어요.</p>
-        </article>
-        <article id="test5">
-            <p>
-                5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.
-                예) 민수대리님 - 참새
-                동엽주임님 - 시바견
-                혜진주임님 - 앵무새
-                인환주임님 - 햄토리
-            </p>
-            <input type="text" v-model="name" :placeholder="inputMsg">
-            <p v-show="name.indexOf('민수') != -1">참새</p>
-            <p v-show="name.indexOf('인환') != -1">햄토리</p>
-            <p v-show="name.indexOf('정호') != -1">개구리</p>
-            <p v-show="name.indexOf('혜진') != -1">앵무새</p>
-            <p v-show="name.indexOf('동엽') != -1">시바견</p>
-        </article>
-        <article id="test6">
-            <p>
-                6. v-show와 v-if는 무슨 차이점이 있을까요?
-            </p>
-            <p>
-                렌더링의 차이가 있다.<br><br>
-                v-show 는 일단 html렌더링을 시켜놓고 조건에 맞지 않으면 display: none을 시키고, 조건에 맞으면 display: block을 시킨다.<br>
-                (예제 5번 확인)<br><br>
-                반면에 v-if 는 조건에 맞지 않으면 html렌더링 자체를 시키지 않는다.<br>
-                (예제 4번 확인)<br>
-            </p>
-        </article>
-        <article id="test7">
-            <p>
-                7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?
-            </p>
-            <dl>
-                <dt>v-pre</dt>
-                <dd>v-pre는 기존 자바스크립트의 pre태그와 같이 태그를 번역하지 않고 그대로 찍는다.</dd>
+        <section>
+            <h2>2장 Vue.js 기초</h2>
+            <dl id="test1">
+                <dt> 1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번 화면에 자신의 이름을 나오게 하세요.</dt>
+                <dd>
+                    <span>{{name}}</span><br>
+                    <span v-html="name"></span>
+                </dd>
             </dl>
-            <dl>
-                <dt>v-once</dt>
-                <dd>v-once는 한번만 렌더링을 시킨다. 예를들어 v-model과 같이 양방향 렌더링을 하더라도 한번만 렌더링을 시킨다.</dd>
+            <dl id="test2">
+                <dt>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</dt>
+                <dd>
+                    <input type="text" v-model="team">
+                    <span>저는 <em v-html="team">***</em>소속입니다.</span>
+                </dd>
             </dl>
-        </article>
-        <article>
-            <p></p>
-        </article>
+            <dl id="test3">
+                <dt>
+                3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면
+                "우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.
+                </dt>
+                </dd>
+                    <label>
+                        <input type="radio" name="likeFood" value="팀장님" v-model="person">
+                        <span>팀장님</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="민수대리님" v-model="person">
+                        <span>민수대리님</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="팀장님" v-model="person">
+                        <span>나</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="혜진주임님" v-model="person">
+                        <span>혜진주임님</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="경아사원님" v-model="person">
+                        <span>경아사원님</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="동엽주임님" v-model="person">
+                        <span>동엽주임님</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="영희사원님" v-model="person">
+                        <span>영희사원님</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="인환주임님" v-model="person">
+                        <span>인환주임님</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="likeFood" value="원석대리님" v-model="person">
+                        <span>원석대리님</span>
+                    </label>
+                    <p style="color: mediumpurple;">우리 중 제일 잘 먹는 사람은 <em v-html="person" style="font-weight: bold; font-size: 15px;">***</em>입니다.</p>
+                </dd>
+            </dl>
+            <dl id="test3_2">
+                <dt>체크박스로 해보기</dt>
+                <dd>
+                    <label>
+                        <input type="checkbox" value="나" v-model="personList">
+                        <span>나</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" value="경아씨" v-model="personList">
+                        <span>경아씨</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" value="혜진주임님" v-model="personList">
+                        <span>혜진주임님</span>
+                    </label>
+                    <p>이 중 초콜릿을 좋아하는 사람은 <span v-html="personList"></span>입니다.</p>
+                </dd>
+            </dl>
+            <dl id="test4">
+                <dt>
+                    <p>
+                        4. 몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.<br>
+                    </p>
+                    <pre>
+** 계산법 >>>   BMI = 체중(Kg) / ( 신장(m) * 신장(m) )
+** 결과 텍스트
+18.5 이하  >> 많이 드세요.
+18.5 ~ 23 >> 적당히 드세요.
+23 ~ 25   >> 먹는 양을 조금 줄이세요.
+25 ~ 30   >> 그만 드세요.
+30이상     >> 우리 중에는 이런사람이 없어요.
+                    </pre>
+                </dt>
+                <dd>
+                    <input type="text" v-model.number="height" placeholder="키를 입력하세요.">
+                    <input type="text" v-model.number="weight" placeholder="몸무게를 입력하세요.">
+                    <!--<p>{{bmi}}</p>-->
+                    <p v-if="bmi == 0 || bmi == NaN"> 당신의 비만도는...?</p>
+                    <p v-else-if="bmi <= 18.5"> 많이 드세요.</p>
+                    <p v-else-if="bmi >= 18.5 && bmi < 23">적당히 드세요.</p>
+                    <p v-else-if="bmi >= 23 && bmi < 25">먹는 양을 조금 줄이세요.</p>
+                    <p v-else-if="bmi >= 25 && bmi < 30">그만 드세요.</p>
+                    <p v-else-if="bmi >= 30">우리 중에는 이런 사람이 없어요.</p>
+                </dd>
+            </dl>
+            <dl id="test5">
+                <dt>
+                    5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.
+                    예) 민수대리님 - 참새
+                    동엽주임님 - 시바견
+                    혜진주임님 - 앵무새
+                    인환주임님 - 햄토리
+                </dt>
+                <dd>
+                    <input type="text" v-model="name" :placeholder="inputMsg">
+                    <p v-show="name.indexOf('민수') != -1">참새</p>
+                    <p v-show="name.indexOf('인환') != -1">햄토리</p>
+                    <p v-show="name.indexOf('정호') != -1">개구리</p>
+                    <p v-show="name.indexOf('혜진') != -1">앵무새</p>
+                    <p v-show="name.indexOf('영희') != -1">술영희</p>
+                    <p v-show="name.indexOf('원석') != -1">두더지</p>
+                    <p v-show="name.indexOf('동엽') != -1">시바견</p>
+                </dd>
+            </dl>
+            <dl id="test6">
+                <dt>
+                    6. v-show와 v-if는 무슨 차이점이 있을까요?
+                </dt>
+                <dd>
+                    <p>"렌더링의 차이"</p>
+                    <dl>
+                        <dt>v-show</dt>
+                        <dd>일단 html렌더링을 시켜놓고 조건에 맞지 않으면 display: none을 시키고, 조건에 맞으면 display: block을 시킨다.<br>
+                            (예제 5번 확인)<br><br>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>v-if</dt>
+                        <dd>조건에 맞지 않으면 html렌더링 자체를 시키지 않는다.<br>
+                            (예제 4번 확인)<br>
+                        </dd>
+                    </dl>
+
+                </dd>
+            </dl>
+            <dl id="test7">
+                <dt>
+                    7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?
+                </dt>
+                <dd>
+                    <dl>
+                        <dt>v-pre</dt>
+                        <dd>
+                            v-pre는 pre태그와 같이 번역하지 않고 그대로 찍는다.<br>
+                            <span v-pre>{{msgOnce}}</span>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>v-once</dt>
+                        <dd>
+                            v-once는 한번만 렌더링을 시킨다. console에서 값을 변경해도 변하지 않는다.
+                            <br>
+                            <input type="text" v-model="msg">
+                            <span v-html="msg"></span>
+                            <p v-once>{{msgOnce}}</p>
+                        </dd>
+                    </dl>
+                </dd>
+            </dl>
+            <dl id="test8">
+                <dt>
+                    8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
+                    정보 (이름 소속팀 나이)<br>
+                    <pre>
+예시)
+신지은 입력시  >> 신지은 프론트엔드팀 27
+주영희 입력시  >> 주영희 기술연구소팀 27
+                    </pre>
+                </dt>
+                <dd>
+                    <input type="text" v-model="inputName" :placeholder="msg" style="width:80%; font-size: 17px;">
+                    <dl class="info__table">
+                        <dt>
+                            <span>이름</span>
+                            <span>소속팀</span>
+                            <span>나이</span>
+                        </dt>
+                        <dd v-for="person in infoList" >
+                            <ul v-show="inputName == person.name">
+                               <li>
+                                   <span>{{person.name}}</span>
+                                   <span>{{person.team}}</span>
+                                   <span>{{person.age}}</span>
+                               </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </dd>
+            </dl>
+            <dl id="test9">
+                <dt>
+                    9. 현재 스터디하는 9명의 이름, 성별, 휴대폰 번호를 입력한 뒤 5번째 사람의 정보에는 노란색을 칠해주세요.
+                </dt>
+                <dd>
+                    <dl class="info__table">
+                        <dt>
+                            <span>이름</span>
+                            <span>성별</span>
+                            <span>휴대폰 번호</span>
+                        </dt>
+                        <dd v-for="(person, idx) in infoList">
+                            <ul>
+                                <li v-if="(idx + 1) % 5 != 0">
+                                    <span>{{person.name}}</span>
+                                    <span>{{person.gender}}</span>
+                                    <span>{{person.number}}</span>
+                                </li>
+                                <li v-if="(idx + 1) % 5 == 0 && (idx + 1) > 0" class="bg--yellow">
+                                    <span>{{person.name}}</span>
+                                    <span>{{person.gender}}</span>
+                                    <span>{{person.number}}</span>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </dd>
+            </dl>
+            <dl id="test10">
+                <dt>
+                    10. 숫자를 입력받고, 1부터 입력된 수까지의 짝수의 합을 구하시오.
+                </dt>
+                <dd>
+                    <input type="text" v-model.number="inputNum">
+                    <p>1부터 {{inputNum}}까지 더해진 짝수의 합은 {{sum}}입니다.</p>
+                </dd>
+            </dl>
+            <dl id="test11">
+                <dt>
+                    11. 지하철 역을 입력하면 해당 지하철의 정보가 나오도록 하세요.
+                    <pre>
+정보 :
+        번호 /  지하철 역 이름 / 지하철역 지역 / 지하철 역 호선
+예시 :
+        1 / 중앙역 / 수도권 / 4
+        2 / 신도림역 / 수도권 / 2
+                    </pre>
+                </dt>
+                <dd>
+                    <input type="text" v-model.trim="stationName" v-bind:placeholder="msg" style="width: 80%;">
+                    <dl class="info__table">
+                        <dt>
+                            <span>번호</span>
+                            <span>지하철 역 이름</span>
+                            <span>지하철 역 지역</span>
+                            <span>지하철 역 호선</span>
+                        </dt>
+                        <dd v-for="(station, idx) in subway">
+                            <ul v-show="stationName == station.name" class="bg--yellow">
+                                <li>
+                                    <span>{{station.num}}</span>
+                                    <span>{{station.name}}</span>
+                                    <span>{{station.location}}</span>
+                                    <span>{{station.line}}</span>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </dd>
+            </dl>
+        </section>
         <script>
             var model1 = {
                 name: "신지은"
@@ -190,9 +368,8 @@
                 },
                 computed: {
                     bmi: function () {
-                        let _weight = Number(this.weight);
-                        let _height = Number(this.height);
-                        console.log(_weight, _height)
+                        let _weight = this.weight;
+                        let _height = this.height;
                         let result = (_weight * _weight) / _height;
                         return result;
                     }
@@ -206,23 +383,153 @@
                 el: "#test5",
                 data: model5
             })
+            var answer7 = new Vue({
+                el: "#test7",
+                data: {
+                    msg: '',
+                    msgOnce: "안바뀌는 메세지 V-ONCE"
+                }
+            });
+            var infoListData = [
+                {
+                    "name" : "신지은",
+                    "team" : "프론트엔드팀",
+                    "age" : "27",
+                    "gender" : "여",
+                    "number" : "01029985593"
+                },
+                {
+                    "name" : "주영희",
+                    "team" : "기술연구소팀",
+                    "age" : "27",
+                    "gender" : "여",
+                    "number" : "01012345667"
+                },
+                {
+                    "name" : "윤경아",
+                    "team" : "프론트엔드팀",
+                    "age" : "29",
+                    "gender" : "여",
+                    "number" : "010456789"
+                },
+                {
+                    "name" : "양원석",
+                    "team" : "기술연구소팀",
+                    "age" : "35",
+                    "gender" : "남",
+                    "number" : "0102444443"
+                },
+                {
+                    "name" : "유혜진",
+                    "team" : "프론트엔드팀",
+                    "age" : "31",
+                    "gender" : "여",
+                    "number" : "01029985654"
+                },
+                {
+                    "name" : "김민수",
+                    "team" : "프론트엔드팀",
+                    "age" : "29",
+                    "gender" : "남",
+                    "number" : "01078945615"
+                },
+                {
+                    "name" : "전정호",
+                    "team" : "프론트엔드팀",
+                    "age" : "33",
+                    "gender" : "남",
+                    "number" : "01062367777"
+                },
+                {
+                    "name" : "전동엽",
+                    "team" : "프론트엔드팀",
+                    "age" : "31",
+                    "gender" : "남",
+                    "number" : "010623414777"
+                },
+                {
+                    "name" : "배인환",
+                    "team" : "프론트엔드팀",
+                    "age" : "29",
+                    "gender" : "남",
+                    "number" : "01062111177"
+                }
+            ];
+            var model8 = {
+                msg: "정보를 보고 싶은 사람의 이름을 입력하세요.",
+                inputName: "",
+                infoList: infoListData
+            };
+            var answer8 = new Vue({
+                el: "#test8",
+                data: model8
+            });
+            var answer9 = new Vue({
+                el: "#test9",
+                data: {
+                    infoList: infoListData
+                }
+            });
+            var answer10 = new Vue({
+                el: "#test10",
+                data: {
+                    inputNum: "",
+                },
+                computed: {
+                    sum: function () {
+                        var num = this.inputNum;
+                        var totN = 0;
+                        //console.log(num)
+                        for (var i = 1; i <= num; i++) {
+                            if ( i % 2 == 0 ) {
+                                totN += i
+                                console.log(i)
+                            }
+                        }
+                        return totN;
+                    }
+                }
+            })
+            var stationData = [
+                {
+                    "num": "1",
+                    "name": "안산",
+                    "location": "수도권",
+                    "line": "4호선",
+                },
+                {
+                    "num": "2",
+                    "name": "초지",
+                    "location": "수도권",
+                    "line": "4호선",
+                },
+                {
+                    "num": "3",
+                    "name": "신도림",
+                    "location": "수도권",
+                    "line": "2호선",
+                },
+                {
+                    "num": "4",
+                    "name": "양재",
+                    "location": "수도권",
+                    "line": "3",
+                },
+                {
+                    "num": "5",
+                    "name": "강남",
+                    "location": "수도권",
+                    "line": "2",
+                },
+            ];
+            var answer11 = new Vue({
+                el: "#test11",
+                data: {
+                    msg: "지하철 역이름을 입력해주세요.",
+                    stationName: "",
+                    subway: stationData
+                }
+            })
         </script>
     </body>
 </html>
-
-
-8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
-정보 (이름 소속팀 나이)
-
-예시)
-신지은 입력시  >> 신지은 프론트엔드팀 27
-주영희 입력시  >> 주영희 기술연구소팀 27
-
-9. 현재 스터디하는 9명의 이름, 성별, 휴대폰 번호를 입력한 뒤 5번째 사람의 정보에는 노란색을 칠해주세요.
-
-10. 숫자를 입력받고, 1부터 입력된 수까지의 짝수의 합을 구하시오.
-
-11. 지하철 역을 입력하면 해당 지하철의 정보가 나오도록 하세요.
-정보 : 번호 /  지하철 역 이름 / 지하철역 지역 / 지하철 역 호선
-예시 : 1 / 중앙역 / 수도권 / 4
-2 / 신도림역 / 수도권 / 2

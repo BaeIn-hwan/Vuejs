@@ -96,7 +96,7 @@
         <script>
             var model3 = {
                 message: 'v-bind 디렉티브사용',
-                imagePath: '../images/sample.jpg'
+                 imagePath: '../images/sample.jpg'
             }
     
             var sample3 = new Vue({
