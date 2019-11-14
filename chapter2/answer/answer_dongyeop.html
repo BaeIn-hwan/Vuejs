@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter2 Answer</title>
+
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+    <h1>Chapter2 Answer</h1>
+<div id="app">
+    <h2>1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번 화면에 자신의 이름을 나오게 하세요.</h2>
+    
+    <div style="margin:30px 0 50px;">
+        <p>{{member[0].name}}</p>
+        <p v-text="'v-text : '+member[0].name"></p>
+        <p v-html="'v-html : '+member[0].name"></p>
+    </div>
+    
+    <h2>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</h2>
+    
+    <div style="margin:30px 0 50px;">
+        <p>팀명을 입력해주세요.</p>
+        <label for="typingTeamName">팀명 : </label><input type="text" id="typingTeamName" v-model="teamName">
+        <p v-if="teamName != ''">저는 {{teamName}}소속입니다.</p>
+        <p>팀명을 입력해주세요.</p>
+    </div>
+
+    <h2>3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면"우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.</h2>
+    
+    <div style="margin:30px 0 50px;">
+        <p>우리 중 제일 잘 먹는 사람을 선택해주세요.</p>
+        <label v-for="person in member"><input type="radio" v-model="glutton" :value="person.name">{{person.name}}</label>
+        <p v-if="glutton != ''">우리 중 제일 잘 먹는 사람은 {{glutton}}입니다.</p>
+    </div>
+
+    <h2 style="white-space:pre-line">
+        4. v-if / v-else-if
+        몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.
+        
+        ** 계산법 >>>   BMI = 체중(Kg) / ( 신장(m) * 신장(m) )
+        ** 결과 텍스트
+              18.5 이하  >> 많이 드세요.
+              18.5 ~ 23 >> 적당히 드세요.
+              23 ~ 25   >> 먹는 양을 조금 줄이세요.
+              25 ~ 30   >> 그만 드세요.
+              30이상     >> 우리 중에는 이런사람이 없어요.
+    </h2>
+
+    <div style="margin:30px 0 50px;">
+        <p>BMI 체크</p>
+        <label>몸무게(kg) : <input type="number" v-model="weight"></label>
+        <label>키(cm) : <input type="number" v-model="height"></label>
+        <p>당신의 BMI는 {{BMI()}}입니다.</p>
+        <p v-if="BMI() > 0">
+            <span v-if="BMI() <= 18.5">많이 드세요.</span>
+            <span v-else-if="BMI() < 23">적당히 드세요.</span>
+            <span v-else-if="BMI() < 25">먹는 양을 조금 줄이세요.</span>
+            <span v-else-if="BMI() < 30">그만 드세요.</span>
+            <span v-else-if="BMI() >= 30">우리 중에는 이런 사람이 없어요.</span>
+        </p>
+    </div>
+    
+    <h2 style="white-space:pre-line">
+    5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.
+    예) 민수대리님 - 참새
+        동엽주임님 - 시바견
+        혜진주임님 - 앵무새
+        인환주임님 - 햄토리
+        (이름을 정확히 입력하면 노출되도록 작성함)
+    </h2>
+
+    <div style="margin:30px 0 50px;">
+        <label>이름 : <input type="text" v-model="memberName"></label>
+        <p v-if="typeof memberInfo() != 'boolean'">
+            <div v-for="(value, key) in memberInfo()">{{key}} : {{value}}</div>
+        </p>
+    </div>
+
+
+    <h2>6. v-show와 v-if는 무슨 차이점이 있을까요?</h2>
+
+    <div style="margin:30px 0 50px;">
+        <p>v-show는 display (none | block) 속성으로 제어됩니다.</p>
+        <p>v-if는 컴포넌트에 있는 태그 자체가 추가/삭제 됩니다. 또한 else를 이용하여 여러 조건으로 노출할 수 있습니다.</p>
+    </div>
+    
+    <h2>7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?</h2>
+
+    <div style="margin:30px 0 50px;">
+        <p>v-pre는 태그 내부에 존재하는 텍스트의 템플릿을 치환하지 않고 있는 그대로 보여줍니다.</p>
+        <p>v-once는 최초에 출력되는 값을 유지할 경우 사용합니다.</p>
+    </div>
+    
+    <h2 style="white-space:pre-line">
+    8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
+    정보 (이름 소속팀 나이)
+    
+    예시)
+    신지은 입력시  >> 신지은 프론트엔드팀 27
+    주영희 입력시  >> 주영희 기술연구소팀 27
+    </h2>
+    
+
+    <h2>9. 현재 스터디하는 9명의 이름, 성별, 휴대폰 번호를 입력한 뒤 5번째 사람의 정보에는 노란색을 칠해주세요.</h2>
+    <div style="margin:30px 0 50px;">
+        <dl v-for="(info, idx) in member" :data-idx="idx" :style="{'background': idx==4 ? 'yellow':'none'}">
+            <dt>{{info.name}}</dt>
+            <dd v-for="(value, key) in info" v-if="key != 'name'">{{value}}</dd>
+        </dl>
+    </div>
+    
+    <h2>10. 숫자를 입력받고, 1부터 입력된 수까지의 짝수의 합을 구하시오.</h2>
+    <div style="margin:30px 0 50px;">
+        <label>입력한 숫자 : <input type="number" v-model="inputNumber"></label>
+        <p v-if="parseInt(inputNumber) > 1">1부터 {{parseInt(inputNumber)}}사이에서 짝수들의 합 : {{sumNumber()}}</p>
+    </div>
+    
+
+    <hr>
+    11. 지하철 역을 입력하면 해당 지하철의 정보가 나오도록 하세요.
+    정보 : 번호 /  지하철 역 이름 / 지하철역 지역 / 지하철 역 호선
+    예시 : 1 / 중앙역 / 수도권 / 4
+          2 / 신도림역 / 수도권 / 2
+    
+    
+    
+    </div>
+    <script>
+        var data = {
+            member : [
+                {name:'전동엽',gender:'남자',rank : '주임',team : '프론트엔드팀'},
+                {name:'윤경아',gender:'여자',rank : '사원',team : '프론트엔드팀'},
+                {name:'신지은',gender:'여자',rank : '사원',team : '프론트엔드팀'},
+                {name:'유혜진',gender:'여자',rank : '주임',team : '프론트엔드팀'},
+                {name:'배인환',gender:'남자',rank : '주임',team : '프론트엔드팀'},
+                {name:'김민수',gender:'남자',rank : '대리',team : '프론트엔드팀'},
+                {name:'전정호',gender:'남자',rank : '과장',team : '프론트엔드팀'},
+                {name:'양원석',gender:'남자',rank : '대리',team : '기술연구소 개발팀'},
+                {name:'주영희',gender:'여자',rank : '사원',team : '기술연구소 개발팀'}
+            ],
+            teamName : '',
+            glutton : '',
+            weight:0,
+            height:0,
+            BMI() {
+                var obj = this;
+                if(obj.weight > 0 && obj.height > 0) {
+                    return (this.weight / Math.pow(this.height/100 , 2)).toFixed(1)
+                }else {
+                    return 0
+                }
+                
+            },
+            memberName:'',
+            memberInfo() {
+                var obj = this;
+                var returnInfo={};
+                var checkMember = obj.member.some(data => {
+                    if(data.name == obj.memberName) {
+                        returnInfo = data;
+                        return true;
+                    }
+                });
+                return checkMember ? returnInfo : checkMember;
+            },
+            inputNumber:0,
+            sumNumber(){
+                var obj = this;
+                var sum = 0;
+                for(var i=0; i < obj.inputNumber; i+=2){
+                    sum += i;
+                }
+                return sum;
+            }
+        };
+
+        var app = new Vue({
+            el : '#app',
+            data : data,
+        })
+    </script>
+</body>
+</html>

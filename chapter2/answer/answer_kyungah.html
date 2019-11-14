@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>chapter2</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+    
+    </style>
+</head>
+<body>
+    <div>
+        <div id="test1">
+            <h3>1번</h3>
+            <p v-text="name"></p>
+            <p>{{name}}</p>
+        </div>
+        <div id="test2">
+            <h3>2번</h3>
+            <input type="text" v-model="teamName">
+            <p>저는 {{teamName}}팀 소속입니다.</p>
+        </div>
+        <div id="test3">
+            <h3>3번</h3>
+            <label>
+                <input type="checkbox" id="1" value="전정호" v-model="people">
+                <span>전정호</span>
+            </label>
+            <label>
+                <input type="checkbox" id="2" value="김민수" v-model="people">
+                <span>김민수</span> 
+            </label>
+            <label>
+                <input type="checkbox" id="3" value="전동엽" v-model="people">
+                <span>전동엽</span>
+            </label>
+            <label>
+                <input type="checkbox" id="4" value="배인환" v-model="people">
+                <span>배인환</span>
+            </label>
+            <label>
+                <input type="checkbox" id="5" value="유혜진" v-model="people">
+                <span>유혜진</span>
+            </label>
+            <label>
+                <input type="checkbox" id="6" value="신지은" v-model="people">
+                <span>신지은</span>
+            </label>
+            </br>
+            <p>우리 중 제일 잘 먹는 사람은 {{people}} 입니다.</p>
+        </div>
+        <div id="test4">
+            <label>
+                <input type="text" v-model="weight">
+                <span>몸무게를 입력해 주세요.</span>
+            </label>
+            <label>
+                <input type="number" v-model="height">
+                <span>키를 입력해 주세요.</span>
+            </label>
+            <p>{{resultMsg}}</p>
+        </div>
+    </div>
+    <!-- 스크립트 -->
+    <script>
+        var test1 = new Vue ({
+            el: '#test1',
+            data: {
+                name: '굥아'
+            }
+        });
+
+        var test2 = new Vue ({
+            el: '#test2',
+            data: {
+                teamName: []
+            }
+        });
+
+        var test3 = new Vue ({
+            el: '#test3',
+            data: {
+                people: []
+            }
+        });
+        var test4 = new Vue ({
+            el: '#test4',
+            data: {
+                weight: '',
+                height: ''
+            },
+            computed: {
+                resultMsg: function() {
+                    var bmi = weight / (height * height);
+                    if(bmi <= 18.5) {
+                        return "많이 드세요";
+                    } else if ( 18.5 < bmi <= 23) {
+                        return "적당히 드세요";
+                    } else if ( 24 < bmi <= 26) {
+                        return "먹는 양을 조금 줄이세요";
+                    } else if ( 27 < bmi <= 29) {
+                        return "그만 드세요";
+                    } else {
+                        return "우리 중에는 이런사람이 없어요.";
+                    }  
+                }
+            }
+        });
+    </script>
+</body>
+</html>
