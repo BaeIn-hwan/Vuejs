@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+        
+    </head>
+    <body>
+        <section id="practice">
+            <!-- 콧수염 모델, v-text/v-html 디렉티브 사용하여 이름 출력 -->
+            <div id="name">
+                <h2>{{name}}</h2>
+                <h2 v-text="name"></h2>
+                <h2 v-html="name"></h2>
+            </div>
+
+            <!-- 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요 -->
+            <div>
+                <label for="inputTeamName">
+                    소속 팀: <input type="text" id="inputTeamName" v-model="teamName" placeholder="팀명을 입력하세요.">
+                </label>
+                <p v-if="teamName != ''">저는 <span v-html="teamName"></span>팀 소속입니다.</p>
+            </div>
+
+            <!-- 체크박스 value 값 반영하여 텍스트 출력 -->
+            <div>
+                <p>가장 잘 먹는 사람을 선택해주세요.</p>
+                <label for="member1"><input type="radio" name="member" id="member1" v-model="member" value="유혜진">유혜진</label>
+                <label for="member2"><input type="radio" name="member" id="member2" v-model="member" value="전동엽">전동엽</label>
+                <label for="member3"><input type="radio" name="member" id="member3" v-model="member" value="전정호">전정호</label>
+                <label for="member4"><input type="radio" name="member" id="member4" v-model="member" value="신지은">신지은</label>
+                <label for="member5"><input type="radio" name="member" id="member5" v-model="member" value="배인환">배인환</label>
+                <label for="member6"><input type="radio" name="member" id="member6" v-model="member" value="윤경아">윤경아</label>
+                <label for="member7"><input type="radio" name="member" id="member7" v-model="member" value="김민수">김민수</label>
+                <p v-if="member != ''">우리 중 제일 잘 먹는 사람은 <span v-html="member"></span> 입니다.</p>
+            </div>   
+
+            <!-- v-if / v-else-if / 계산형 속성(Computed Property) 사용하여 조건에 부합하는 결과값 출력하기 -->
+            <div>
+                <p>몸무게와 키를 입력해주세요.</p>
+                <label for="inputWeight">
+                    몸무게: <input type="text" id="inputWeight" v-model="weight">
+                </label>
+                <label for="inputHeight">
+                    키: <input type="text" id="inputHeight" v-model="height">
+                </label>
+                <p>
+                    <span v-if="BMI <= 18.5">많이 드세요</span>
+                    <span v-else-if="BMI < 23">적당히 드세요</span>
+                    <span v-else-if="BMI < 25">먹는 양을 조금 줄이세요</span>
+                    <span v-else-if="BMI < 30">그만 드세요</span>
+                    <span v-else-if="BMI >= 30">우리 중에는 이런 사람이 없어요</span>
+                </p>
+            </div>
+
+            <!-- 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트 출력 -->
+            <div>
+                <label for="memberinfo">
+                    <input type="text" id="memberinfo" v-model="memberinfo.name" placeholder="이름을 입력하세요.">
+                </label>
+                <p v-if="" v-html="memberinfo.engName"></p>
+            </div>
+
+            <!-- v-if / v-show 차이점 -->
+            <div>
+                <p>v-if : v-if 디렉티브를 사용한 element의 event listener와 자식 컴포넌트들이 DOM에 제거되거나 삽입되는 진짜 조건부 렌더링</p>
+                <p>v-show : DOM에 항상 삽입되고 display style을 통해 화면에 그려지거나 그려지지 않는 조건부 렌더링</p>    
+            </div>
+           
+        </section>
+
+        <script>
+
+            var model = {
+                name : "<i>유혜진</i>",
+                teamName : "", 
+                member : "",
+                weight : "",
+                height : "",
+                koreanName : "",
+                memberinfo : [
+                    { name : "유혜진", engName : "YooHyejin"},
+                    { name : "김민수", engName : "KimMinsoo"},
+                    { name : "신지은", engName : "ShinJieun"}
+                ]
+            };
+
+            var practice = new Vue({
+                el : "#practice",
+                data : model,
+                computed : {
+                    
+                    BMI() {
+                        console.log(this);
+                        if(this.weight > 0 && this.height > 0) {
+                            return this.weight / (this.height * this.height / 10000);
+                            //this는 Vue 객체 
+                        }                        
+                    }
+                },
+            });
+            
+            console.log(document.getElementById("name").innerHTML);
+            
+    
+        
+        </script>
+    </body>
+</html>
