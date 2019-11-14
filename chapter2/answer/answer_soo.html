@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+		<div id="app">
+			<template>
+				<section id="question1">
+					<h4>1. 콧수염 모델을 사용하여 한번, v-text/v-html 디렉티브를 사용하여 한번</h4>
+					<div v-text="question1.name"></div>
+				</section>
+				<section id="question2">
+					<h4>2. 본인이 속한 팀을 입력받고, "저는 ***팀 소속입니다" 가 나오도록 하세요.</h4>
+					<input type="text" v-model="question2.team">
+					<div v-if="question2.team">저는 "{{question2.team}}"팀 소속입니다</div>
+				</section>
+				<section id="question3">
+					<h4>3. 스터디 하는 사람들을 체크박스로 만들고, 그 중 제일 잘먹는 사람을 체크하면 "우리 중 제일 잘 먹는 사람은 *** 입니다." 가 나오도록 하세요.</h4>
+					<template v-for="(person, index) in question3.people">
+						<input :id="'people' + index" type="radio" name="people" :value="person" :key="index" v-model="question3.selected">
+						<label :for="'people' + index">{{person}}</label>
+					</template>
+					<div v-if="question3.selected">
+						우리 중 제일 잘 먹는 사람은 {{question3.selected}} 입니다.
+					</div>
+				</section>
+				<section id="question4">
+					<h4>4. v-if / v-else-if 몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.</h4>
+					키(cm)&nbsp;<input type="number" v-model="question4.height">
+					몸무게(kg)&nbsp;<input type="number" v-model="question4.weight">
+
+					<div v-if="bmi">
+						<div v-if="18.5 >= bmi">많이 드세요.</div>
+						<div v-else-if="23 >= bmi">적당히 드세요.</div>
+						<div v-else-if="25 >= bmi">먹는 양을 조금 줄이세요.</div>
+						<div v-else-if="30 >= bmi">그만 드세요.</div>
+						<div v-else>우리 중에는 이런사람이 없어요.</div>
+					</div>
+				</section>
+				<section id="question5">
+					<input type="text" v-model="question5.name">
+					<span v-if="question5.name">{{getImage()}}</span>
+				</section>
+
+				
+				<section id="question6">
+					<h4>6. v-show와 v-if는 무슨 차이점이 있을까요?</h4>
+						v-if는 조건부 블럭 안의 이벤트 리스너와 자식 컴포넌트가 토글하는 동안 적절하게 제거되고 다시 만들어지기 때문에 “진짜” 조건부 렌더링 입니다
+						v-if는 또한 게으릅니다 초기 렌더링에서 조건이 거짓인 경우 아무것도 하지 않습니다. 조건 블록이 처음으로 참이 될 때 까지 렌더링 되지 않습니다.
+						비교해보면, v-show는 훨씬 단순합니다. CSS 기반 토글만으로 초기 조건에 관계 없이 엘리먼트가 항상 렌더링 됩니다.
+						일반적으로 v-if는 토글 비용이 높고 v-show는 초기 렌더링 비용이 더 높습니다. 매우 자주 바꾸기를 원한다면 v-show를, 런타임 시 조건이 바뀌지 않으면 v-if를 권장합니다.
+				</section>
+				<section id="question7">
+					<h4>7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?</h4>
+					v-pre: 컴파일 하지 않음
+					v-once: 최초 1번만 렌더링 됨
+				</section>
+				<section id="question8">
+					<h4>8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)</h4>
+					<p>김민수, 김만수, 김만두</p>
+					<input type="text" v-model="question8.name">
+					<span v-if="question8.name" v-html="getquestion8()"></span>
+				</section>
+				<section id="question9">
+					<h4>9. 현재 스터디하는 9명의 이름, 성별, 휴대폰 번호를 입력한 뒤 5번째 사람의 정보에는 노란색을 칠해주세요.</h4>
+					<div :key="index" v-for="(person, index) in question9.people">
+						<span :style="4 == index ? 'background: yellow' : null">{{person.name}} {{person.gender}} {{person.phone}}</span>
+					</div>
+				</section>
+				<section id="question10">
+					<h4>10. 숫자를 입력받고, 1부터 입력된 수까지의 짝수의 합을 구하시오.</h4>
+					<input type="number" v-model="question10.number">
+					<div v-if="question10.number">
+						짝수 합 {{question10Answer}}
+					</div>
+				</section>
+				<section id="question11">
+					<h4>11. 지하철 역을 입력하면 해당 지하철의 정보가 나오도록 하세요.</h4>
+					<div>부평, 신도림, 구로 디지털 단지, 노량진, 양재</div>
+					<input type="text" v-model="question11.subwayStation">
+					{{getSubwayStation()}}
+				</section>
+			</template>
+		</div>
+		<script>
+			new Vue ({
+				el: "#app",
+				data: {
+					question1: {
+						name: '김민수',
+					},
+
+					question2: {
+						team: '',
+					},
+
+					question3: {
+						people: ['1번선수', '2번선수', '3번선수'],
+						selected: null,
+					},
+
+					question4: {
+						height: null,
+						weight: null,
+					},
+
+					question5: {
+						name: null,
+
+						model: {
+							'%EB%AF%BC%EC%88%98%EB%8C%80%EB%A6%AC%EB%8B%98': '참새',
+							'%EB%8F%99%EC%97%BD%EC%A3%BC%EC%9E%84%EB%8B%98': '시바견',
+							'%ED%98%9C%EC%A7%84%EC%A3%BC%EC%9E%84%EB%8B%98': '앵무새',
+							'%EC%9D%B8%ED%99%98%EC%A3%BC%EC%9E%84%EB%8B%98': '햄토리'
+						}
+					},
+
+					question8: {
+						name: null,
+						info: [{
+							name: '김민수',
+							team: '프론트엔드팀',
+							age: 29
+						}, {
+							name: '김만수',
+							team: '개발팀',
+							age: 28
+						}, {
+							name: '김만두',
+							team: '영업',
+							age: 27
+						}]
+					},
+
+					question9: {
+						people: [{
+							name: '김민수',
+							gender: '남',
+							phone: '010-4212-3327',
+						}, {
+							name: '김민수2',
+							gender: '남',
+							phone: '010-4212-3327',
+						}, {
+							name: '김민수3',
+							gender: '남',
+							phone: '010-4212-3327',
+						}, {
+							name: '김민수4',
+							gender: '남',
+							phone: '010-4212-3327',
+						}, {
+							name: '김민수5',
+							gender: '남',
+							phone: '010-4212-3327',
+						}]
+					},
+
+					question10: {
+						number: 0,
+					},
+
+					question11: {
+						subwayStation: null,
+						subwayStations: [{
+							index: 0,
+							name: '부평',
+							area: '인천',
+							line: '1',
+						}, {
+							index: 1,
+							name: '신도림',
+							area: '서울',
+							line: '1',
+						}, {
+							index: 2,
+							name: '구로 디지털 단지',
+							area: '서울',
+							line: '7',
+						}, {
+							index: 3,
+							name: '노량진',
+							area: '서울',
+							line: '9',
+						}, {
+							index: 0,
+							name: '양재',
+							area: '서울',
+							line: '3',
+						}],
+					}
+				},
+
+				computed: {
+					bmi() {
+						const values = this.question4;
+						const weight = parseFloat(values.weight) || null;
+						const height = parseFloat(values.height) || null;
+
+						if(height && weight && /^[0-9]*$/.test(height) && /^[0-9]*$/.test(weight)) return weight / ( height * height / 10000);
+						else return null;
+					},
+
+					question10Answer() {
+						let result = 0;
+
+						if(!this.question10.number) return null;
+						for(let i = 1, maxCnt = this.question10.number; i <= maxCnt; i++) {
+							if(!(i%2)) result += i;
+						}
+
+						return result;
+					}
+				},
+
+				methods: {
+					getImage() {
+						const model = this.question5.model;
+						const key = encodeURIComponent(this.question5.name);
+						
+						if(model.hasOwnProperty(key)) return model[key];
+						else return '존재하지 않는 인간 입니다.';
+					},
+
+					getquestion8() {
+						const model = this.question8.info;
+						const target = model.find(v => this.question8.name === v.name);
+						let result = '<div>사람을 찾을 수 없습니다.</div>';
+
+						if(target) result = `
+							<div>이름: ${target.name}</div>
+							<div>팀: ${target.team}</div>
+							<div>나이: ${target.age}</div>
+						`;
+
+						return result;
+					},
+
+					getSubwayStation() {
+						const model = this.question11;
+						const value = model.subwayStation;
+						const subwayStation = model.subwayStations.find(v => v.name.replace(/ /g, '') == (value || '').replace(/ /g, ''));
+
+						return subwayStation ? `${subwayStation.index} / ${subwayStation.name} / ${subwayStation.area} / ${subwayStation.line}` : '';
+					}
+				}
+			});
+		</script>
+		<style>
+			section {
+				margin-bottom: 30px;
+			}
+		</style>
+    </body>
+</html>
