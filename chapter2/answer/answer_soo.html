@@ -99,7 +99,7 @@
 					},
 
 					question2: {
-						team: '',
+						team: null,
 					},
 
 					question3: {
@@ -219,7 +219,6 @@
 						const inputName = this.question5.name;
 						const people = this.question5.people;
 						const result = people.find(v => inputName == v.name)
-						// const key = encodeURIComponent(this.question5.name);
 
 						if(result) return result.value;
 						else return '존재하지 않는 인간 입니다.';
