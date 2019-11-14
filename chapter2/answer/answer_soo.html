@@ -211,7 +211,7 @@
 						const weight = parseFloat(values.weight) || null;
 						const height = parseFloat(values.height) || null;
 
-						if(height && weight && /^[0-9]*$/.test(height) && /^[0-9]*$/.test(weight)) return weight / ( height * height / 10000);
+						if(height && weight && /^[+-]?\d+(\.\d+)?$/.test(height) && /^[+-]?\d+(\.\d+)?$/.test(weight)) return weight / ( height * height / 10000);
 						else return null;
 					},
 
