@@ -119,6 +119,7 @@
                         <span>원석대리님</span>
                     </label>
                     <p style="color: mediumpurple;">우리 중 제일 잘 먹는 사람은 <em v-html="person" style="font-weight: bold; font-size: 15px;">***</em>입니다.</p>
+
                 </dd>
             </dl>
             <dl id="test3_2">
@@ -136,7 +137,7 @@
                         <input type="checkbox" value="혜진주임님" v-model="personList">
                         <span>혜진주임님</span>
                     </label>
-                    <p>이 중 초콜릿을 좋아하는 사람은 <span v-html="personList"></span>입니다.</p>
+                    <p>이 중 초콜릿을 좋아하는 사람은 <span v-html="personList.join('/')" v-if="personList && personList.length"></span>입니다.</p>
                 </dd>
             </dl>
             <dl id="test4">
@@ -224,7 +225,7 @@
                             v-once는 한번만 렌더링을 시킨다. console에서 값을 변경해도 변하지 않는다.
                             <br>
                             <input type="text" v-model="msg">
-                            <span v-html="msg"></span>
+                            <span>{{msg}}</span>
                             <p v-once>{{msgOnce}}</p>
                         </dd>
                     </dl>
@@ -249,7 +250,10 @@
                             <span>나이</span>
                         </dt>
                         <dd v-for="person in infoList" >
+                            <!--++ tab 메뉴같이 display:none block 은 show로-->
+                            <!--그 외에는 if로-->
                             <ul v-show="inputName == person.name">
+                            <!--<ul>-->
                                <li>
                                    <span>{{person.name}}</span>
                                    <span>{{person.team}}</span>
@@ -278,6 +282,10 @@
                                     <span>{{person.gender}}</span>
                                     <span>{{person.number}}</span>
                                 </li>
+                                <!--++
+                                <tr :class="{ 'division': index == 4 }">
+                                 :속성="{결과값 : 조건문}"
+                                -->
                                 <li v-if="(idx + 1) % 5 == 0 && (idx + 1) > 0" class="bg--yellow">
                                     <span>{{person.name}}</span>
                                     <span>{{person.gender}}</span>
@@ -358,6 +366,13 @@
                 el: "#test3_2",
                 data: {
                     personList: [],
+                },
+                computed: {
+                    result: function () {
+                        var person = this.personList;
+                        console.log(person);
+                        return person;
+                    }
                 }
             })
             var answer4 = new Vue({
@@ -477,7 +492,7 @@
                 },
                 computed: {
                     sum: function () {
-                        var num = this.inputNum;
+                        var num = Number(this.inputNum);
                         var totN = 0;
                         //console.log(num)
                         for (var i = 1; i <= num; i++) {
