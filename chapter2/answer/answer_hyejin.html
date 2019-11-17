@@ -3,8 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Chapter02</title>
-        <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
-        
+        <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>        
     </head>
     <body>
         <div id="chapter02">
@@ -35,7 +34,6 @@
                 <p v-if="task03.member != ''">우리 중 제일 잘 먹는 사람은 <span v-html="task03.member"></span> 입니다.</p>
             </section>   
 
-            <!-- v-if / v-else-if / 계산형 속성(Computed Property) 사용하여 조건에 부합하는 결과값 출력하기 -->
             <section id="task04">
                 <h2>4. 몸무게와 키를 입력하면 각각에 결과에 맞는 텍스트가 나오도록 하세요.</h2>
                 <label for="inputWeight">
@@ -53,24 +51,102 @@
                 </p>
             </section>
 
-            <!-- 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트 출력 -->
             <section id="task05">
                 <h4>5. 이름을 입력받고 입력받은 사람의 이미지 또는 텍스트가 보이도록 하세요.</h4>
-                <input type="text" id="memberinfo" v-model="task05.name" placeholder="이름을 입력하세요.">
-                <p v-if="task05.name" v-html="task05.name">{{task05Result}}</p>
+                <input type="text" v-model="task05.name" placeholder="이름을 입력하세요.">
+                <p v-show="task05.name != ''">
+                    way1 :
+                    <span v-show="task05.name == '유혜진'">YooHyejin</span>
+                    <span v-show="task05.name == '김민수'">KimMinsoo</span>
+                    <span v-show="task05.name == '신지은'">ShinJieun</span>
+                </p>
+                
+                <p v-if="task05.name != ''">
+                    way2 :
+                    {{task05Result}}
+                </p>
             </section>
 
-            <!-- v-if / v-show 차이점 -->
             <section class="task06">
-                <p>v-if : v-if 디렉티브를 사용한 element의 event listener와 자식 컴포넌트들이 DOM에 제거되거나 삽입되는 진짜 조건부 렌더링</p>
-                <p>v-show : DOM에 항상 삽입되고 display style을 통해 화면에 그려지거나 그려지지 않는 조건부 렌더링</p>    
+                <h4>6. v-show와 v-if는 무슨 차이점이 있을까요?</h4>
+                <p>
+                    v-if : v-if 디렉티브를 사용한 element의 event listener와 자식 컴포넌트들이 DOM에 제거되거나 삽입되는 진짜 조건부 렌더링<br>
+                    v-show : DOM에 항상 삽입되고 display style을 통해 화면에 그려지거나 그려지지 않는 조건부 렌더링
+                </p>
+                <div class="box">
+                    <!-- v-if Test -->
+                    <p v-show="task06.visible" v-html="task06.exShow"></p>
+                    <!-- v-show Test -->
+                    <p v-if="task06.value > 9">value가 9보다 커요.</p>
+                </div>    
             </section>
-           
+
+            <section class="task07">
+                <h4>7. v-pre 와 v-once는 각각 무슨 특징을 가지고 있을까요?</h4>
+                <p>
+                    v-pre : 특정 엘리먼트를 무시하는데 사용. Vue 시스템에서 해당 엘리먼트는 지시문이 없다는걸 인식하게 되어 그 엘리먼트 내부의 자식엘리먼트들을 신경쓰지 않고 그냥 건너뜀. 따라서, 컴파일 속도가 빨라진다는 장점이 있음<br>
+                    v-once : 컴포넌트를 초기에 딱 한번만 렌더링. 즉, 자바스크립트에서 사용하는 데이터를 사용하긴 하는데, 변동이 없고 한결같은 정적인 부분을 보여줄 때 사용
+                </p>   
+                <div class="box">
+                    <p v-if="task07.value > 5">value 가 5보다 크군요</p>
+                    <p v-else-if="task07.value === 5">값이 5네요</p>
+                    <p v-else>value 가  5보다 작아요</p>
+                    <p v-once>초기 값: {{task07.value}}</p>
+                    <p>현재 값: {{task07.value}}</p>
+                    <p v-pre>{{task07.value}}</p>
+                </div> 
+            </section>
+
+            <section id="task08">
+                <h4>8. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.) 정보 (이름 소속팀 나이)</h4>
+                <input type="text" v-model="task08.name" placeholder="이름을 입력하세요.">
+                <table>
+                    <thead>
+                        <tr v-if="task08.name != ''">
+                            <th>이름</th>
+                            <th>소속</th>
+                            <th>나이</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="info in task08Result" v-if="task08.name != ''">
+                            <td>{{info.name}}</td>
+                            <td>{{info.team}}</td>
+                            <td>{{info.age}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="task09">
+                <h4>9. 현재 스터디하는 9명의 이름, 성별, 휴대폰 번호를 입력한 뒤 5번째 사람의 정보에는 노란색을 칠해주세요.</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>소속</th>
+                            <th>성별</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(info, index) in task09.infoList" v-bind:style="index === 4 ? 'background:yellow' : null">
+                            <td>{{index+1}}</td>
+                            <td>{{info.name}}</td>
+                            <td>{{info.team}}</td>
+                            <td>{{info.sex}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
         </div>
 
         <style>
             section + section {margin-top: 50px;}
             section h2 {font-size: 16px; font-weight: bold;}
+            section .box {padding:10px 30px; background: #eee;}
+            section table {border-collapse: collapse;}
+            section table tr th, section table tr td {padding: 5px 10px; text-align: center;}
         </style>
 
         <script>
@@ -99,11 +175,46 @@
                 task05: {
                     name : "",
                     infoList : [
-                        { korName : "유혜진", engName : "YooHyejin"},
-                        { korName : "김민수", engName : "KimMinsoo"},
-                        { korName : "신지은", engName : "ShinJieun"}
+                        { name : "유혜진", engName : "YooHyejin"},
+                        { name : "김민수", engName : "KimMinsoo"},
+                        { name : "신지은", engName : "ShinJieun"}
                     ]
                 },
+
+                task06: {
+                    text : "보여줄까말까",
+                    visible : true,
+                    value : 0,
+                },
+
+                task07: {
+                    value : 0,
+                },
+     
+                task08: {
+                    name : "",
+                    infoList : [
+                        { name : "유혜진", team : "프론트엔드팀", age : 31},
+                        { name : "전동엽", team : "frontend Team", age : 31},
+                        { name : "배인환", team : "FET", age : 29}
+                    ]
+                },
+     
+                task09: {
+                    name : "",
+                    infoList : [
+                        { name : "유혜진", team : "프론트엔드", sex : "여"},
+                        { name : "전동엽", team : "프론트엔드", sex : "남"},
+                        { name : "전정호", team : "프론트엔드", sex : "남"},
+                        { name : "신지은", team : "프론트엔드", sex : "여"},
+                        { name : "양원석", team : "기술연구소", sex : "남"},
+                        { name : "배인환", team : "프론트엔드", sex : "남"},
+                        { name : "윤경아", team : "프론트엔드", sex : "여"},
+                        { name : "주영희", team : "기술연구소", sex : "여"},
+                        { name : "김민수", team : "프론트엔드", sex : "남"}
+                    ]
+                },
+
 
             };
 
@@ -124,14 +235,25 @@
                     },
 
                     task05Result() {
-                        const task05 = this.task05;
-                        const name = task05.name;
-                        const korName = task05.korName;
-                        const engName = task05.engName;
+                        const $this = this.task05;
+                        const inputText = $this.name;
+                        const infoList = $this.infoList;
+                        const outputInfo = infoList.find(v => inputText == v.name)
 
-                        if(name === korName) {
-                            return engName;
-                        }
+						if(outputInfo) return outputInfo.engName;
+						else return '등록된 정보가 없습니다.';
+
+                    },
+
+                    task08Result() {
+                        const $this = this.task08;
+                        const name = $this.name;
+
+                        return $this.infoList.filter(function(item, index) {
+                            if (item.name.indexOf(name) > -1) {
+                                return true;
+                            }
+                        });
                     }
                 },
             });
