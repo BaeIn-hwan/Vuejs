@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+
+    <style>
+        #list  { width: 400px; border:1px solid black; border-collapse:collapse; }
+        #list td, #list th { border:1px solid black;  text-align:center; }
+        #list > thead > tr { color:yellow; background-color: purple; }
+        div[id^=test]{padding:30px 0;border-top:1px solid #ddd;}
+    </style>
+
+
+</head>
+<body>
+<div id="test1">
+    {{name}}
+</div>
+<script type="text/javascript">
+    var model = {
+        name : "홍길동"
+    }
+    var vm = new Vue({
+        el : "#test1",
+        data : model
+    })
+</script>
+
+<div id="test2">
+    <input type="text" v-model="num" /><br />
+    1부터 입력된 수까지의 합 : <span>{{sum}}</span>
+</div>
+<script type="text/javascript">
+    //1부터 입력된 수까지의 합구하기
+    var vmSum = new Vue({
+        el : "#test2",
+        data : { num : 0 },
+        computed : {
+            sum : function() {
+                var n = Number(this.num);
+                if (Number.isNaN(n) || n < 1)  return 0;
+                return ((1+n) * n) / 2;
+            }
+        }
+    });
+</script>
+
+
+<div id="test3">
+    금액 : <span>{{amount}}원</span>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el : "#test3",
+        data : { amt : 1234567 },
+        computed : {
+            amount : {
+                get : function() {
+                    var s = new String(""+this.amt);
+                    var result = "";
+                    var num = 0;
+                    for (var i=s.length-1; i>=0; i--) {
+                        result = s[i] + result;
+                        if (num % 3 == 2 && i !== 0)
+                            result = "," + result;
+                        num++;
+                    }
+                    return result;
+                },
+                set : function(amt) {
+                    if (typeof(amt) === "string") {
+                        var result = parseInt(amt.replace(/,/g, ""))
+                        if (isNaN(result)) this.amt = 0;
+                        else   this.amt = result;
+                    } else if (typeof(amt) === "number")
+                        this.amt = amt;
+                }
+            }
+        }
+    });
+</script>
+
+<div id="test4">
+    <input type="text" v-model="num" /><br />
+    1부터 입력된 수까지의 합 : <span>{{sum()}}</span>
+</div>
+<script type="text/javascript">
+    //1부터 입력된 수까지의 합구하기
+    var vmSum = new Vue({
+        el : "#test4",
+        data : { num : 0 },
+        methods : {
+            sum : function() {
+                console.log(Date.now());
+                var n = Number(this.num);
+                if (Number.isNaN(n) || n < 1)  return 0;
+                return ((1+n) * n) / 2;
+            }
+        }
+    });
+</script>
+
+<div id="test5">
+    x : <input type='text' v-model="x" /><br />
+    y : <input type='text' v-model="y" /><br />
+    덧셈 결과 : {{sum}}
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el : "#test5",
+        data : { x:0, y:0 },
+        beforeUpdate : function() {
+            console.log("before update")
+            console.log(this.x);
+        },
+        updated : function() {
+            console.log("update")
+            console.log(this.x);
+        },
+        computed : {
+            sum : function() {
+                var result = Number(this.x) + Number(this.y);
+                if (isNaN(result)) return  0;
+                else return result;
+            }
+        }
+    })
+</script>
+
+<div id="test6">
+    <p>
+        이름 : <input type="text" v-model="name" placeholder="두글자 이상을 입력하세요" />
+    </p>
+    <table id="list">
+        <thead>
+        <tr>
+            <th>번호</th><th>이름</th><th>전화번호</th><th>주소</th>
+        </tr>
+        </thead>
+        <tbody id="contacts" >
+        <tr v-for="contact in contactlist">
+            <td>{{contact.no}}</td>
+            <td>{{contact.name}}</td>
+            <td>{{contact.tel}}</td>
+            <td>{{contact.address}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div v-show="isProcessing === true">조회중</div>
+</div>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el : '#test6',
+        data : {
+            name : "",
+            isProcessing : false,
+            contactlist : []
+        },
+        watch : {
+            name : function(val) {
+                if (val.length >= 2) {
+                    this.fetchContacts();
+                } else {
+                    this.contactlist = [];
+                }
+            }
+        },
+        methods : {
+            fetchContacts : _.debounce(function() {
+                this.contactlist = [];
+                this.isProcessing = true;
+                var url = "http://sample.bmaster.kro.kr/contacts_long/search/" + this.name;
+                var vm = this;
+                fetch(url)
+                    .then(function(response) {
+                        return response.json()
+                    }).then(function(json) {
+                    vm.contactlist = json;
+                    vm.isProcessing = false;
+                }).catch(function(ex) {
+                    console.log('parsing failed', ex);
+                    vm.contactlist = [];
+                    vm.isProcessing = false;
+                })
+            }, 300)
+        }
+    })
+</script>
+
+<div id="test7">
+    <input type="text" v-model="num" /><br />
+    1부터 입력된 수까지의 합 : <span>{{sum}}</span>
+</div>
+<script type="text/javascript">
+    var vmSum = new Vue({
+        el : "#test7",
+        data : { num : 0 },
+        created : function() {
+            console.log("Created!!");
+        },
+        updated : function() {
+            console.log("updated!!");
+            console.log(this.num);
+        },
+        computed : {
+            sum : function() {
+                var n = Number(this.num);
+                if (Number.isNaN(n) || n < 1)  return 0;
+                return ((1+n) * n) / 2;
+            }
+        }
+    });
+</script>
+
+
+</body>
+</html>
