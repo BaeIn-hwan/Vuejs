@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>chapter3</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+    <style>
+        #answer2 dl {
+            padding: 15px;
+            background: #eeeeee;
+        }
+        #answer2 dt {
+            padding-bottom: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            color: hotpink;
+        }
+        #answer3 table{
+            width: 400px;
+            margin-top: 20px;;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        #answer3 table th,
+        #answer3 table td{
+            border: 1px solid #333;
+            padding: 5px;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <section id="answer1">
+        <h3>1.두개의 숫자를 입력 받고 두개의 숫자 사이의 모든 홀수의 합을 구하시오.</h3>
+        입력받을 수 1: <input type="text" v-model.number="firstNumber" :placeholder="Msg"><br>
+        입력받을 수 2: <input type="text" v-model.number="secondNumber" :placeholder="Msg"><br>
+        <br>
+        입력 받은 두 숫자 사이의 홀수의 합 : {{result}} {{result2}}
+    </section>
+    <section id="answer2">
+        <h3>2.라이프 사이클 훅 에 대해서 설명 하시고 실행되는 순서대로 나열하세요.</h3>
+        <dl>
+            <dt>beforeCreate</dt>
+            <dd>
+                가장 먼저 실행되며 초기화 된 직후에 발생하므로 data,methods에도 접근이 불가능하다.
+            </dd>
+            <dt>created</dt>
+            <dd>
+                data등은 사용할 수 있으나, DOM에 컴포넌트 마운트 되지않아 $el 은 사용할 수 없다.
+            </dd>
+            <dt>beforeMount</dt>
+            <dd>
+                DOM에 부착하기 직전에 호출되는 beforeMount훅입니다. 이 단계 전에서 템플릿이 있는지 없는지 확인한 후 템플릿을 렌더링 한 상태이므로, 가상 DOM이 생성되어 있으나 실제
+                DOM에 부착되지는 않은 상태이다.
+            </dd>
+            <dt>mounted</dt>
+            <dd>
+                일반적으로 가장 많이 사용하는 mounted훅입니다. 가상 DOM의 내용이 실제 DOM에 부착되고 난 이후에 실행되므로, data, computed, methods, watch 등 모든
+                요소에 접근이 가능하다.
+            </dd>
+            <dt>beforeUpdate</dt>
+            <dd>
+                컴포넌트에서 사용되는 data값이 변해서 DOM에 변화를 적용시켜야할 때,
+                변화직전에 호출되는 것. 이 훅에서 값들을 추가적으로 변화시켜도 렌더링을 추가로 호출하지는 않는다.
+            </dd>
+            <dt>updated</dt>
+            <dd>
+                가상 DOM을 렌더링하고 실제 DOM이 변경된 이후에 호출된다.<br>
+                이 훅에서 data를 변경하는 것은 무한 루프를 일으킬 수 있으므로 데이터를 직접바꿔서는 안된다.
+            </dd>
+            <dt>beforeDestroy</dt>
+            <dd>
+                해당 인스턴스가 제거되기 직전에 호출되며, 아직 해체되기 전이므로 인스턴스는 완전하게 작동하고있어서 모든 속성에 접근이 가능하다.
+            </dd>
+            <dt>destroyed</dt>
+            <dd>
+                인스턴스가 해체되고 난 직후에 호출되며 해체가 끝난 이후기 때문에 인스턴스의 속성에 접근할 수 없고 하위 인스턴스도 삭제된다.
+            </dd>
+        </dl>
+    </section>
+    <section id="answer3">
+        <h3>
+            3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요.
+            ** 하단에 프로그레스바가 노출되게 해주세요.
+        </h3>
+        <input type="text" v-model="inputName" :placeholder="Msg" >
+        <table>
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>소속</th>
+                    <th>나이</th>
+                </tr>
+            </thead>    
+            <tbody v-for="person in profile">
+                <tr v-show="inputName == person.name">
+                    <td>{{person.name}}</td>
+                    <td>{{person.team}}</td>
+                    <td>{{person.sex}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div v-show="isProcessing === true">조회중</div>
+    </section>
+    <section id="answer4">
+        <h3>
+            4. get과 set메서드를 이용하여 300,000 을 입력하면 300000 , 
+            300000 을 입력하면 300,000 을 리턴, 
+            문자열을 입력하면 0을 리턴하시오.
+        </h3>
+        <input type="text" v-model="Tcom" placeholder="콤마 생성됨"> <span>{{Tcom}}</span> <br>  
+        <input type="text" v-model="Fcom" placeholder="숫자만 출력됨"> <span>{{Fcom}}</span>
+        <!--<br>  
+        300000을 입력했을 때=> <span>{{Tcom}}</span>
+        <br>
+        300,000을 입력했을 때=> <span>{{Fcom}}</span>-->
+    </section>
+    <script>
+        //1번
+        var question1 = new Vue({
+            el: "#answer1",
+            data: {
+                Msg: "숫자를 입력하세요.",
+                firstNumber: "",
+                secondNumber: ""
+            },
+            computed: {
+                temp_firstNumber : function () {
+                    var num = Number(this.firstNumber);
+                    var totN = 0;
+                    for (var i = 1; i<= num; i++){
+                        if( i % 2 == 1) {
+                            totN += i
+                        }
+                    }
+                    return totN;
+                },
+                temp_secondNumber : function () {
+                    var num = Number(this.secondNumber);
+                    var totN = 0;
+                    for (var i = 1; i<= num; i++){
+                        if( i % 2 == 1) {
+                            totN += i
+                        }
+                    }
+                    return totN;
+                },
+                result : function () {
+                    return this.temp_firstNumber + this.temp_secondNumber
+                }
+            }
+        });
+        //3번
+        var profiletData = [
+            {
+                "name": "주영희",
+                "team": "기술연구소",
+                "sex": "여",
+            },
+            {
+                "name": "신지은",
+                "team": "프론트엔드",
+                "sex": "여",
+            },
+            {
+                "name": "유혜진",
+                "team": "프론트엔드",
+                "sex": "여",
+            },
+            {
+                "name": "윤경아",
+                "team": "프론트엔드",
+                "sex": "여",
+            },
+            {
+                "name": "양원석",
+                "team": "기술연구소",
+                "sex": "남",
+            },
+            {
+                "name": "전정호",
+                "team": "프론트엔드",
+                "sex": "남",
+            },
+            {
+                "name": "전동엽",
+                "team": "프론트엔드",
+                "sex": "남",
+            },
+            {
+                "name": "김민수",
+                "team": "프론트엔드",
+                "sex": "남",
+            },
+            {
+                "name": "배인환",
+                "team": "프론트엔드",
+                "sex": "남",
+            }
+        ]
+        var question2 = new Vue({
+            el : "#answer3",
+            data : {
+                Msg : "이름을 입력하세요.",
+                inputName : "",
+                profile : profiletData,
+                isProcessing : false,
+            },
+            computed : {
+                profile : function(){
+                    var putname = this.person.trim();
+                    return this.profiletData.profile(function(item, index){
+                        if(item.name.indexOf(putname) > -1){
+                            return true;
+                        }
+                    });
+                }
+            },
+            methods : {
+                fetchContacts : _.debounce(function() {
+                    this.contactlist = [];
+                    this.isProcessing = true;
+                    var url = "http://sample.bmaster.kro.kr/contacts_long/search/" + this.name;
+                    var vm = this;
+                    fetch(url)
+                        .then(function(response) {
+                            return response.json()
+                        }).then(function(json) {
+                        vm.contactlist = json;
+                        vm.isProcessing = false;
+                    }).catch(function(ex) {
+                        console.log('parsing failed', ex);
+                        vm.contactlist = [];
+                        vm.isProcessing = false;
+                    })
+                }, 300)
+            }
+        });
+        //4번
+        var question4 = new Vue({
+            el : "#answer4",
+            data : {
+                Msg: "숫자를 입력하세요.",
+                ncom : "",
+                com: ""
+            },
+            computed : {
+                Tcom : {
+                    get : function() {
+                        var s = new String(""+this.ncom);
+                        var result = "";
+                        var num = 0;
+                        for (var i=s.length-1; i>=0; i--) {
+                           result = s[i] + result;
+                           if (num % 3 == 2 && i !== 0)
+                                result = "," + result;
+                            num++;
+                        }
+                        return result;
+                    },
+                    set : function(ncom) {
+                        if (typeof(ncom) === "string") {
+                            var result = parseInt(ncom.replace(/,/g, ""))
+                            if (isNaN(result)) this.ncom = 0;
+                            else   this.ncom = result;
+                        } else if (typeof(ncom) === "number")
+                            this.ncom = ncom;
+                    }
+                },
+                Fcom : {
+                    get : function() {
+                        var s = new String(""+this.com);
+                        var result = "";
+                        
+                        for (var i=s.length-1; i>=0; i--) {
+                            if (s[i] !== "," )
+                                result = s[i] + result;
+                        }
+                        return result;
+                    },
+                    set : function(com) {
+                        if (typeof(com) === "string") {
+                            var result = parseInt(com.replace(/,/g, ""))
+                            if (isNaN(result)) this.com = 0;
+                            else   this.com = result;
+                        } else if (typeof(com) === "number")
+                            this.com = com;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
