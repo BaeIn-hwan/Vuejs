@@ -80,14 +80,14 @@
                     <p>{{watchR}}</p>
                 </dd>
             </dl>
-            <dl>
+            <dl id="test2">
                 <dt>
                     3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
                     정보 (이름 소속팀 나이)
                     ** 하단에 프로그레스바가 노출되었다가 노출되게 해주세요.
                 </dt>
                 <dd>
-                    <input type="text" v.model.trim="test2.name" placeholder="이름을 입력하세요.">
+                    <input type="text" v-model.trim="test2.name" placeholder="이름을 입력하세요.">
                     <dl class="info__table">
                         <dt>
                             <span>이름</span>
@@ -106,9 +106,21 @@
                     </dl>
                 </dd>
             </dl>
+            <dl>
+                <dt>
+                    4. get과 set메서드를 이용하여 300,000 을 입력하면 300000 ,
+                    300000 을 입력하면 300,000 을 리턴,
+                    문자열을 입력하면 0을 리턴하시오.
+                </dt>
+                <dd>
+                    <input type="text" v-model="test3.money">
+                    <span>{{moneyResult}}</span>
+                </dd>
+            </dl>
         </template>
     </section>
     <div id="vSetGet">
+        <!--https://kr.vuejs.org/v2/guide/computed.html-->
         <!--<input type="text" v-model.num="amt" >-->
         금액: <span>{{amount}}</span>원
     </div>
@@ -210,6 +222,9 @@
                         "number" : "01062111177"
                     }
                 ]
+            },
+            test3: {
+                money: 0
             }
         },
         computed: {
@@ -226,6 +241,31 @@
                     }
                 }
                 return result;
+            },
+            moneyResult: {
+                get: function () {
+                        var amt = this.test3.money;
+                        if (!isNaN(amt)) {
+//                            var splitamt = amt.split("")
+//                            console.log(splitamt)
+                        }
+//                    var s = new String(""+this.amt);
+//                    var result = "";
+//                    var num = 0;
+//                    for (var i=s.length-1; i>=0; i--) {
+//                        result = s[i] + result;
+//                        if (num % 3 == 2 && i !== 0)
+//                            result = "," + result;
+//                        num++;
+//                    }
+//                    return result;
+
+
+                        return amt;
+                },
+                set: function () {
+
+                }
             }
         },
         methods: {
