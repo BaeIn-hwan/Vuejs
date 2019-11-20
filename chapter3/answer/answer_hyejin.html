@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chapter03</title>
+        <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>    
+        <!-- 여러가지 유틸리티 기능을 제공하는 라이브러리 -->
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.js"></script>
+        <!-- IE 브ㅏ우저에서 Promise 객체를 이용하기 위한 폴리필 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+    </head>
+    <body>
+        <div id="example">
+            <div class="ex1">
+                금액 : <span>{{amount}}원</span>
+            </div>
+
+            <div class="ex2">
+                x : <input type="text" v-model="x">
+                y : <input type="text" v-model="y">
+                <p>[계산형속성 사용] 덧셈 결과 : {{sumComputed}}</p>
+                <p>[관찰속성 사용] 덧셈 결과 : {{sumWatch}}</p>   
+            </div>      
+
+            <div class="ex3">   
+                <p>
+                    이름 : <input type="text" v-model="name" placeholder="두글자 이상을 입력하세요" />
+                </p>
+                <table id="list">
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>이름</th>
+                            <th>전화번호</th>
+                            <th>주소</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contacts">
+                        <tr v-for="contact in contactlist">
+                            <td>{{contact.no}}</td>
+                            <td>{{contact.name}}</td>
+                            <td>{{contact.tel}}</td>
+                            <td>{{contact.address}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div v-show="isProcessing === true">조회중</div>
+            </div>    
+        </div>  
+
+        <div id="chapter03">
+            <section id="task01">
+                <h2>1. 두개의 숫자를 입력 받고 두개의 숫자 사이의 모든 홀수의 합을 구하시오.<br>
+                    예) 2 와 10 이렇게 두개의 숫자를 입력하면 3, 5, 7 의 합을 구함</h2>
+                   <div class="box">
+                        <p>Warm-up : 1부터 입력된 수까지의 합 구하기</p>
+                        <input type="text" v-model="task01.num">
+                        <span v-html="sum"></span>    
+                   </div>
+
+                   <div class="box">
+                        <p>입력받은 두 숫자 사이에 있는 모든 홀수들의 합 구하기</p>
+                        <label for="numA">
+                            <input id="numA" type="text" name="numA" v-model="task01.numA">
+                        </label>
+                        <label for="numB">
+                            <input id="numB" type="text" name="numB" v-model="task01.numB">
+                        </label>
+    
+                        <p>두 숫자 사이에 존재하는 모든 홀수의 합은 <span v-html="task01Result"></span>입니다.</p>
+                   </div>
+            </section>
+
+            <section id="task02">
+                <h2>2. 라이프 사이클 훅 에 대해서 설명 하시고 실행되는 순서대로 나열하세요<br>
+                    beforeCreate/created/beforeMount/mounted/beforeUpdate/updated/beforeDestroy/destroyed</h2>
+                    <table>
+                        <thead>
+                            <colgroup>
+                                <col style="width: 150px;">
+                                <col>
+                            </colgroup>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>beforeCreate</th>
+                                <td>vue 인스턴스가 생성되고 데이터에 대한 관찰 기능 및 이벤트 감시자 설정 전에 호출됩니다.</td>
+                            </tr>
+                            <tr>
+                                <th>created</th>
+                                <td>vue 인스턴스가 생성된 후에 데이터에 대한 관찰기능<br>계산적속성, 메서드,감시자 설정이 완료된 후 호출됩니다.</td>
+                            </tr>
+                            <tr>
+                                <th>beforeMount</th>
+                                <td>마운트가 시작되기 전에 호출됩니다.</td>
+                            </tr>
+                            <tr>
+                                <th>mounted</th>
+                                <td>el에 vue 인스턴스에 데이터가 마운트된 후 호출됩니다.</td>
+                            </tr>
+                            <tr>
+                                <th>beforeUpdate</th>
+                                <td>가상 DOM이 렌더링,패치되기 전에 데이터가 변경될 때 호출<br>이 훅에서 추가적인 상태 변경을 수행할 수 있음, 하지만 추가적으로 다시 렌더링 되지 않음</td>
+                            </tr>
+                            <tr>
+                                <th>updated</th>
+                                <td>데이터의 변경으로 가상 DOM이 다시 렌더링되고 패치된 후에 호출<br>이 훅이 호출되었을때는 이미 컴포넌트의 DOM이 업데이트된 상태<br>DOM에 종속성이 있는 연산을 이단계에서 수행할 수 있음.</td>
+                            </tr>
+                            <tr>
+                                <th>beforeDestory</th>
+                                <td>Vue 인스턴스가 제거되기 전에 호출됩니다.</td>
+                            </tr>
+                            <tr>
+                                <th>destory</th>
+                                <td>Vue 인스턴스가 제거되기 전에 호출됩니다. 이 훅 호출될 때는 Vue 인스턴스의 모든 디렉티브의 바인딩이 해체되고 이벤트 연결도 모두 제거</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+
+            <section id="task03">
+                <h2>3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)<br>
+                    정보 (이름 소속팀 나이)<br>
+                    ** 하단에 프로그레스바가 노출되었다가 노출되게 해주세요.</h2>
+                <input type="text" v-model="task03.name" placeholder="이름을 입력하세요.">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>이름</th>
+                            <th>소속</th>
+                            <th>나이</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="info in task03Result" v-if="task03.name != ''" v-cloak>
+                            <td>{{info.name}}</td>
+                            <td>{{info.team}}</td>
+                            <td>{{info.age}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p v-show="task03.name.length >= 1">조회중</p>
+            </section>
+
+            <section id="task04">
+                <h2>4. get과 set메서드를 이용하여 300,000 을 입력하면 300000 , 300000 을 입력하면 300,000 을 리턴, 
+                        문자열을 입력하면 0을 리턴하시오.</h2>
+                <label for="unit">
+                    <input id="unit" type="text" name="unit" v-model="task04.amt">
+                </label>
+
+                <p v-html="task04Result"></p>
+            </section>
+        </div>
+
+        <style>
+            section + section {margin-top: 50px;}
+            section h2 {font-size: 16px; font-weight: bold;}
+            section .box {padding:10px 30px; background: #eee;}
+            section table {border-collapse: collapse;}
+            section table tr th, section table tr td {padding: 5px 10px; text-align: center;}
+            section#task02 table {border:1px solid #bcbcbc;}
+            section#task02 table tr + tr {border-top: 1px solid #bcbcbc;}
+            section#task02 table tr th { text-align: left; border-right: 1px solid #bcbcbc;}
+            section#task02 table tr td { text-align: left;}
+            [v-cloak] {display: none;}
+
+            #list {
+                  width: 600px;
+                  border: 1px solid black;
+                  border-collapse: collapse;
+              }
+              
+              #list td,
+              #list th {
+                  border: 1px solid black;
+                  text-align: center;
+              }
+              
+              #list>thead>tr {
+                  color: yellow;
+                  background-color: purple;
+              }
+
+              #example {margin-bottom:60px;}
+        </style>
+
+        <script>
+
+            var model = {
+
+                task01 : {
+                    numA : null,
+                    numB : null,
+                    num : 0,
+                },
+     
+                task03: {
+                    name : "",
+                    loading: false,
+                    infoList : [
+                        { name : "윤경아", team : "프론트엔드팀", age : 29},
+                        { name : "김민수", team : "프론트엔드팀", age : 29},
+                        { name : "배인환", team : "프론트엔드팀", age : 29}
+                    ],
+                },
+
+                task04 : {
+                    amt : 123455,
+                    x : 0,
+                    y : 0,
+                }
+
+            }
+
+            var example = new Vue({
+                el : "#example",
+                data : { 
+                    amt : 1234567,
+                    x : 0,
+                    y : 0,
+                    sumWatch : 0,
+                    name: "",
+                    isProcessing: false,
+                    contactlist: []
+                },
+                computed : {
+                    amount : {
+                        get : function() {
+                            var s = new String("" +this.amt);   // 숫자를 문자로 변환하기 위해 string 객체 생성
+                            var result = "";
+                            var num = 0;
+                            // 맨 뒷자리부터 하나씩 문자를 result 변수에 붙이면서
+                            for (var i=s.length-1; i>=0; i--) {
+                                result = s[i] + result;
+                                // 숫자 3자리마다 콤마(,)를 넣어서 결과값을 리턴
+                                if (num % 3 == 2 && i !==0)
+                                    result = "," + result;
+                                num++;
+                            }
+                            return result;
+                        },
+                        set : function(amt) {
+                            // 문자열을 입력받으면
+                            if (typeof(amt) === "string") {
+                                var result = parseInt(amt.replace(/,/g, ""))    // 쉼표(,)를 제거한 뒤 정수로 변환하여 amt 데이터속성에 할당
+                                if (isNaN(result)) this.amt = 0;    // 숫자로 변환 불가능한 값이 들어오면 숫자 0 할당
+                                else this.amt = result;
+                            // 숫자를 입력받으면
+                            } else if (typeof(amt) === "number")
+                                this.amt = amt;
+                        }
+                    },
+                    sumComputed : function() {
+                        const result = Number(this.x) + Number(this.y);
+                        if (isNaN(result)) return 0;
+                        else return result;
+                    },
+                },
+
+                watch : {   // watch 옵션에 등록되는 것은 속성의 이름과 해당 속성이 변경되었을때 호출할 함수
+                    // 함수는 인자를 전달받고 이것은 변경된 속성의 값
+                    // x는 x 속성을 의미, function(v)는  x 속성이 변경될때 호출되는 함수, 파라미터 v는 변경된 x 속성의 값
+                    x : function(v) {   
+                        console.log("## x 변경");
+                        const result = Number(v) + Number(this.y);
+                        if (isNaN(result)) this.sumWatch = 0;
+                        else this.sumWatch = result;
+                    },
+                    y : function(v) {
+                        console.log("## y 변경");
+                        this.y = v;
+                        const result = Number(this.x) + Number(v);
+                        if (isNaN(result)) this.sumWatch = 0;
+                        else this.sumWatch = result;
+                    },
+
+                    // Vue 객체 내에 관찰자(Watcher)는 name 속성의 변화를 감지하여 함수 호출                    
+                    name: function(val) {
+                        // 두 글자 이상 입력시 fetchContacts 함수 호출
+                        if (val.length >= 2) {
+                            this.fetchContacts();
+                        } else {
+                            this.contactlist = [];
+                        }
+                    },
+                },
+
+                methods: {
+                    // fetchContacts 메서드에서는 fetch 함수를 이용하여 이름검색을 수행
+                    // fetch 메서드의 리턴값은 promise객체
+                    fetchContacts: _.debounce(function() {    // lodash 라이브러리의 _.debounce() 함수
+                        this.contactlist = [];
+                        this.isProcessing = true;
+                        var url = "http://sample.bmaster.kro.kr/contacts_long/search/" +
+                            this.name;
+                        var vm = this;
+                        // fetch()가 호출되고 나서 서버로부터 응답이 오면 then()에 전달한 함수가 호출됨
+                        // fetch()를 호출하는 시점과 then()에 인자로 전달한 함수가 실행되는 시점이 차이가 남
+                        fetch(url) 
+                            .then(function(response) {
+                                return response.json()
+                            }).then(function(json) { // 서버로부터 응답온 후에
+                                vm.contactlist = json;  // Vue 객체의 contactlist 속성을 변경하고 이는 다시 v-for문을 통해 화면에 즉시 나타남
+                                vm.isProcessing = false;
+                            }).catch(function(ex) {
+                                console.log('parsing failed', ex);
+                                vm.contactlist = [];
+                                vm.isProcessing = false;
+                            })
+
+                    }, 300)
+                  },
+            })
+
+            var chapter03 = new Vue({
+                el : "#chapter03",
+                data : model,
+                computed : {
+
+                    sum() {                        
+                        let n = Number(this.task01.num);
+
+                        if(Number.isNaN(n) || n < 1) return 0;
+                        return ((1+n) * n) / 2;
+                    },
+
+                    task01Result() {
+                        const numA = Number(this.task01.numA);
+                        const numB = Number(this.task01.numB);
+                        let sum = 0;
+
+                        // 최소값이 최대값보다 작거나 같을때까지 반복문 실행
+                        for(let i = Math.min(numA, numB); i <= Math.max(numA, numB); i++) {
+                            // 단, i의 값이 홀수일때만 반복문 실행
+                            if(i%2==1) {
+                                sum += i;
+                            }
+                        }           
+                        
+                        return sum;
+                    },
+
+                    task03Result() {
+                        const $this = this.task03;
+                        const name = $this.name;
+                        const infoList = $this.infoList;
+                        const loading = $this.loading;
+
+                        return infoList.filter(function(item, index) {
+                            if (item.name.indexOf(name) > -1) {
+                                return true;
+                            }
+                        });
+                    },
+
+                    task04Result : {
+                        get : function() {
+                            var $this = this.task04;
+                            var s = new String("" +this.task04.amt);   // 숫자를 문자로 변환하기 위해 string 객체 생성
+                            var result = "";
+                            var num = 0;
+                            // 맨 뒷자리부터 하나씩 문자를 result 변수에 붙이면서
+                            for (var i=s.length-1; i>=0; i--) {
+                                result = s[i] + result;
+                                // 숫자 3자리마다 콤마(,)를 넣어서 결과값을 리턴
+                                if (num % 3 == 2 && i !==0)
+                                    result = "," + result;
+                                num++;
+                            }
+                            return result;
+                        },
+                        set : function(amt) {
+                            // 문자열을 입력받으면
+                            if (typeof(amt) === "string") {
+                                var result = parseInt(amt.replace(/,/g, ""))    // 쉼표(,)를 제거한 뒤 정수로 변환하여 amt 데이터속성에 할당
+                                if (isNaN(result)) this.amt = 0;    // 숫자로 변환 불가능한 값이 들어오면 숫자 0 할당
+                                else this.amt = result;
+                            // 숫자를 입력받으면
+                            } else if (typeof(amt) === "number")
+                                this.amt = amt;
+                        }
+                    },
+                },
+            })            
+        </script>
+    </body>
+</html>
