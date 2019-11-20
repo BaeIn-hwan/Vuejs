@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        *{padding: 0; margin: 0; font-size: 20px; line-height: 1.4;}
+        body {
+            padding: 50px;
+        }
+        h2 {
+            font-size: 30px;
+        }
+        pre {
+            font-weight: 500;
+            line-height: 1.3;
+        }
+        dl {
+            padding: 15px;
+            margin-top: 30px;
+            background: #f2f2f2;
+            border: 1px solid #ddd;
+        }
+        dt {
+            padding-bottom: 10px;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        em {
+            font-style: normal;
+            font-weight: bold;
+        }
+        input {
+            line-height: 40px;
+            padding-left: 20px;
+        }
+        ul, li {
+            list-style-type: none;
+        }
+        [v-cloak] {
+            display: none;
+            /*콧수염 템플릿 안보이게 하기*/
+        }
+        .info__table dt:after,
+        .info__table dd:after {
+            display: block;
+            clear: both;
+            content: "";
+        }
+        .info__table dt span,
+        .info__table dd span {
+            display: inline-block;
+            float: left;
+            width: 20%;
+            background: white;
+            border-right: 1px solid #ddd;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <section id="answer">
+        <template>
+            <dl id="test1">
+                <dt>
+                    1. 두개의 숫자를 입력 받고 두개의 숫자 사이의 모든 홀수의 합을 구하시오.
+                    예) 2 와 10 이렇게 두개의 숫자를 입력하면 3, 5, 7 의 합을 구함
+                </dt>
+                <dd>
+                    <input type="text" v-model="test1.num1">
+                    <input type="text" v-model="test1.num2">
+                    <p>{{oddSumComputed}}</p>
+                    <p>{{oddSumMethod()}}</p>
+                </dd>
+                <dd>
+                    <!--질문 ! 만약 test1 안에 변수라면?-->
+                    <input type="text" v-model.number="watch1">
+                    <input type="text" v-model.number="watch2">
+                    <p>{{watchR}}</p>
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
+                    정보 (이름 소속팀 나이)
+                    ** 하단에 프로그레스바가 노출되었다가 노출되게 해주세요.
+                </dt>
+                <dd>
+                    <input type="text" v.model.trim="test2.name" placeholder="이름을 입력하세요.">
+                    <dl class="info__table">
+                        <dt>
+                            <span>이름</span>
+                            <span>성별</span>
+                            <span>휴대폰 번호</span>
+                        </dt>
+                        <dd v-for="(person, idx) in test2.infoListData">
+                            <ul>
+                                <li v-if="person.name == test2.name">
+                                    <span>{{person.name}}</span>
+                                    <span>{{person.gender}}</span>
+                                    <span>{{person.number}}</span>
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </dd>
+            </dl>
+        </template>
+    </section>
+    <div id="vSetGet">
+        <!--<input type="text" v-model.num="amt" >-->
+        금액: <span>{{amount}}</span>원
+    </div>
+    <div id="vMethod">
+        {{nowComputed}}<!--종속된 대상이 변경될 때에만 함수를 실행. 결과값 저장-->
+        {{nowMethod()}}<!--렌더링 다시 할때마다 함수를 항상 실행. 매번 실행-->
+    </div>
+    <div id="vWatch">
+        <!--비동기일때는 watch가 편리. 값이 바뀔 때마다 함수가 호출됨.-->
+        x : <input type='text' v-model="x" /><br />
+        y : <input type='text' v-model="y" /><br />
+        덧셈 결과 : {{sum}}
+    </div>
+    <div id="vclock">
+        <p v-cloak></p>
+    </div>
+    <div id="vLifeCycle">
+        <!--라이프 사이클 훅 참고사이트-->
+        <!--https://medium.com/witinweb/vue-js-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-7780cdd97dd4-->
+        <input type="text" v-model="num" /><br />
+        1부터 입력된 수까지의 합 : <span>{{sum}}</span>
+    </div>
+<script>
+    var answer = new Vue({
+        el: "#answer",
+        data: {
+            test1: {
+                num1: 0,
+                num2: 0,
+                oddSumWatch: 0
+            },
+            watch1: 0,
+            watch2: 0,
+            watchR: 0,
+            test2: {
+                name: "",
+                infoListData : [
+                    {
+                        "name" : "신지은",
+                        "team" : "프론트엔드팀",
+                        "age" : "27",
+                        "gender" : "여",
+                        "number" : "01029985593"
+                    },
+                    {
+                        "name" : "주영희",
+                        "team" : "기술연구소팀",
+                        "age" : "27",
+                        "gender" : "여",
+                        "number" : "01012345667"
+                    },
+                    {
+                        "name" : "윤경아",
+                        "team" : "프론트엔드팀",
+                        "age" : "29",
+                        "gender" : "여",
+                        "number" : "010456789"
+                    },
+                    {
+                        "name" : "양원석",
+                        "team" : "기술연구소팀",
+                        "age" : "35",
+                        "gender" : "남",
+                        "number" : "0102444443"
+                    },
+                    {
+                        "name" : "유혜진",
+                        "team" : "프론트엔드팀",
+                        "age" : "31",
+                        "gender" : "여",
+                        "number" : "01029985654"
+                    },
+                    {
+                        "name" : "김민수",
+                        "team" : "프론트엔드팀",
+                        "age" : "29",
+                        "gender" : "남",
+                        "number" : "01078945615"
+                    },
+                    {
+                        "name" : "전정호",
+                        "team" : "프론트엔드팀",
+                        "age" : "33",
+                        "gender" : "남",
+                        "number" : "01062367777"
+                    },
+                    {
+                        "name" : "전동엽",
+                        "team" : "프론트엔드팀",
+                        "age" : "31",
+                        "gender" : "남",
+                        "number" : "010623414777"
+                    },
+                    {
+                        "name" : "배인환",
+                        "team" : "프론트엔드팀",
+                        "age" : "29",
+                        "gender" : "남",
+                        "number" : "01062111177"
+                    }
+                ]
+            }
+        },
+        computed: {
+            oddSumComputed: function () {
+                var input1 = Number(this.test1.num1);
+                var input2 = Number(this.test1.num2);
+                var result = 0;
+                if (isNaN(input1) || isNaN(input2) ) return 0;
+
+                console.log("computed"+ Date.now());
+                for ( var i = input1; i <= input2; i++ ) {
+                    if ( i % 2 ) {
+                        result += i;
+                    }
+                }
+                return result;
+            }
+        },
+        methods: {
+            oddSumMethod: function () {
+                var input1 = Number(this.test1.num1);
+                var input2 = Number(this.test1.num2);
+                var result = 0;
+                if (isNaN(input1) || isNaN(input2) ) return 0;
+
+                console.log("method"+ Date.now());
+                for ( var i = input1; i <= input2; i++ ) {
+                    if ( i % 2 ) {
+                        result += i;
+                    }
+                }
+                return result;
+            }
+        },
+        watch: {
+            watch1: function (getN) {
+                console.log("1번변경");
+                var result = 0;
+                for (var num = getN; num <= this.watch2; num++ ){
+                    if ( num % 2 ){
+                        result += num;
+                    }
+                }
+                this.watchR = result;
+            },
+            watch2: function (getN) {
+                console.log("2번변경")
+                var result = 0;
+                for (var num = this.watch1; num <= getN; num++ ){
+                    if ( num % 2 ){
+                        result += num;
+                    }
+                }
+                this.watchR = result;
+            }
+//            test1: {
+//                num1: function (v) {
+//                    console.log("1번 변경")
+//                },
+//                num2: function (v) {
+//                    console.log("2번 변경")
+//                }
+//
+//            }
+
+        }
+    });
+    var vSetGet = new Vue({
+        el: "#vSetGet",
+        data: {
+            amt: 12444
+        },
+        computed : {
+            amount : {
+                get : function() {
+                    var s = new String(""+this.amt);
+                    var result = "";
+                    var num = 0;
+                    for (var i=s.length-1; i>=0; i--) {
+                        result = s[i] + result;
+                        if (num % 3 == 2 && i !== 0)
+                            result = "," + result;
+                        num++;
+                    }
+                    return result;
+                },
+                set : function(amt) {
+                    if (typeof(amt) === "string") {
+                        var result = parseInt(amt.replace(/,/g, ""))
+                        if (isNaN(result)) this.amt = 0;
+                        else   this.amt = result;
+                    } else if (typeof(amt) === "number")
+                        this.amt = amt;
+                }
+            }
+        }
+    })
+    var vMethod = new Vue({
+        el: "#vMethod",
+        data: {
+
+        },
+        computed: {
+            nowComputed: function () {
+                return Date.now();
+            }
+        },
+        methods: {
+            nowMethod: function () {
+                return Date.now();
+            }
+        }
+    })
+    var vWatch = new Vue({
+        el : "#vWatch",
+        data : { x:0, y:0, sum:0 },
+        watch : {
+            x : function(v) {
+                console.log('## x 변경')
+                var result = Number(v) + Number(this.y);
+                if (isNaN(result)) this.sum = 0;
+                else this.sum = result;
+            },
+            y : function(v) {
+                console.log('## y 변경')
+                this.y = v;
+                var result = Number(this.x) + Number(v);
+                if (isNaN(result)) this.sum = 0;
+                else this.sum = result;
+            }
+        }
+    })
+    var vLifeCycle = new Vue({
+        el: "#vLifeCycle",
+        data: {
+            num: ""
+        },
+        beforeCreate: function () {
+            console.log("beforeCreated")
+        },
+        created: function () {
+            console.log("created")
+            //data, init Events 들어오고 실행
+        },
+        beforeMount: function () {
+            console.log("beforeMount")
+        },
+        mounted: function () {
+            //vm의 el이 만들어지는 곳. 그리고 html의 el이 대체되는곳.
+        },
+        updated: function () {
+            console.log(this.num,"updated");
+            //데이터 changed 됐을때
+        },
+        beforeDestory: function () {
+            //vue인스턴스가 제거되기 전 호출
+            console.log("beforeDestory")
+        },
+        destroyed: function () {
+            //vue인스턴스 제거된 후 호출
+            console.log("Destory")
+        },
+        computed: {
+            sum: function () {
+                var n = Number (this.num);
+                if (Number.isNaN(n) || n < 1 ) return 0;
+                return ((1 + n) * n) / 2;
+            }
+        }
+    })
+</script>
+</body>
+</html>
