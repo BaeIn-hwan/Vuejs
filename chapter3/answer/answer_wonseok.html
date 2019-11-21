@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>챕터 3</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,input,button,textarea,option,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video { padding:0; font:inherit; outline: 0 none; }
+
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {display:block;}
+
+
+
+
+        body {position:relative;}
+        body,input,button,textarea,select,option {}
+        h1,h2,h3,h4,h5,h6 {}
+
+        table {table-layout:fixed; border-collapse:unset;border-spacing:0;}
+        caption {display:none;}
+        img, fieldset{border:0;}
+        ul,ol,li{list-style:none}
+        a, img, input {}
+        img {vertical-align:top;}
+        a {color:#656565; text-decoration:none;}
+        em, i, address{font-style:normal}
+        input, textarea {box-sizing:border-box; -webkit-box-sizing:border-box; border-radius:0; -webkit-border-radius:0;}
+        input.txt-box {padding:0 10px;border:1px solid #ddd;line-height:38px;}
+        input.aright {text-align:right;}
+        input[type="text"][disabled="disabled"] {background:#f2f2f2;}
+        input[type=text]::-ms-clear{display: none;}
+        textarea {padding:10px; resize:none;}
+
+        input[type="text"]{
+            padding:5px;
+            border:1px solid #333;
+        }
+        .division td{
+            background: yellow;
+        }
+
+        article{padding:30px 10px;border-bottom:2px solid #ddd;}
+    </style>
+</head>
+
+<body>
+    <section>
+        <article id="test01">
+            <h2>
+                1. 두개의 숫자를 입력 받고 두개의 숫자 사이의 모든 홀수의 합을 구하시오.
+            </h2>
+            <div id="simple">
+                <input type="text" v-model="num01" placeholder="1번째 숫자" />
+                <input type="text" v-model="num02" placeholder="2번째 숫자" />
+                <p>두개의 숫자 사이 홀수의 합은 : {{sum}}</p>
+            </div>
+
+            <script type="text/javascript">
+                var vmSum = new Vue({
+                    el : "#simple",
+                    data : {
+                        num01 : null,
+                        num02 : null
+                    },
+                    computed : {
+                        sum : function() {
+                            var n1 = Number(this.num01);
+                            var n2 = Number(this.num02);
+                            var oddsum = 0;
+                            if (isNaN(n1) || isNaN(n2))  return 0;
+                            for ( i = n1+1; i < n2; i++ ){
+                                if(i%2 != 0){
+                                    oddsum = oddsum + i;
+                                }
+                            }
+                            return oddsum;
+                        }
+                    }
+                });
+            </script>
+            <!-- * 앞뒤 순서 상관없이 두 숫자간에 차이가 있으면 사이의 합을 구할 수 있을까? -->
+        </article>
+
+        <article id="test06">
+            <h2>
+                2. 라이프 사이클 훅 에 대해서 설명 하시고 실행되는 순서대로 나열하세요
+            </h2>
+            <blockquote>
+            <pre>
+                1. beforeCreate : 이름처럼 가장 먼저 실행되는 훅. Vue 인스턴스가 초기화 된 직후에 발생
+
+                2. created : Vue 인스턴스가 생성된 후에 데이터에 대한 관찰 기능, 계산형 속성, 메서드, 감시자 설정이 완료된 후에 호출
+                          템플릿과 가상돔은 마운트 및 렌더링되지 않은 상태
+
+                3. beforeMount : 템플릿과 렌더 함수들이 컴파일된 후에 첫 렌더링이 일어나기 직전에 실행.
+
+                4. mounted : el에 vue 인스턴스의 데이터가 마운트된 후에 호출 하지만 모든 하위 컴포넌트가 마운트 된 상태를 보장하지 않는다
+
+                5. beforeUpdate : 컴포넌트의 데이터가 변하여 업데이트 사이클이 시작될 때 실행된다. 정확히는 돔이 재 랜더링되고 패치되기 직전에 실행됨
+                                여기서 재 랜더링 전의 새상태의 데이터를 얻을 수 있으며, 더 많은 변경이 가능하다. 이 변경으로 인한 재랜더링은 트리거되지 않는다.
+
+                6. updated : 컴포넌트의 데이터가 변하여 재 랜더링이 일어난 후에 실행된다. 그래서 DOM에 종속성이 있는 연산을 이 단계에서 수행할 수 있습니다.
+                            하지만 여기서 상태를 변경하게 되면 무한루프에 빠질수도 있다. 모든 자식 컴포넌트의 재랜더링 상태를 보장해주지 않는다.
+
+                7. beforeDestroy : Vue 인스턴스가 제거되기 전에 호출됩니다. 컴포넌트는 원래 모습과 모든 기능을 그대로 가지고 있으며,
+                                이벤트 리스너를 제거하거나 reactive subscription 을 제거하고자 할때 사용.
+
+                8. destroyed : Vue 인스턴스가 제거된 후에 호출됩니다. 이 훅이 호출될 때는 Vue 인스턴스의 모든 디렉티브의 바인딩이 해제되고, 이벤트 연결도 모두 제거됩니다.
+            </pre>
+            </blockquote>
+        </article>
+
+        <article id="test03">
+            <h2>
+                3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
+            </h2>
+            <div id="simple3">
+                <p>
+                    이름 : <input type="text" :value="membername" placeholder="팀원명" @input="memberChanged">
+                </p>
+                <table id="list" v-show="membername != ''">
+                    <tbody id="contacts">
+                        <tr v-for="m in filtered">
+                            <td> &nbsp; {{m.name}} &nbsp; </td>
+                            <td> &nbsp; {{m.team}} &nbsp; </td>
+                            <td> &nbsp; {{m.phone}} &nbsp; </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <script>
+                var model = {
+                    membername : "",
+                    members : [
+                        { no:1, name : "전정호", team : "프론트엔드", phone: "9518"},
+                        { no:2, name : "전동엽", team : "프론트엔드", phone: "5215"},
+                        { no:3, name : "신지은", team : "프론트엔드", phone: "5593"},
+                        { no:4, name : "유혜진", team : "프론트엔드", phone: "8486"},
+                        { no:5, name : "배인환", team : "프론트엔드", phone: "0308"},
+                        { no:6, name : "주영희", team : "기술연구소", phone: "0963"},
+                        { no:7, name : "김민수", team : "프론트엔드", phone: "3327"},
+                        { no:8, name : "윤경아", team : "프론트엔드", phone: "3554"}
+                    ]
+                }
+                var clist = new Vue({
+                    el: "#simple3",
+                    data : model,
+                    computed : {
+                        filtered : function() {
+                            var mname = this.membername.trim();
+                            return this.members.filter(function(member, index) {
+                                if(member.name.indexOf(mname) > -1) {
+                                    return true;
+                                }
+                            })
+                        }
+                    },
+                    methods: {
+                        memberChanged: function(e) {
+                            this.membername = e.target.value;
+                        }
+                    }
+                })
+
+
+
+
+            </script>
+        </article>
+        <article id="test04">
+            <h2>
+                4. get과 set메서드를 이용하여 300,000 을 입력하면 300000 , 300000 을 입력하면 300,000 을 리턴, 문자열을 입력하면 0을 리턴하시오.
+            </h2>
+            <div id="simple4">
+                <input type="text" v-model="amt" placeholder="숫자를 입력하세요" /> : <span>{{amount}}</span>
+            </div>
+            <script type="text/javascript">
+                var vm = new Vue({
+                    el : "#simple4",
+                    data : { amt : '' },
+                    computed : {
+                        amount : {
+                            get : function() {
+                                var s = new String(""+this.amt);
+                                var result = "";
+                                var num = 0;
+                                for (var i=s.length-1; i>=0; i--) {
+                                    result = s[i] + result;
+                                    if (num % 3 == 2 && i !== 0)
+                                        result = "," + result;
+                                    num++;
+                                }
+                                return result;
+                            },
+                            set : function(amt) {
+                                if (typeof(amt) === "string") {
+                                    var result = parseInt(amt.replace(/,/g, ""))
+                                    if (isNaN(result)) this.amt = 0;
+                                    else   this.amt = result;
+                                } else if (typeof(amt) === "number")
+                                    this.amt = amt;
+                            }
+                        }
+                    }
+                });
+            </script>
+        </article>
+
+    </section>
+
+</body>
+</html>
