@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+<script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+}
+
+[v-cloak] {
+  display: none;
+}
+</style>
+</head>
+<body>
+    <p>1. 두개의 숫자를 입력 받고 두개의 숫자 사이의 모든 홀수의 합을 구하시오.<br>예) 2 와 10 이렇게 두 개의 숫자를 입력하면 3, 5, 7 의 합을 구함</p>
+
+    <div id="ques01" style="margin-top: 30px;">
+        X : <input type="text" v-model="x"><br>
+        Y : <input type="text" v-model="y"><br>
+      
+        계산형속성 합 : {{computedSum}}<br>
+        관찰속성 합 : {{watchSum}}
+    </div>
+
+    <p style="margin-top: 50px;">
+        2. 라이프 사이클 훅 에 대해서 설명 하시고 실행되는 순서대로 나열하세요.<br><br>
+        beforeCreate<br><br>
+        created<br><br>
+        beforeMount<br><br>
+        mounted<br><br>
+        beforeUpdate<br><br>
+        updated<br><br>
+        beforeDestroy<br><br>
+        destroyed
+    </p>
+
+    <div style="margin-top: 30px;">
+        beforeCreate : 모든 훅 중에 가장 먼저 실행되는 훅, data와 events가 세팅되지 않은 시점이라 접근하면 에러 발생<br>
+        created : data와 events가 활성화되어 접근 가능, 하지만 템플릿과 가상돔은 마운트 및 렌더링되지 않은 상태<br>
+        beforeMount : 템플릭과 렌더 함수들이 컴파일된 후에 첫 렌더링이 일어나기 직전 실행됨<br>
+        mounted : 컴포넌트, 템플릿, 렌더링된 돔에 접근 가능. 단 부모자식 관계의 컴포넌트에서 우리가 생각한 순서로 mounted가 발생하지 않음.(부모 created -> 자식 created -> 자식 mounted -> 부모 mounted)<br>
+        beforeUpdate : 컴포넌트의 데이터가 변하여 업데이트 사이클이 시작될 때 실행됨<br>
+        updated : 데이터가 변하여 재 렌더링이 일어난 후에 실행. 종속적인 연산이 가능. 하지만 여기서 상태를 변경하는 경우 무한루프가 돌 수 있음<br>
+        beforeDestroy : 뷰 인스턴스 제거가 되기 직전에 호출됨. <br>
+        destroyed : 뷰 인스턴스가 제거된 후에 호출. 뷰 인스턴스의 모든 디렉티브가 바인딩 해제 되고 모든 이벤트 리스너가 제거되며 모든 하위 뷰 인스턴스도 삭제<br>
+    </div>
+
+    <p style="margin-top: 50px;">3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요.(정보는 최소 3 명 이상으로 합니다.)<br>정보(이름 소속팀 나이)<br> ** 하단에 프로그레스바가 노출되었다가 노출되게 해주세요.</p>
+
+    <div id="ques03">
+        <input type="text" v-model="userName" placeholder="이름을 입력하세요.">
+        <ul>
+            <li v-for="info in infos">
+                <span>{{info.name}}</span>
+                <span>{{info.team}}</span>
+                <span>{{info.gender}}</span>
+            </li>
+        </ul>
+        <div v-show="flag === true">조회중</div>
+    </div>
+
+    <p style="margin-top: 50px;">4. get과 set메서드를 이용하여 300,000 을 입력하면 300000,<br>300000 을 입력하면 300,000 을 리턴,<br>문자열을 입력하면 0을 리턴하시오.</p>
+
+    <div id="ques04">
+    </div>
+    
+<script>
+const aws01 = new Vue({
+    el: "#ques01",
+    data: {x: 0, y: 0, watchSum: 0},
+    computed: {
+        computedSum() {
+            const x = Number(this.x);
+            const y = Number(this.y);
+            let computedSum = 0;
+
+            for ( let i = x; i <= y; i++ ) {
+                if ( i % 2 != 0 ) computedSum += i;
+            }
+
+            return computedSum;
+        }
+    },
+    watch: {
+        x(v) {
+            const x = Number(v);
+            this.watchSum = 0;
+        
+            for ( let i = x; i <= Number(this.y); i++ ) {
+                if ( i % 2 != 0 ) this.watchSum += i;
+            }
+
+            return this.watchSum;
+           
+        },
+        y(v) {
+            const y = Number(v);
+            this.watchSum = 0;
+            
+            for ( let i = Number(this.x); i <= y; i++ ) {
+                if ( i % 2 != 0 ) this.watchSum += i;
+            }
+
+            return this.watchSum;
+        }
+    }
+})
+
+// const aws03 = new Vue({
+//     el: '#ques03',
+//     data : {
+//         userName: '',
+//         flag: false,
+//         infos: [
+//             {
+//                 name: '배인환',
+//                 teams: '프론트엔드',
+//                 gender: '남'
+//             }, {
+//                 name: '배이난',
+//                 teams: '프론트엔드',
+//                 gender: '남'
+//             }, {
+//                 name: '이나니',
+//                 teams: '프론트엔드',
+//                 gender: '남'
+//             }, {
+//                 name: '망나니',
+//                 teams: '??',
+//                 gender: '여'
+//             } 
+//         ]
+//     },
+//     watch: {
+//         userName: function(val) {
+//             if (val.length >= 2) this.contents();
+//         }
+//     },
+//     methods: {
+//         contents() {
+//             this.flag = true;
+//             const cname = this.userName.trim();
+//             let _data = [];
+
+//             for (let i = 0; i < 3; i++ ) {
+//                 if ( this.infos[i].name.indexOf(cname) != -1 ) _data.push(this.infos[i]);
+//             }
+
+//             this.flag = false;
+
+//             this.infos
+//         }
+//     },
+// })
+
+</script>
+
+</body>
+</html>
