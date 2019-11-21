@@ -119,29 +119,48 @@
             </dl>
         </template>
     </section>
-    <div id="vSetGet">
-        <!--https://kr.vuejs.org/v2/guide/computed.html-->
-        <!--<input type="text" v-model.num="amt" >-->
-        금액: <span>{{amount}}</span>원
-    </div>
-    <div id="vMethod">
-        {{nowComputed}}<!--종속된 대상이 변경될 때에만 함수를 실행. 결과값 저장-->
-        {{nowMethod()}}<!--렌더링 다시 할때마다 함수를 항상 실행. 매번 실행-->
-    </div>
-    <div id="vWatch">
-        <!--비동기일때는 watch가 편리. 값이 바뀔 때마다 함수가 호출됨.-->
-        x : <input type='text' v-model="x" /><br />
-        y : <input type='text' v-model="y" /><br />
-        덧셈 결과 : {{sum}}
-    </div>
-    <div id="vclock">
-        <p v-cloak></p>
-    </div>
-    <div id="vLifeCycle">
-        <!--라이프 사이클 훅 참고사이트-->
-        <!--https://medium.com/witinweb/vue-js-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-7780cdd97dd4-->
-        <input type="text" v-model="num" /><br />
-        1부터 입력된 수까지의 합 : <span>{{sum}}</span>
+    <div>
+        <dl id="vSetGet">
+            <!--https://kr.vuejs.org/v2/guide/computed.html-->
+            <!--<input type="text" v-model.num="amt" >-->
+            <dt>set/get</dt>
+            <dd>
+                금액: <span>{{amount}}</span>원
+            </dd>
+        </dl>
+        <dl id="vMethod">
+            <dt>method</dt>
+            <dd>
+                {{nowComputed}}<!--종속된 대상이 변경될 때에만 함수를 실행. 결과값 저장-->
+                {{nowMethod()}}<!--렌더링 다시 할때마다 함수를 항상 실행. 매번 실행-->
+            </dd>
+        </dl>
+        <dl id="vWatch">
+            <!--비동기일때는 watch가 편리. 값이 바뀔 때마다 함수가 호출됨.-->
+            <dt>watch</dt>
+            <dd>
+                x : <input type='text' v-model="x" /><br />
+                y : <input type='text' v-model="y" /><br />
+                덧셈 결과 : {{sum}}
+            </dd>
+        </dl>
+        <dl id="vclock">
+            <dt>clock</dt>
+            <dd>
+                <p v-cloak></p>
+            </dd>
+        </dl>
+        <dl id="vLifeCycle">
+            <dt>
+                lifeCycle
+            </dt>
+            <dd>
+                <!--라이프 사이클 훅 참고사이트-->
+                <!--https://medium.com/witinweb/vue-js-%EB%9D%BC%EC%9D%B4%ED%94%84%EC%82%AC%EC%9D%B4%ED%81%B4-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-7780cdd97dd4-->
+                <input type="text" v-model="num" /><br />
+                1부터 입력된 수까지의 합 : <span>{{sum}}</span>
+            </dd>
+        </dl>
     </div>
 <script>
     var answer = new Vue({
@@ -245,23 +264,29 @@
             moneyResult: {
                 get: function () {
                         var amt = this.test3.money;
-                        if (!isNaN(amt)) {
-//                            var splitamt = amt.split("")
-//                            console.log(splitamt)
+                        var num = 0;
+                        var result = "";
+                        if (isNaN(amt)) {
+                            console.log("문자");
+                            result = parseInt(amt.replace(/,/g, ""))
+
+                            return result;
+
+                        } else {
+                            console.log("숫자");
+                            var stringAmt = new String(""+amt);
+
+                            for ( var i = stringAmt.length - 1; i >= 0; i-- ) {
+                                result = stringAmt[i] + result;
+                                if (num % 3 == 2 && i !== 0) {
+                                    result = "," + result;
+                                }
+                                num++;
+                            }
+                            return result;
                         }
-//                    var s = new String(""+this.amt);
-//                    var result = "";
-//                    var num = 0;
-//                    for (var i=s.length-1; i>=0; i--) {
-//                        result = s[i] + result;
-//                        if (num % 3 == 2 && i !== 0)
-//                            result = "," + result;
-//                        num++;
-//                    }
-//                    return result;
 
 
-                        return amt;
                 },
                 set: function () {
 
