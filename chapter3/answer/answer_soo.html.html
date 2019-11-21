@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    </head>
+    <body>
+      <div id="app">
+         <template>
+            <section id="question1">
+               <h4>1. 두개의 숫자를 입력 받고 두개의 숫자 사이의 모든 홀수의 합을 구하시오.
+                  예) 2 와 10 이렇게 두개의 숫자를 입력하면 3, 5, 7 의 합을 구함</h4>
+
+                  <input type="number" v-model.number="question1.start"> ~ <input type="number" v-model.number="question1.end">
+                  <div v-if="question1.start && question1.end && question1.end >= question1.start">
+                     홀수 합 {{question1Answer}}
+                  </div>
+            </section>
+            <section id="question2">
+               <h4>2. 라이프 사이클 훅 에 대해서 설명 하시고 실행되는 순서대로 나열하세요</h4>
+               
+               <div>beforeCreate: 인스턴스가 방금 초기화 된 후 데이터 관찰 및 이벤트 / 감시자 설정 전에 동기적으로 호출 됩니다.</div>
+               <div>created: 인스턴스가 작성된 후 동기적으로 호출됩니다. 이 단계에서 인스턴스는 데이터 처리, 계산된 속성, 메서드, 감시/이벤트 콜백 등과 같은 옵션 처리를 완료합니다. 그러나 마운트가 시작되지 않았으므로 $el 속성을 아직 사용할 수 없습니다. (element 제외 한 나머지는 loaded 상태)</div>
+               <div>beforeMount: 마운트가 시작되기 바로 전에 호출됩니다. render 함수가 처음으로 호출 됩니다. (element 생성 전?)</div>
+               <div>mounted: el이 새로 생성된 vm.$el로 대체된 인스턴스가 마운트 된 직후 호출됩니다. 루트 인스턴스가 문서 내의 엘리먼트에 마운트 되어 있으면, mounted가 호출 될 때 vm.$el도 문서 안에 있게 됩니다. (element 렌더링 중... 렌더링 보장 필요 시 vm.$nextTick 사용)</div>
+               <div>beforeUpdate: 데이터가 변경되면, 가상 DOM 재 렌더링과 패치가 이뤄지기 전에 호출됩니다. 이 훅에서 더 많은 상태 변경을 수행할 수 있으며 추가로 재 렌더링을 트리거하지 않습니다.</div>
+               <div>updated: 데이터가 변경되어 가상 DOM이 재 렌더링되고 패치되면 호출됩니다. 이 훅이 호출되면 엘리먼트의 DOM이 업데이트 된 상태가 되어 이 훅에서 DOM 종속적인 연산을 할 수 있습니다. 그러나 대부분의 경우 무한루프가 발생할 수 있으므로 훅에서 상태를 변경하면 안됩니다. 상태 변화에 반응하기 위해서 계산된 속성 또는 [감시자(#watch)를 사용하는 것이 더 좋습니다. (element 렌더링 중... 렌더링 보장 필요 시 vm.$nextTick 사용)</div>
+               <div>activated: keep-alive 인 컴포넌트가 활성화 될 때 호출됩니다.</div>
+               <div>deactivated: keep-alive인 컴포넌트가 비활성화 될 때 호출됩니다.</div>
+               <div>beforeDestroy: Vue 인스턴스가 제거되기 전에 호출됩니다. 이 단계에서 인스턴스는 아직 완벽하게 작동합니다.\</div>
+               <div>destroyed: Vue 인스턴스가 제거된 후 호출됩니다. 이 훅이 호출되면 Vue 인스턴스의 모든 디렉티브가 바인딩 해제 되고 모든 이벤트 리스너가 제거되며 모든 하위 Vue 인스턴스도 삭제됩니다.</div>
+            </section>
+            <section id="question3">
+               <h4>3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)
+                  정보 (이름 소속팀 나이)
+                    ** 하단에 프로그레스바가 노출되었다가 노출되게 해주세요.</h4>
+
+               <input type="text" v-model="question3.searchText">
+               <button ref="question3SearchTextButton">검색</button>
+               <div v-if="false === question3.fetchs.searchText && question3.searchText">
+                  loading...
+               </div>
+               {{question3Answer}}
+               
+               <!-- <template v-else-if="true === question3.fetchs.searchText">
+                  <div v-if="question3.rows && question3.rows.length">
+                     <div v-for="row in question3.rows">
+                        {{row.name}} / {{row.value}}
+                     </div>
+                  </div>
+                  <div v-else>
+                     조회 결과가 없습니다.
+                  </div>
+               </template> -->
+            </section>
+            <section id="question4">
+               <h4>4. get과 set메서드를 이용하여 300,000 을 입력하면 300000, 300000 을 입력하면 300,000 을 리턴, 문자열을 입력하면 0을 리턴하시오.</h4>
+
+               <input type="text" v-model="question4.number">
+               <div v-if="null !== question4.number && undefined !== question4.number">
+                  {{question4Answer}}
+               </div>
+            </section>
+         </template>
+      </div>
+      <script>
+         new Vue ({
+            el: "#app",
+
+            data: {
+               question1: {
+                  start: null,
+                  end: null
+               },
+
+               question2: {
+                  team: null,
+               },
+
+               question3: {
+                  fetchs: {
+                     searchText: null,
+                  },
+
+                  lastRequested: null,
+
+                  searchText: null,
+                  people: [{
+                     name: '민수대리님',
+                     value: '참새',
+                  }, {
+                     name: '동엽주임님',
+                     value: '시바견',
+                  }, {
+                     name: '혜진주임님',
+                     value: '앵무새',
+                  }, {
+                     name: '인환주임님',
+                     value: '햄토리',
+                  }]
+               },
+
+               question4: {
+                  number: null,
+               }
+            },
+
+            computed: {
+               question1Answer() {
+                  let result = 0;
+
+                  if(!this.question1.start || !this.question1.end) return null;
+                  for(let i = this.question1.start, maxCnt = this.question1.end; i <= maxCnt; i++) {
+                     if((i%2)) result += i;
+                  }
+      
+                  return result;
+               },
+
+               question3Answer() {
+                  if(!this.question3.searchText) return null;
+
+                  const timestamp = +new Date();
+                  let queryResult = null;
+
+                  this.question3.fetchs.searchText = false;
+                  this.question3.lastRequested = timestamp;
+
+                  queryResult = this.question3.people.find(v => v.name === this.question3.searchText);
+
+                  if(timestamp == this.question3.lastRequested) {
+                     this.question3.fetchs.searchText = true;
+
+                     return queryResult && queryResult.value ? queryResult.value : '조회 결과가 없습니다.';
+                  }
+                  else {
+                     return null;
+                  }
+               },
+
+               question4Answer: {
+                  get() {
+                     const number = parseInt(this.question4.number);
+
+                     if(number) return '콤마숫자';
+                     else return 0;
+                  },
+
+                  set() {
+
+                  }
+               },
+            },
+
+            methods: {
+               requestQuestion3SearchText() {
+                  if(this.question3.fetchs.searchText) {
+                     alert('조회 중 입니다.');
+                     return
+                  }
+
+                  queryResult = this.question3.people.find(v => v.name === this.question3.searchText);
+                  
+                  if(queryResult) {
+                     this.question3.rows = [queryResult];
+                     this.question3.fetchs.searchText = true;
+                  }
+                  else {
+                     this.question3.rows = null;
+                  }
+
+                  this.question3.fetchs.searchText = true;
+               },
+
+               question3SearchText() {
+                  const button = this.$refs.question3SearchTextButton;
+
+                  if(button.disabled) return;
+
+                  button.disabled = true;
+                  this.question3.fetchs.searchText = false;
+
+                  setTimeout(() => {
+                     try {
+                        this.requestQuestion3SearchText();
+                     }
+                     catch(ex) {
+                        console.error(ex);
+                     }
+                     finally {
+                        console.log('222');
+                        button.disabled = false;
+                     }
+                  }, 2000);
+               }
+            }
+         });
+      </script>
+      <style>
+         section {
+            margin-bottom: 30px;
+         }
+      </style>
+    </body>
+</html>
