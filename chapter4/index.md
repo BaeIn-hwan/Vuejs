@@ -13,40 +13,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>04-01</title>
-  // 디자인 적용을 위해 부트스트랩(bootstrap) 사용
-  // 부스스트랩은 반응형 웹 UI 개발을 위한 HTML,CSS,JS 프레임워크
-  <link rel="stylesheet" 
+    <meta charset="utf-8">
+    <title>04-01</title>
+    // 디자인 적용을 위해 부트스트랩(bootstrap) 사용
+    // 부스스트랩은 반응형 웹 UI 개발을 위한 HTML,CSS,JS 프레임워크
+    <link rel="stylesheet" 
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <style>
-      .layout1 { margin:30px 30px 30px 30px; }
-  </style>
-  <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        .layout1 { margin:30px 30px 30px 30px; }
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
-<div id="example" class="container layout1">
-    // amount 데이터 속성을 v-model로 양방향 바인딩
-    <p><input type="text" v-model="amount" class="form-control" /></p> 
-    <p>
-        // v-on:click 디렉티브를 이용해 클릭 이벤트 처리를 수행
-        <button id="deposit" v-on:click="balance += parseInt(amount)"
-          class="btn btn-primary">예금</button>
-        // v-on = @
-        <button id="withdraw" @click="balance -= parseInt(amount)" 
-          class="btn btn-primary">인출</button>
-    </p>            
-    <h3>계좌 잔고 : {{balance}}</h3>
-</div>
-<script type="text/javascript">
-    var vm = new Vue({
-    el : "#example",
-        data : {
-            amount : 0,
-            balance : 0,
-        }
-    })
-</script>
+    <div id="example" class="container layout1">
+        // amount 데이터 속성을 v-model로 양방향 바인딩
+        <p><input type="text" v-model="amount" class="form-control" /></p> 
+        <p>
+            // v-on:click 디렉티브를 이용해 클릭 이벤트 처리를 수행
+            <button id="deposit" v-on:click="balance += parseInt(amount)"
+            class="btn btn-primary">예금</button>
+            // v-on = @
+            <button id="withdraw" @click="balance -= parseInt(amount)" 
+            class="btn btn-primary">인출</button>
+        </p>            
+        <h3>계좌 잔고 : {{balance}}</h3>
+    </div>
+    <script type="text/javascript">
+        var vm = new Vue({
+        el : "#example",
+            data : {
+                amount : 0,
+                balance : 0,
+            }
+        })
+    </script>
 </body>
 </html>
 ```
@@ -57,57 +57,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>04-03</title>
-  <link rel="stylesheet" 
+    <meta charset="utf-8">
+    <title>04-03</title>
+    <link rel="stylesheet" 
     href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <style>
-      .layout1 { margin:30px 30px 30px 30px; }
-  </style>
-  <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        .layout1 { margin:30px 30px 30px 30px; }
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
-<div id="example" class="container layout1">
-    <p><input type="text" v-model="amount" class="form-control" /></p>
-    <p>
-        <button id="deposit" v-on:click="deposit($event)" 
-            class="btn btn-primary">예금</button>
-        <button id="withdraw" v-on:click="withdraw" 
-            class="btn btn-primary">인출</button>
-    </p>            
-    <h3>계좌 잔고 : {{balance}}</h3>
-</div>
+    <div id="example" class="container layout1">
+        <p><input type="text" v-model="amount" class="form-control" /></p>
+        <p>
+            <button id="deposit" v-on:click="deposit($event)" 
+                class="btn btn-primary">예금</button>
+            <button id="withdraw" v-on:click="withdraw" 
+                class="btn btn-primary">인출</button>
+        </p>            
+        <h3>계좌 잔고 : {{balance}}</h3>
+    </div>
 
-<script type="text/javascript">
-var vm = new Vue({
-  el : "#example",
-  data : {
-    amount : 0,
-    balance : 0,
-  },
-  // Vue 인스턴스에 deposit, withdraw 메서드 작성하여 금액과 계좌잔고에 따른 유효성검사
-  methods : {
-    deposit : function(e) { // 첫번째 파라미터로 event 객체 전달받음
-        var amt = parseInt(this.amount);
-        if (amt <= 0) {
-            alert("0보다 큰 값을 예금해야 합니다");
-        } else {
-            this.balance += amt;
+    <script type="text/javascript">
+        var vm = new Vue({
+        el : "#example",
+        data : {
+            amount : 0,
+            balance : 0,
+        },
+        // Vue 인스턴스에 deposit, withdraw 메서드 작성하여 금액과 계좌잔고에 따른 유효성검사
+        methods : {
+            deposit : function(e) { // 첫번째 파라미터로 event 객체 전달받음
+                var amt = parseInt(this.amount);
+                if (amt <= 0) {
+                    alert("0보다 큰 값을 예금해야 합니다");
+                } else {
+                    this.balance += amt;
+                }
+            }, 
+            withdraw : function(e) {
+                var amt = parseInt(this.amount);
+                if (amt <= 0) {
+                    alert("0보다 큰 값을 인출할 수 있습니다");
+                } else if (amt > this.balance) {
+                    alert("잔고보다 많은 금액을 인출할 수 없습니다");
+                } else {
+                    this.balance -= amt;
+                }
+            }
         }
-    }, 
-    withdraw : function(e) {
-        var amt = parseInt(this.amount);
-        if (amt <= 0) {
-            alert("0보다 큰 값을 인출할 수 있습니다");
-        } else if (amt > this.balance) {
-            alert("잔고보다 많은 금액을 인출할 수 없습니다");
-        } else {
-            this.balance -= amt;
-        }
-    }
-  }
-})
-</script>
+        })
+    </script>
 </body>
 </html>
 ```
@@ -128,7 +128,6 @@ var vm = new Vue({
 |defaultPrevented|기본 이벤트가 방지되었는지 여부를 나타냄.|
 |eventPhase|이벤트 흐름의 단계를 나타냄.<br>1. 포착 (CAPTURING_PHASE)<br>2. 이벤트 발생 (AT_TARGET)<br>3. 버블링 (BUBBLING_PHASE)|
 |srcElement|IE에서 사용되던 속성으로 target과 동일한 속성|
-|||
 
 
 ### [키보드 이벤트 관련 속성]
@@ -144,7 +143,6 @@ var vm = new Vue({
 |keyCode|이벤트를 발생시킨 키보드의 고유 키코드<br>ex) a, A는 65를 리턴함(대소문자 구분하지 않음).|
 |charCode|keypress 이벤트가 발생될 때 Unicode 캐릭터 코드를 리턴함.|
 |location|디바이스에서의 키 위칫값. 일반 키보드는 이 값이 모두 0이므로 이용할 수 없음.|
-|||
 
 
 ### [마우스 이벤트 관련 속성]
@@ -159,7 +157,6 @@ var vm = new Vue({
 |offetX, offsetY|마우스 이벤트가 발생한 HTML 요소 영역상에서의 좌표(IE 브라우저 사용)|
 |pageX, pageY|마우스 이벤트가 일어났을 때의 HTML 문서(Document) 영역상의 좌표|
 |screenX, screenY|마우스 이벤트가 일어났을 때의 모니터 화면(Screen) 영역상의 좌표|
-|||
 
 
 ### [이벤트 객체의 주요 메서드]
@@ -168,7 +165,6 @@ var vm = new Vue({
 |:---|:---|
 |preventDefault()|기본 이벤트의 자동 실행을 중지시킴|
 |stopPropagation()|이벤트의 전파를 막음|
-|||
 
 ## 4. 기본 이벤트
 - HTML 문서나 요소에 어떤 기능을 실행하도록 이미 정의되어 있는 이벤트
@@ -182,15 +178,15 @@ var vm = new Vue({
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>04-04</title>
-  <style>
-   html, body { margin: 0;padding: 0; }
-   #example {
-    height: 98vh; min-height: 100%; padding:5px
-   }
-  </style>
-  <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <title>04-04</title>
+    <style>
+        html, body { margin: 0;padding: 0; }
+        #example {
+        height: 98vh; min-height: 100%; padding:5px
+        }
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
 
@@ -200,22 +196,22 @@ var vm = new Vue({
 </div>
 
 <script type="text/javascript">
-var vm = new Vue({
-    el : "#example",
-    methods: {
-        ctxStop : function(e) {
-            // contextmenu의 기본이벤트를 막기위해 e.preventDefault() 호출
-            // 이벤트 수식어 v-on:contextmenu.prevent 사용할 경우 해당 메서드 호출할 필요 없음
-           e.preventDefault();  
-        },
-        confirmFB : function(e) {
-            if (!confirm("페이스북으로 이동할까요?")) {
-                // 사용자가 취소 버튼을 클릭하면 e.preventDefault()가 호출되어 기본이벤트 실행 중지
-                e.preventDefault();
+    var vm = new Vue({
+        el : "#example",
+        methods: {
+            ctxStop : function(e) {
+                // contextmenu의 기본이벤트를 막기위해 e.preventDefault() 호출
+                // 이벤트 수식어 v-on:contextmenu.prevent 사용할 경우 해당 메서드 호출할 필요 없음
+            e.preventDefault();  
+            },
+            confirmFB : function(e) {
+                if (!confirm("페이스북으로 이동할까요?")) {
+                    // 사용자가 취소 버튼을 클릭하면 e.preventDefault()가 호출되어 기본이벤트 실행 중지
+                    e.preventDefault();
+                }
             }
         }
-    }
-})
+    })
 </script>
 </body>
 </html>
@@ -233,64 +229,64 @@ var vm = new Vue({
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>04-05</title>
-  <style>
-    .outer {
-        display: inline-block;
-        width:200px; height:200px; border:solid 2px black;
-        background-color: aqua; 
-        padding:10px 10px 10px 10px;
-    }
-    .inner {
-        width:100px; height:100px; border:solid 2px black;
-        background-color:yellow;
-    }
-  </style>
-  <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <title>04-05</title>
+    <style>
+        .outer {
+            display: inline-block;
+            width:200px; height:200px; border:solid 2px black;
+            background-color: aqua; 
+            padding:10px 10px 10px 10px;
+        }
+        .inner {
+            width:100px; height:100px; border:solid 2px black;
+            background-color:yellow;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
-<div id="example"  class="layout">
-    <!-- 버블링 차단 메서드 stopPropagation 호출 -->
-    <div class="outer" @click="outerClick">
-        <div class="inner" @click="innerClick"></div>
-    </div>
-    
-    <!-- @click.stop 수식어 사용 -->
-    <div class="outer" @click.stop="outerClick">
-        <div class="inner" @click.stop="innerClick"></div>
-    </div>
+    <div id="example"  class="layout">
+        <!-- 버블링 차단 메서드 stopPropagation 호출 -->
+        <div class="outer" @click="outerClick">
+            <div class="inner" @click="innerClick"></div>
+        </div>
+        
+        <!-- @click.stop 수식어 사용 -->
+        <div class="outer" @click.stop="outerClick">
+            <div class="inner" @click.stop="innerClick"></div>
+        </div>
 
-    <!--  
-        @click.capture.stop과 @click.stop 수식어 사용
-        click.capture.stop 이벤트 포착단계에서 이벤트 전파를 중단하므로,
-        .inner를 클릭하더라도 outerClick만 호출되고 더 이상 이벤트 발생은 일어나지 않음
-    -->
-    <div class="outer" @click.capture.stop="outerClick">
-        <div class="inner" @click.stop="innerClick"></div>
+        <!--  
+            @click.capture.stop과 @click.stop 수식어 사용
+            click.capture.stop 이벤트 포착단계에서 이벤트 전파를 중단하므로,
+            .inner를 클릭하더라도 outerClick만 호출되고 더 이상 이벤트 발생은 일어나지 않음
+        -->
+        <div class="outer" @click.capture.stop="outerClick">
+            <div class="inner" @click.stop="innerClick"></div>
+        </div>
     </div>
-</div>
-<script type="text/javascript">
-    var vm = new Vue({
-        el : "#example",
-        methods : {
-            outerClick : function(e) {
-                console.log("### OUTER CLICK")
-                console.log("Event Phase : ", e.eventPhase); // 이벤트 흐름의 단계를 나타냄
-                console.log("Current Target : ", e.currentTarget); // 이벤트리스너가 이벤트를 발생시키는 HTML 요소를 리턴
-                console.log("Target : ", e.target); // 이벤트가 발생한 HTML 요소를 리턴
-                // e.stopPropagation(); // 버블링 막기
-            },
-            innerClick : function(e) {
-                console.log("### INNER CLICK")
-                console.log("Event Phase : ", e.eventPhase);
-                console.log("Current Target : ", e.currentTarget);
-                console.log("Target : ", e.target);  
-                // e.stopPropagation(); // 버블링 막기
+    <script type="text/javascript">
+        var vm = new Vue({
+            el : "#example",
+            methods : {
+                outerClick : function(e) {
+                    console.log("### OUTER CLICK")
+                    console.log("Event Phase : ", e.eventPhase); // 이벤트 흐름의 단계를 나타냄
+                    console.log("Current Target : ", e.currentTarget); // 이벤트리스너가 이벤트를 발생시키는 HTML 요소를 리턴
+                    console.log("Target : ", e.target); // 이벤트가 발생한 HTML 요소를 리턴
+                    // e.stopPropagation(); // 버블링 막기
+                },
+                innerClick : function(e) {
+                    console.log("### INNER CLICK")
+                    console.log("Event Phase : ", e.eventPhase);
+                    console.log("Current Target : ", e.currentTarget);
+                    console.log("Target : ", e.target);  
+                    // e.stopPropagation(); // 버블링 막기
+                }
             }
-        }
-    })
-</script>
+        })
+    </script>
 </body>
 </html>
 ```
@@ -312,58 +308,58 @@ var vm = new Vue({
 <!DOCTYPE html>
 <html>
 <head>
- <meta charset="utf-8">
- <title>04-08</title>
- <link rel="stylesheet" 
-   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
- <style>
-     .layout1 { margin:30px 30px 30px 30px; }
- </style>
- <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <title>04-08</title>
+    <link rel="stylesheet" 
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .layout1 { margin:30px 30px 30px 30px; }
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
-<div id="example" class="container layout1">
-   <p><input type="text" v-model="amount" class="form-control" /></p>
-   <p>
-        <!-- once 수식어로 인해서 한번만 실행됨 -->
-        <button id="create" v-on:click.once="specialEvent" class="btn btn-primary">계좌 개설 10000원 이벤트</button> 
-        <button id="deposit" v-on:click="deposit($event)" class="btn btn-primary">예금</button>
-        <button id="withdraw" v-on:click="withdraw" class="btn btn-primary">인출</button>
-   </p>            
-   <h3>계좌 잔고 : {{balance}}</h3>
-</div>
-<script type="text/javascript">
-    var vm = new Vue({
-        el : "#example",
-        data : {
-            amount : 0,
-            balance : 0,
-        },
-        methods : {
-            specialEvent : function(e) {
-                this.balance += 10000;
+    <div id="example" class="container layout1">
+    <p><input type="text" v-model="amount" class="form-control" /></p>
+    <p>
+            <!-- once 수식어로 인해서 한번만 실행됨 -->
+            <button id="create" v-on:click.once="specialEvent" class="btn btn-primary">계좌 개설 10000원 이벤트</button> 
+            <button id="deposit" v-on:click="deposit($event)" class="btn btn-primary">예금</button>
+            <button id="withdraw" v-on:click="withdraw" class="btn btn-primary">인출</button>
+    </p>            
+    <h3>계좌 잔고 : {{balance}}</h3>
+    </div>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el : "#example",
+            data : {
+                amount : 0,
+                balance : 0,
             },
-            deposit : function(e) {
-                var amt = parseInt(this.amount);
-                if (amt <= 0) {
-                    alert("0보다 큰 값을 예금해야 합니다");
-                } else {
-                    this.balance += amt;
-                }
-            }, 
-            withdraw : function(e) {
-                var amt = parseInt(this.amount);
-                if (amt <= 0) {
-                    alert("0보다 큰 값을 인출할 수 있습니다");
-                } else if (amt > this.balance) {
-                    alert("잔고보다 많은 금액을 인출할 수 없습니다");
-                } else {
-                    this.balance -= amt;
+            methods : {
+                specialEvent : function(e) {
+                    this.balance += 10000;
+                },
+                deposit : function(e) {
+                    var amt = parseInt(this.amount);
+                    if (amt <= 0) {
+                        alert("0보다 큰 값을 예금해야 합니다");
+                    } else {
+                        this.balance += amt;
+                    }
+                }, 
+                withdraw : function(e) {
+                    var amt = parseInt(this.amount);
+                    if (amt <= 0) {
+                        alert("0보다 큰 값을 인출할 수 있습니다");
+                    } else if (amt > this.balance) {
+                        alert("잔고보다 많은 금액을 인출할 수 없습니다");
+                    } else {
+                        this.balance -= amt;
+                    }
                 }
             }
-        }
-    })
-</script>
+        })
+    </script>
 </body>
 </html>
 ```
@@ -377,14 +373,14 @@ var vm = new Vue({
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>03-08</title>
-<style>
-    #list  { width: 600px; border:1px solid black; border-collapse:collapse; }
-    #list td, #list th { border:1px solid black;  text-align:center; }
-    #list > thead > tr { color:yellow; background-color: purple; }
-    [v-cloak] { display: none; }
-</style>
+    <meta charset="utf-8">
+    <title>03-08</title>
+    <style>
+        #list  { width: 600px; border:1px solid black; border-collapse:collapse; }
+        #list td, #list th { border:1px solid black;  text-align:center; }
+        #list > thead > tr { color:yellow; background-color: purple; }
+        [v-cloak] { display: none; }
+    </style>
 </head>
 <body>
     <div id="example"  v-cloak>
@@ -490,15 +486,15 @@ var vm = new Vue({
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>04-11</title>
-<style>
-    html, body { margin: 0;padding: 0; }
-    #example {
-    height: 98vh; min-height: 100%; padding:10px
-    }
-</style>
-<script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <meta charset="utf-8">
+    <title>04-11</title>
+    <style>
+        html, body { margin: 0;padding: 0; }
+        #example {
+        height: 98vh; min-height: 100%; padding:10px
+        }
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
     <!-- 마우스 오른쪽 클릭했을때 내장 컨텍스트 메뉴가 나타나지 않도록 prevent 수식어 적용 -->
