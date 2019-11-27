@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<style>
+    #app {  
+        padding: 30px;
+    }
+    section {
+        margin-bottom: 80px;
+    }
+    h3 {
+        width: 1000px;
+        margin-bottom: 20px;
+        font-size: 15px;
+    }
+    .wrap {
+        width: 1000px;
+        padding: 15px;
+        background: #eee;
+    }
+    #answer1 input {
+        width: 200px;
+        height: 23px;
+    }
+    button{
+        background: slateblue;
+        box-shadow: none;
+        border: none;
+        width: 90px;
+        height: 30px;
+        color: #fff;
+    }
+    a{
+        display: inline-block;
+        background: salmon;
+        box-shadow: none;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+    .shape {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        background: navy;
+    }
+</style>
+<body>
+    <div id="app">
+        <h1>CHAPTER 4. 이벤트 처리</h1>
+        <template>
+            <section id="answer1">
+                <h3>
+                    1. 하나의 입력창과 '예금, 인출'이라는 두개의 버튼을 만들고 
+                    예금 버튼 클릭시 입력한 숫자만큼 누적되도록 인출 버튼 클릭시 입력한 숫자만큼 차감되도록 하세요.
+                    그리고 출력되는 숫자는 세자리마다 콤마(,)가 찍히도록 하세요.
+                    또한 인출하려는 금액은 마이너스 값을 허용하지 않고, 인출 금액은 계좌 잔고보다 많아서는 안됩니다.
+                </h3>
+                <div class="wrap">
+                    <input type="text" v-model="answer1.amount" class="inputbox">
+                    <button class="deposit" @click="deposit">예금</button>
+                    <button class="withdraw" @click="withdraw" style="background: darkgreen;">인출</button>
+                    <p style="font-size:20px">계좌잔고 : {{balance}}</p>
+                </div>
+            </section>
+            <section id="answer2">
+                <h3>
+                    2. "출석체크 하기" 버튼을 만들고 버튼을 클릭하면 "출석체크를 하시겠습니다까?"라는 confirm 창이 뜨게 하세요.
+                    여기서 "확인"을 누르면 "출석체크 완료"라는 alert창이 노출되게 합니다.
+                    해당 이벤트는 이벤트 수식어 once를 사용하여 한번만 실행되도록 하고, contextmenu 이벤트는 기본 실행되지않도록 구현하세요.
+                </h3>
+                <div class="wrap">
+                    <a @click.once="attendance" @contextmenu="ctxStop">출석체크하기</a>
+                </div>
+            </section>
+            <section id="answer3">
+                <h3>
+                    3. 원하는 모양을 하나 만들고, 키보드 방향키에 따라 모양이 50px씩 누른 방향으로 이동하도록 이벤트를 만드세요.
+                    (예를 들어, 위로 가는 방향키를 누르면 위로 30px 이동).
+                </h3>
+                <div class="wrap">
+                    <div class="shape" @keydown="move" v-bind:style="{ left: answer3.left + 'px', top:answer3.top +'px' }"></div>
+                </div>
+            </section>            
+        </template>
+    </div>
+    <script>
+        var example = new Vue ({
+            el: "#app",
+            data: {
+                answer1: {
+                    amount: 0,
+                    balance: 0,
+                },
+                answer3: {
+                    top: 0,
+                    left : 0,
+                }
+            },
+            methods : {
+                deposit: function(e) {
+                    var model = this.answer1
+                    var amt = parseInt(model.amount);
+                    var s = new String(""+ model.balance);
+                    var result = "";
+                    var num = 0;
+                    if(amt <= 0) {
+                        alert("0보다 큰 값을 입력하세요.");
+                    } else {
+                        model.balance += amt;
+                    }
+                },
+
+                withdraw: function(e) {
+                    var model = this.answer1
+                    var amt = parseInt(model.amount);
+                    if(amt < 0) {
+                        alert("0보다 큰 값을 인출할 수 있습니다.");
+                    } else if (amt > model.balance) {
+                        alert("잔고보다 많은 금액을 인출할 수 없습니다.");
+                    } else {
+                        model.balance -= amt;
+                    }
+                },
+                attendance: function(e) {
+                    var check = confirm("출석체크를 하시겠습니까?");
+                    if(check == true) {
+                        alert("출석체크완료");
+                    } else {
+                        return false;
+                    }
+                },
+                ctxStop: function(e) {
+                    e.preventDefault();
+                },
+                move: function(e) {
+                    if(e.keyCode === 37) {
+                        this.answer3.left -= 50;
+                    } else if(e.keyCode === 38) {
+                        this.answer3.top += 50;
+                    } else if(e.keyCode === 39) {
+                        this.answer3.left += 50;
+                    } else if(e.keyCode === 40) {
+                        this.answer3.top -= 50;
+                    }
+                }
+            },
+            computed: {
+                balance : function() {
+                    var model = this.answer1
+                    var amt = parseInt(model.amount);
+                    var s = new String(""+ model.balance);
+                    var result = "";
+                    var num = 0;
+
+                    for(var i=s.length-1; i>=0; i--) {
+                        result =s[i] + result;
+                        if(num % 3 == 2 && i !==0) {
+                            result = ","+result;
+                        }
+                        num++;
+                    }
+                    return result;
+                    console.log(result);                    
+                }
+            }
+        });      
+    </script>  
+</body>  
+</html>
