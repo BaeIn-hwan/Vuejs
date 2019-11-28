@@ -48,7 +48,6 @@
         position: relative;
         width: 80px;
         height: 80px;
-        background: navy;
     }
 </style>
 <body>
@@ -79,14 +78,14 @@
                     <a @click.once="attendance" @contextmenu="ctxStop">출석체크하기</a>
                 </div>
             </section>
-            <section id="answer3">
+            <section id="answer3" v-on:contextmenu.prevent="ctxStop">
                 <h3>
                     3. 원하는 모양을 하나 만들고, 키보드 방향키에 따라 모양이 50px씩 누른 방향으로 이동하도록 이벤트를 만드세요.
                     (예를 들어, 위로 가는 방향키를 누르면 위로 30px 이동).
                 </h3>
-                <div class="wrap">
-                    <div class="shape" @keydown="move" v-bind:style="{ left: answer3.left + 'px', top:answer3.top +'px' }"></div>
-                </div>
+                <a href="#" class="wrap" @keydown="move">
+                    <img src="../images/whale.png" class="shape" :style="{ left: answer3.left + 'px', top:answer3.top +'px' }"></img>
+                </a>
             </section>            
         </template>
     </div>
@@ -99,8 +98,8 @@
                     balance: 0,
                 },
                 answer3: {
-                    top: 0,
-                    left : 0,
+                    top: 50,
+                    left : 50,
                 }
             },
             methods : {
@@ -140,14 +139,15 @@
                     e.preventDefault();
                 },
                 move: function(e) {
+                    e.preventDefault();
                     if(e.keyCode === 37) {
                         this.answer3.left -= 50;
                     } else if(e.keyCode === 38) {
-                        this.answer3.top += 50;
+                        this.answer3.top -= 50;
                     } else if(e.keyCode === 39) {
                         this.answer3.left += 50;
                     } else if(e.keyCode === 40) {
-                        this.answer3.top -= 50;
+                        this.answer3.top += 50;
                     }
                 }
             },
