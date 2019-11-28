@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="question1">
+            <p :style="{'write-space':'pre-line'}">
+                1. 하나의 입력창과 '예금, 인출'이라는 두개의 버튼을 만들고
+                예금 버튼 클릭시 입력한 숫자만큼 누적되도록 인출 버튼 클릭시 입력한 숫자만큼 차감되도록 하세요.
+                그리고 출력되는 숫자는 세자리마다 콤마(,)가 찍히도록 하세요.
+                또한 인출하려는 금액은 마이너스 값을 허용하지 않고, 인출 금액은 계좌 잔고보다 많아서는 안됩니다.
+            </p>
+            <div>
+                <label><span>금액 입력란 : </span><input type="number" placeholder="0" v-model="cash" @input="checkCash" :style="{'text-align':'right'}">원</label>
+                <div>
+                    <button type="button" @click="deposit">예금</button>
+                    <button type="button" @click="withdraw">출금</button>
+                </div>
+                <p>계좌 금액 : {{comma(balance)}} 원</p>
+            </div>
+        </div>
+
+        <div class="question2">
+            <p :style="{'write-space':'pre-line'}">
+                2. "출석체크 하기" 버튼을 만들고 버튼을 클릭하면 "출석체크를 하시겠습니까?"라는 confirm 창이 뜨게 하세요. 
+                여기서 "확인"을 누르면 "출석체크 완료"라는 alert창이 노출되게 합니다.
+                해당 이벤트는 이벤트 수식어 once를 사용하여 한번만 실행되도록 하고, contextmenu 이벤트는 기본 실행되지않도록 구현하세요.
+            </p>
+            <div>
+                <button type="button" @contextmenu.prevent="" @click.once="attendance">출석체크하기</button>
+            </div>
+        </div>
+
+        <div class="question3">
+                <p :style="{'write-space':'pre-line'}">
+                    3. 원하는 모양을 하나 만들고, 키보드 방향키에 따라 모양이 50px씩 누른 방향으로 이동하도록 이벤트를 만드세요.
+                    (예를 들어, 위로 가는 방향키를 누르면 위로 30px 이동)
+                </p>
+                <div style="position:relative;">
+                    <img id="rabbit" :src="'../images/rabbit'+ ( rabbit.moving ? 1 : 2 ) +'.png'" 
+                    style="position:absolute;width:100px;height:100px;"
+                    :style="{'top':rabbit.top+'px', 'left':rabbit.left+'px','transform':'rotateZ('+rabbit.rotate+'deg) rotateY('+rabbit.toLeft+'deg)'}" 
+                    alt="토끼야 뛰어라">
+                </div>
+            </div>
+    </div>
+    <script>
+        var data = {
+            balance : 0,
+            cash : '',
+            deposit () {
+                var obj = app;
+                if(obj.checkTransaction(obj.cash)) {
+                    obj.balance += parseInt(obj.cash);
+                    obj.cash = 0;
+                }
+            },
+            withdraw () {
+                var obj = app;
+                if(obj.checkTransaction(obj.cash) && obj.cash < obj.balance) {
+                    obj.balance -= parseInt(obj.cash);
+                    obj.cash = 0;
+                }else {
+                    alert('계좌 금액보다 큰값은 인출할 수 없습니다.')
+                }
+            },
+            comma(data) {
+                // 참조 필요
+                return data;
+            },
+            checkCash () {
+                var obj = app;
+                if( obj.cash < 0) {
+                    obj.cash = 0;
+                }
+            },
+            checkTransaction (data) {
+                if(data > 0) {
+                    return true;
+                }else {
+                    alert('0 보다 큰 값을 입력해주세요.');
+                    return false;
+                }
+            },
+
+            //2번 문제 데이터
+            attendance() {
+                if(confirm('출석체크를 하시겠습니까')) {
+                    alert('출석체크 완료!');
+                }
+            },
+
+            //3번 문제 데이터
+            rabbit : {
+                top:0,
+                left:300,
+                moving:true,
+                range : 50,
+                deg : 0,
+                toLeft:0,
+                rotate:0
+            },
+            move(event) {
+                if(document.activeElement.tagName == 'INPUT'
+                    || (event.keyCode < 37 || event.keyCode > 40)) return ;
+
+                // 37 , 38 , 39 , 40
+                var posRabbit = app.rabbit;
+                switch(event.key) {
+                    case 'ArrowLeft':
+                        posRabbit.left -= posRabbit.range;
+                        posRabbit.toLeft = 180;
+                        posRabbit.rotate = 0;
+                        break;
+                    case 'ArrowRight':
+                        posRabbit.left += posRabbit.range;
+                        posRabbit.toLeft = 0;
+                        posRabbit.rotate = 0;
+                        break;
+                    case 'ArrowUp':
+                        posRabbit.top -= posRabbit.range;
+                        posRabbit.toLeft = 0;
+                        posRabbit.rotate = -90;
+                        break;
+                    case 'ArrowDown':
+                        posRabbit.top += posRabbit.range;
+                        posRabbit.toLeft = 0;
+                        posRabbit.rotate = 90;
+                        break;
+                    default:
+                        break;
+                }
+                posRabbit.moving = !posRabbit.moving;
+
+
+            },
+            init() {
+                console.log('init');
+                window.addEventListener('keyup', this.move);
+                
+            }
+        };
+
+        var app = new Vue({
+            el : '#app',
+            data : data,
+            created : function() {
+                this.init();
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

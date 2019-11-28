@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+    #num{
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding-bottom: 50px;
+    }
+    #list {width: 400px; border: 1px solid black; border-collapse: collapse;}
+    #list td, #list th {border: 1px solid black; text-align: center;}
+    #list > thead > tr {color: white; background-color: green;}
+    .yellow{background-color: yellow;}
+    #test3{
+        position: relative;
+        background-color: #eee;
+        width: 1000px;
+        height: 300px;
+    }
+    .square{
+        width: 30px;
+        height: 30px;
+        background-color: hotpink;
+    }
+</style>
+</head>
+<body>
+    <section id="test1">
+        <h3>1.</h3>
+        <p><input type="text" v-model="amount"/></p> 
+        <p>
+            <button id="deposit" v-on:click="deposit">예금</button>            
+            <button id="withdraw" v-on:click="withdraw">인출</button>
+            <p>계좌잔고 : {{balance}}</p>
+        </p> 
+    </section>
+    <script>
+        //1번
+        var vm = new Vue({
+            el : "#test1",
+            data : {
+                amount : 0,
+                balance : 0,
+            },
+            methods : {
+                deposit : function(e) {
+                    var amt = parseInt(this.amount);
+                    var s = new String(""+ this.balance);
+                    var result = "";
+                    if (amt <= 0) {
+                        alert("0원 보다 큰 금액을 예금해야합니다.");
+                    } else {
+                        this.balance += amt;
+                    }
+                    return result;
+                }, 
+                withdraw : function(e) {
+                    var amt = parseInt(this.amount);
+                    if (amt <= 0) {
+                        alert("0원 보다 큰 금액을 인출해야합니다.");
+                    } else if (amt > this.balance) {
+                        alert("잔고보다 많은 금액을 인출할 수 없습니다.");
+                    } else {
+                        this.balance -= amt;
+                    }
+                    return result;
+                },
+            }
+        })
+    </script>
+
+
+    <section id="test2">
+       <h3>2. 출석하기</h3>
+       <button id="attendance" v-on:click.once="attendance" class="">출석하기</button>
+    </section>
+    <script>
+        var test2 = new Vue({
+            el: '#test2',
+            methods:{
+                attendance : function(event) {
+                    var event = confirm("출석체크를 하시겠습니까?");
+                    if (event) {
+                       alert("출석완료");
+                    } else {
+                        alert("출석체크 취소");
+                    }
+                }
+            }
+        })
+    </script>
+
+
+    <section id="test3" v-on:contextmenu.prevent="ctxStop" @mouseup.left="leftMouse" @mouseup.right="rightMouse">
+        <h3>3.</h3>
+        <div>
+            마우스 커서를 회색박스 안에서만 클릭하세요.
+            left : 왼쪽 , Right : 오른쪽
+        </div>
+        <div class="square" v-bind:style="{ position:'absolute', left: pos.left + 'px', top:pos.top +'px' }"></div>
+    </section>
+    <script>
+        var test3 = new Vue({
+                el : "#test3",
+                data : {
+                    pos : { 
+                        left: 200,
+                        top: 100
+                    }
+                },
+                methods: {
+                    ctxStop : function(e) { },
+                    leftMouse : function(e) {
+                        if (this.pos.left > 10)
+                        this.pos.left -= 50;
+                        console.log("왼쪽");
+                    },
+                    rightMouse : function(e) {
+                        if (this.pos.left < 950)
+                        this.pos.left += 50;
+                        console.log("오른쪽");
+                    }
+                }
+            });
+    </script>
+</body>
+</html>

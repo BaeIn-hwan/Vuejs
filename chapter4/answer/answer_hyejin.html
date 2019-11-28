@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chapter04</title>
+        <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>    
+        <!-- 여러가지 유틸리티 기능을 제공하는 라이브러리 -->
+        <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.js"></script>
+        <!-- IE 브라우저에서 Promise 객체를 이용하기 위한 폴리필 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+    </head>
+    <body>
+
+        <div id="chapter04">
+            <section id="task01">
+                <h2>1. 하나의 입력창과 '예금, 인출'이라는 두개의 버튼을 만들고
+                        예금 버튼 클릭시 입력한 숫자만큼 누적되도록 인출 버튼 클릭시 입력한 숫자만큼 차감되도록 하세요.
+                        그리고 출력되는 숫자는 세자리마다 콤마(,)가 찍히도록 하세요.
+                        또한 인출하려는 금액은 마이너스 값을 허용하지 않고, 인출 금액은 계좌 잔고보다 많아서는 안됩니다.</h2>
+
+                <div class="box">
+                    <input type="text" v-model="task01.amount">
+                    <p>
+                        <button type="button" id="deposit" v-on:click="deposit" class="btn btn-primary">예금</button>
+                        <button type="button" id="withdraw" @click="withdraw" class="btn btn-primary">인출</button>
+                    </p>
+                    <p>계좌잔고 : {{balance}}</p>
+                </div>
+            </section>
+
+            <section id="task02" v-on:contextmenu.prevent="ctxStop">
+                <h2>2. "출석체크 하기" 버튼을 만들고 버튼을 클릭하면 "출석체크를 하시겠습니다까?"라는 confirm 창이 뜨게 하세요. 
+                    여기서 "확인"을 누르면 "출석체크 완료"라는 alert창이 노출되게 합니다.
+                    해당 이벤트는 이벤트 수식어 once를 사용하여 한번만 실행되도록 하고, contextmenu 이벤트는 기본 실행되지않도록 구현하세요.</h2>
+                
+                    <div class="box">
+                        <button type="button" @click="attdEvent">{{task02.attdMsg}}</button>
+                    </div>
+                    <!-- 
+                    <button v-on:click="show('Welcome to VueJS world', $event)">
+                        Submit
+                    </button> 
+                    -->
+            </section>
+            <!-- </section> -->
+
+            <section id="task03" v-on:contextmenu.prevent="ctxStop">
+                <h2>3. 원하는 모양을 하나 만들고, 키보드 방향키에 따라 모양이 50px씩 누른 방향으로 이동하도록 이벤트를 만드세요.
+                    (예를 들어, 위로 가는 방향키를 누르면 위로 50px씩 이동) </h2>
+                <a href="#" @keydown="footprint" v-bind:style="{position:'absolute', top:task03.top+'px', left:task03.left+'px'}">
+                    <img src="http://sample.bmaster.kro.kr/img/foot.jpg" alt="" >
+                </a>
+            </section>
+        </div>
+
+        <style>
+            section + section {margin-top: 50px;}
+            section h2 {font-size: 16px; font-weight: bold;}
+            section .box {padding:10px 30px; background: #eee;}
+            #task03 {position: relative;}
+            [v-cloak] {display: none;}
+
+            #task03 a {display: block; position: relative; width: 63px; height: 63px;}
+            #task03 a img {display: block; width: 100%; height: 100%;}
+        </style>
+
+        <script>
+
+            var model = {
+                task01 : {
+                    amount : 0,
+                    balance : 0,
+                },
+                task02 : {
+                    attdMsg : "출석체크 하기"
+                },
+                task03 : { 
+                    top : 100,
+                    left : 200,
+                },              
+            };
+
+            var chapter04 = new Vue({
+                el : "#chapter04",
+                data : model,
+                methods : {
+                    ctxStop : function(e) {},
+                    attdEvent : function(e) {
+                        if(confirm("출석체크를 하시겠어요?")) {
+                            alert("출석체크 완료!");
+                        } else {
+                            return false;
+                        }
+                    },
+                    
+                    //   show: function (message, event) {
+                    //     // now we have access to the native event
+                    //     if (confirm("출석체크를 하시겠어요?")) {
+                    //         console.log(message);
+                    //         alert("출석체크 완료!");
+                    //     }
+                    //   },
+
+                    // 예금
+                    deposit : function(e) {
+                        const $this = this.task01;
+                        const amt = parseInt($this.amount);
+
+                        if(amt <= 0) {
+                            alert("0 이상의 금액만 예금 가능합니다.");
+                        } else {
+                            $this.balance += amt;
+                        }
+                        console.log("예금 후 잔액", $this.balance)
+                    },
+
+                    // 인출
+                    withdraw : function(e) {
+                        const $this = this.task01;
+                        const amt = parseInt($this.amount);
+
+                        if(amt <= 0) {
+                            alert("0보다 큰 값을 인출할 수 있습니다");
+                        } else if(amt > $this.balance) {
+                            alert("잔액보다 많은 금액을 인출할 수 없습니다");
+                        } else {
+                            $this.balance -= amt;
+                        }
+                        console.log("인출 후 잔액", $this.balance)
+                    },
+                    
+                    footprint : function(e) {
+                        const $pos = this.task03;
+                        
+                        switch (e.keyCode) {
+                            case 38 :
+                                $pos.top -= 50;
+                                console.log("Up", $pos.top);
+                                break;
+                            case 40 :
+                                $pos.top += 50;
+                                console.log("Down", $pos.top);
+                                break;
+                            case 37 :
+                                $pos.left -= 50;
+                                console.log("Left", $pos.left);
+                                break;
+                            case 39 :
+                                $pos.left += 50;
+                                console.log("Right", $pos.left);
+                                break;
+                        }
+                    },
+                },
+                computed : {                    
+                    balance : function(e) {
+                        var $this = this.task01; 
+                        var s = new String("" + $this.balance);   // 숫자를 문자로 변환하기 위해 string 객체 생성
+                        var result = "";
+                        var num = 0;
+                        // 맨 뒷자리부터 하나씩 문자를 result 변수에 붙이면서
+                        for (var i=s.length-1; i>=0; i--) {
+                            // 변수 s를 배열로 저장
+                            result = s[i] + result;
+                            // 숫자 3자리마다 콤마(,)를 넣어서 결과값을 리턴
+                            if (num % 3 == 2 && i !==0)
+                                result = "," + result;
+                                num++;
+                        }
+                        return result;
+                    }
+                },
+
+            })            
+        </script>
+    </body>
+</html>
