@@ -69,23 +69,6 @@
                     }
                     return result;
                 },
-            },
-            computed: {
-                balance : function() {
-                    var amt = parseInt(this.amount);
-                    var s = new String(""+ this.balance);
-                    var result = "";
-                    var num = 0;
-                    for(var i=s.length-1; i>=0; i--) {
-                        result =s[i] + result;
-                        if(num % 3 == 2 && i !==0) {
-                            result = ","+result;
-                        }
-                        num++;
-                    }
-                    return result;
-                    console.log(result);               
-                }
             }
         })
     </script>
