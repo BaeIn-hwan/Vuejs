@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+      <meta charset="utf-8">
+      <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+      <style>
+            *{padding: 0; margin: 0;}
+            dl {
+                  background: #f2f2f2;
+                  padding: 10px;
+                  margin: 20px 10px;
+            }
+            button {
+                  padding: 0 10px;
+            }
+            .whale {
+                  position: absolute;
+                  width: 100px;
+                  height: 100px;
+                  transform: rotateY(180deg);
+            }
+
+      </style>
+</head>
+<body>
+<dl id="test1">
+      <dt>
+            1. 하나의 입력창과 '예금, 인출'이라는 두개의 버튼을 만들고
+            예금 버튼 클릭시 입력한 숫자만큼 누적되도록 인출 버튼 클릭시 입력한 숫자만큼 차감되도록 하세요.
+            그리고 출력되는 숫자는 세자리마다 콤마(,)가 찍히도록 하세요.
+            또한 인출하려는 금액은 마이너스 값을 허용하지 않고, 인출 금액은 계좌 잔고보다 많아서는 안됩니다.
+      </dt>
+      <dd>
+            <input type="text" v-model="amount">
+            <button @click="deposit">예금</button>
+            <button @click="withdrawal">인출</button>
+            <p v-html="resultAccount">result</p>
+      </dd>
+</dl>
+<script>
+    var answer1 = new Vue({
+        el: "#test1",
+        data: {
+            amount: 0,
+            myAccount: 0,
+            resultAccount: 0
+        },
+        watch: {
+            amount: function(val) {
+                if (isNaN(Number(val))){
+                    alert("숫자만 입력하세요.");
+                    this.reset();
+                }
+            },
+            myAccount: function (val) {
+                let result = "";
+                let num = 0;
+                const stringAmount = new String(""+val);
+
+                for (let i = stringAmount.length - 1; i >= 0; i--) {
+                    result = stringAmount[i] + result;
+
+                    if (num % 3 == 2 && i !== 0) {
+                        result = "," + result;
+                    }
+                    num ++;
+                }
+                this.resultAccount = result;
+            }
+        },
+        methods: {
+            deposit: function () {
+                const amount = Number(this.amount);
+                this.myAccount += amount;
+
+                this.reset();
+            },
+            withdrawal: function () {
+                const amount = Number(this.amount);
+                if (amount > this.myAccount) alert("인출금액이 현재 금액보다 많습니다.")
+                else this.myAccount -= amount;
+
+                if (this.myAccount < 0) this.myAccount = 0;
+
+                this.reset();
+            },
+            reset: function () {
+                this.amount = 0;
+
+            }
+        }
+    })
+</script>
+<dl id="test2">
+      <dt>
+            2. "출석체크 하기" 버튼을 만들고 버튼을 클릭하면 "출석체크를 하시겠습니다까?"라는 confirm 창이 뜨게 하세요.
+            여기서 "확인"을 누르면 "출석체크 완료"라는 alert창이 노출되게 합니다.
+            해당 이벤트는 이벤트 수식어 once를 사용하여 한번만 실행되도록 하고, contextmenu 이벤트는 기본 실행되지않도록 구현하세요.
+      </dt>
+      <dd>
+            <button @click.once="attendanceCheck" v-on:contextmenu.prevent="rightClick" :disabled="disabled">출석체크하기</button>
+      </dd>
+</dl>
+<script>
+    var answer2 = new Vue({
+        el: "#test2",
+        data: {
+            disabled: false,
+        },
+        methods: {
+            attendanceCheck: function (event) {
+                var attendance = confirm("출석체크를 하시겠습니까?");
+                if (attendance) {
+                    alert("출석체크 완료");
+                    this.disabled = true;
+                    event.target.removeEventListener("click",this.attendanceCheck);
+                } else {
+                    event.target.addEventListener("click",this.attendanceCheck)
+                }
+                return false;
+            },
+            rightClick: function () {
+                return false;
+            }
+        }
+    })
+</script>
+<dl id="test3">
+      <dt>
+            3. 원하는 모양을 하나 만들고, 키보드 방향키에 따라 모양이 50px씩 누른 방향으로 이동하도록 이벤트를 만드세요.
+            (예를 들어, 위로 가는 방향키를 누르면 위로 30px 이동)
+      </dt>
+      <dd v-on:keydown="moveInit">
+            <button @click="fetches.whale = true;">고래보이기</button>
+            <div>
+                  <figure v-show="fetches.whale === true" >
+                        <img ref="whaleimg" src="../images/whale.png" alt="whale" class="whale" :style="{left:position.left + 'px', top: position.top + 'px'}">
+                  </figure>
+            </div>
+
+      </dd>
+</dl>
+<script>
+    var answer3 = new Vue ({
+        el: "#test3",
+        data: {
+            fetches: {
+                whale: false,
+            },
+            position: {
+                top: 0,
+                left: 0,
+            }
+        },
+        methods: {
+            moveInit: function (e) {
+                //console.log(e.keyCode)
+                document.getElementsByTagName("body")[0].style.position="fixed";
+                const whale = this.$refs.whaleimg;
+                if (e.keyCode == 37) {
+                    this.position.left -= 50; //왼쪽
+                    whale.style.transform="rotateY(0deg)";
+                }
+                else if (e.keyCode == 38) {
+                    this.position.top -= 50;
+                    whale.style.transform="rotate(90deg)";
+                }
+                else if (e.keyCode == 39) {
+                    this.position.left += 50;
+                    whale.style.transform="rotateY(180deg)";
+                }
+                else if (e.keyCode == 40) {
+                    this.position.top += 50;
+                    whale.style.transform="rotate(270deg)";
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>
