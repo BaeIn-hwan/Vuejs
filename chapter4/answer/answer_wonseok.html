@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>챕터 4</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+
+    <style>
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,input,button,textarea,option,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video { padding:0; font:inherit; outline: 0 none; }
+
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {display:block;}
+
+
+
+
+        body {position:relative;}
+        body,input,button,textarea,select,option {}
+        h1,h2,h3,h4,h5,h6 {}
+
+        table {table-layout:fixed; border-collapse:unset;border-spacing:0;}
+        caption {display:none;}
+        img, fieldset{border:0;}
+        ul,ol,li{list-style:none}
+        a, img, input {}
+        img {vertical-align:top;}
+        a {color:#656565; text-decoration:none;}
+        em, i, address{font-style:normal}
+        input, textarea {box-sizing:border-box; -webkit-box-sizing:border-box; border-radius:0; -webkit-border-radius:0;}
+        input.txt-box {padding:0 10px;border:1px solid #ddd;line-height:38px;}
+        input.aright {text-align:right;}
+        input[type="text"][disabled="disabled"] {background:#f2f2f2;}
+        input[type=text]::-ms-clear{display: none;}
+        textarea {padding:10px; resize:none;}
+
+        input[type="text"]{
+            padding:5px;
+            border:1px solid #333;
+        }
+
+        article{padding:30px 10px;border-bottom:2px solid #ddd;}
+        #simple3 img{
+            -ms-user-select: none;
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .whale{display:inline-block;}
+    </style>
+</head>
+
+<body>
+    <section>
+        <article id="test01">
+            <h2>
+                1. 하나의 입력창과 '예금, 인출'이라는 두개의 버튼을 만들고<br />
+                예금 버튼 클릭시 입력한 숫자만큼 누적되도록 인출 버튼 클릭시 입력한 숫자만큼 차감되도록 하세요.<br />
+                그리고 출력되는 숫자는 세자리마다 콤마(,)가 찍히도록 하세요.<br />
+                또한 인출하려는 금액은 마이너스 값을 허용하지 않고, 인출 금액은 계좌 잔고보다 많아서는 안됩니다.
+
+            </h2>
+            <div id="simple">
+                <p><input type="text" v-model="amount" class="form-control" /></p>
+                <p>
+                    <button id="deposit" @click="deposit">예금</button>
+                    <button id="withdraw" @click="withdraw">인출</button>
+                <p>계좌잔고 : {{balance_}}</p>
+                </p>
+            </div>
+
+            <script type="text/javascript">
+                var vm = new Vue({
+                    el : "#simple",
+                    data : {
+                        amount : 0,
+                        balance : 0,
+                    },
+                    methods : {
+                        deposit : function(e) {
+                            var amt = parseInt(this.amount);
+                            if (amt <= 0) {
+                                alert("0보다 큰 값을 예금해야 합니다");
+                            } else {
+                                this.balance += amt;
+                            }
+                            console.log("예금 후 잔액", this.balance)
+                        },
+                        withdraw : function(e) {
+                            var amt = parseInt(this.amount);
+                            if (amt <= 0) {
+                                alert("0보다 큰 값을 인출할 수 있습니다");
+                            } else if (amt > this.balance) {
+                                alert("잔고보다 많은 금액을 인출할 수 없습니다");
+                            } else {
+                                this.balance -= amt;
+                            }
+                            console.log("인출 후 잔액", this.balance)
+                        }
+                    },
+                    computed : {
+                        balance_ : {
+                            get : function() {
+                                var s = new String(""+this.balance);
+                                var result = "";
+                                var num = 0;
+                                for (var i=s.length-1; i>=0; i--) {
+                                    result = s[i] + result;
+                                    if (num % 3 == 2 && i !== 0)
+                                        result = "," + result;
+                                    num++;
+                                }
+                                return result;
+                            }
+                        }
+                    }
+                })
+            </script>
+        </article>
+
+        <article id="test02">
+            <h2>
+                2. "출석체크 하기" 버튼을 만들고 버튼을 클릭하면 "출석체크를 하시겠습니다까?"라는 confirm 창이 뜨게 하세요.<br />
+                여기서 "확인"을 누르면 "출석체크 완료"라는 alert창이 노출되게 합니다.<br />
+                해당 이벤트는 이벤트 수식어 once를 사용하여 한번만 실행되도록 하고, contextmenu 이벤트는 기본 실행되지않도록 구현하세요.
+            </h2>
+            <div id="simple2"  v-on:contextmenu="ctxStop">
+                <span @click.once="confirmFB" style="cursor: pointer;">출석체크 하기</span>
+            </div>
+            <script type="text/javascript">
+                var vm = new Vue({
+                    el : "#simple2",
+                    methods: {
+                        ctxStop : function(e) {
+                            e.preventDefault();
+                        },
+                        confirmFB : function(e) {
+                            if (!confirm("출석체크를 하시겠습니까?")) {
+                                e.preventDefault();
+                            }else{
+                                alert("출석체크 완료!!");
+                            }
+                        }
+                    }
+                })
+            </script>
+        </article>
+
+        <article id="test03">
+            <h2>
+                3. 원하는 모양을 하나 만들고, 키보드 방향키에 따라 모양이 50px씩 누른 방향으로 이동하도록 이벤트를 만드세요.<br />
+                (예를 들어, 위로 가는 방향키를 누르면 위로 30px 이동)
+            </h2>
+            <div id="simple3" v-on:keyup="move">
+                <div>
+                    Left  : 왼쪽으로<br />
+                    Right : 오른쪽으로
+                </div>
+                <span class="whale" v-bind:style="{ position:'relative', left: pos.left + 'px', top:pos.top +'px' }">
+                    <img src="../images/whale.png" />
+                </span>
+            </div>
+            <script type="text/javascript">
+                var vm = new Vue({
+                    el : "#simple3",
+                    data : {
+                        pos : {
+                            top: 50,
+                            left : 300
+                        }
+                    },
+                    methods: {
+                        move : function(e) {
+                            if(e.keyCode === 37) {
+                                this.pos.left -= 50;
+                            } else if(e.keyCode === 38) {
+                                this.pos.top += 50;
+                            } else if(e.keyCode === 39) {
+                                this.pos.left += 50;
+                            } else if(e.keyCode === 40) {
+                                this.pos.top -= 50;
+                            }
+                        }
+
+                    }
+
+                })
+
+            </script>
+        </article>
+    </section>
+
+</body>
+</html>
