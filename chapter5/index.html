@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter5. 스타일</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script> 
+    <style>
+        body {margin: 40px 10px;}
+        section {margin-bottom: 50px; border: 1px solid #ddd; padding: 20px 10px;}
+        .test {background-color: yellow; border: double 4px grey;}
+        .over {background-color: #aqua; width: 300px; height: 100px;}
+        .set1 {background-color: aqua; color: purple;}
+        .set2 {text-align: center; width: 120px;}
+        .set3 {border:sandyBrown dashed 1px;}
+        .score {border: solid 1px black;}
+        .warning {background-color: orange; color: purple;}
+        .warnimage {width: 18px; height: 18px; top: 5px; position: relative;}
+        .boxcolor {background-color: orange;}
+        .center {width: 200px; height: 100px; line-height: 100px; text-align: center; border: 1px solid gray;}
+        #todolistapp > * {
+            box-sizing: border-box;
+        }
+        #todolistapp ul {
+            margin: 0;
+            padding: 0;
+        }
+        #todolistapp ul li{
+            cursor: pointer;
+            position: relative;
+            padding: 8px 8px 8px 40px;
+            background: #eee;
+            font-size: 14px;
+            transition: .2s;
+            list-style: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-selet: none;
+            user-select: none;
+        }
+        #todolistapp ul li:hover {
+            background: #ddd;
+        }
+        #todolistapp ul li.checked {
+            background: #bbb;
+            color: #fff;
+            text-decoration: line-through;
+        }
+        #todolistapp ul li.checked:before {
+            content: "";
+            position: absolute;
+            border-color: #fff;
+            border-style: solid;
+            border-width: 0 1px 1px 0;
+            top: 10px;
+            left: 16px;
+            transform: rotate(45deg);
+            height: 8px;
+            width: 8px;
+        }
+        #todolistapp .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 8px 16px;
+            box-sizing: border-box;
+        }
+        #todolistapp .close:hover {
+            background-color: #f44336;
+            color: white;
+        }
+        .header {
+            background-color: purple;
+            padding: 30px;
+            color: yellow;
+            text-align: center;
+        }
+        .header:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        .input {
+            border: none;
+            width: 70%;
+            height: 35px;
+            padding: 10px;
+            float: left;
+            font-size: 16px;
+        }
+        .addbutton {
+            padding: 10px;
+            width: 25%;
+            height: 35px;
+            background: #d9d9d9;
+            color: #555;
+            float: left;
+            text-align: center;
+            font-size: 13px;
+            cursor: pointer;
+            transition: .3s;
+            line-height: 35px;
+        }
+        .addbutton:hover {
+            background-color: #bbb;
+        }
+        .completed {
+            text-decoration: none;
+        }
+    </style>     
+</head>
+<body>
+    <h1>05. 스타일</h1>
+   <section id="example1">
+        <h3>[예제 05-01] 스타일 적용</h3>
+        <div style="background-color: orange;" class="test over"></div>
+   </section>
+   <section id="example2">
+        <h3>[예제 05-02] 인라인스타일</h3>
+        <div>
+            <button id="a" v-bind:style="style1" @mouseover.stop="overEvent" @mouseout.stop="outEvent">테스트</button>
+        </div>
+   </section>
+   <script>
+    var vm = new Vue ({
+        el: "#example2",
+        data: {
+            style1: {backgroundColor: 'aqua', border:'solid 1px gray', width: '100px', textAlign: 'center'}
+        },
+        methods: {
+            overEvent : function(e) {
+                this.style1.backgroundColor = "purple";
+                this.style1.color = "yellow";
+            },
+            outEvent : function(e) {
+                this.style1.backgroundColor = 'aqua';
+                this.style1.color = 'black';
+            }
+        }
+    })
+    </script> 
+   <section id="example3">
+        <h3>[예제 05-03] v-bind:style 디렉티브를 통한 개별 속성을 하나씩 바인딩하기</h3>
+        <div :style="{backgroundColor: a.bc, border: a.bd, width: a.w+'px', height: a.h+'px'}"></div>
+   </section>
+   <script>
+    var vm = new Vue ({
+        el: "#example3",
+        data: {
+            a: {bc: 'yellow', bd: 'solid 1px gray', w:200, h:100}
+        },
+    })
+    </script>   
+   <section id="example4">
+        <h3>[예제 05-04] 여러 개의 스타일 객체 적용</h3>
+        <title>05-04</title>
+        <button id="btn1" v-bind:style="[myColor, myLayout]">버튼1</button>   
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#example4",
+            data: {
+                myColor: {
+                    backgroundColor: 'purple',
+                    color: 'yellow'
+                },
+                myLayout: {
+                    width: '150px',
+                    height: '80px',
+                    textAlign: 'center'
+                }
+            },
+        })
+    </script>    
+    <section id="example5">
+        <h3>[예제 05-05] v-bind:class 적용</h3>
+        <button id="btn1" v-bind:class="{set1:s1, set2:s2, set3:s3}">버튼</button>
+        <p>
+            <input type="checkbox" v-model="s1" value="true">set1 디자인 <br>
+            <input type="checkbox" v-model="s2" value="true">set2 디자인 <br>
+            <input type="checkbox" v-model="s3" value="true">set3 디자인 <br>
+        </p>
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#example5",
+            data: {
+                s1: false,
+                s2: false,
+                s3: false
+            }
+        })
+    </script>    
+    <section id="example6">
+        <h3>[예제 05-06] 클래스 이름을 데이터 속성명으로 사용하기</h3>
+        <button id="btn1" v-bind:class="myStyle">버튼1</button>
+        <p>
+            <input type="checkbox" v-model="myStyle.set1" value="true">set1 디자인 <br>
+            <input type="checkbox" v-model="myStyle.set2" value="true">set2 디자인 <br>
+            <input type="checkbox" v-model="myStyle.set3" value="true">set3 디자인 <br>
+        </p>
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#example6",
+            data: {
+                myStyle: {
+                    set1: false,
+                    set2: false,
+                    set3: false
+
+                }
+            }
+        })
+    </script>    
+    <section id="example7">
+        <h3>[예제 05-07] 계산형 속성, 메서드를 이용한 스타일 적용</h3>
+        <div>
+            <p>1부터 100까지만 입력 가능합니다.</p>
+            <div>
+                <!-- v-bind:class="info"에 의해 info 계산형 속성이 바인딩 되고 score값에 따라 warning: true/false를 리턴 -->
+                점수: <input type="text" class="score" v-model.number="score" v-bind:class="info">
+                <img src="images/error.jpg" class="warnimage" v-show="info.warning">
+            </div>
+        </div>
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#example7",
+            data: {
+                score: 0
+            },
+            computed: {
+                info: function() {
+                    if(this.score >= 1 && this.score <= 100)
+                        return {
+                            warning: false
+                        };
+                    else
+                        return {
+                            warning: true
+                        };
+                }
+            }
+        })
+    </script>    
+    <section id="example8">
+        <h3>[예제 05-08] 컴포넌트에서의 스타일 적용</h3>
+        <div>
+            <center-box v-bind:class="boxstyle"></center-box>
+        </div>
+    </section>
+    <script>
+        Vue.component('center-box', {
+            template: '<div class="center">중앙에 위치</div>'
+        })
+        var vm = new Vue ({
+            el: "#example8",
+            data: {
+                boxstyle: {boxcolor: true}
+            }
+        })
+    </script>    
+    <section id="todolistapp">
+        <h3>[예제 05-09] TodoList 예제</h3>
+        <div id="header" class="header">
+            <p>Todo List App</p>
+            <input type="text" class="input" id="task" v-model.trim="todo" placeholder="입력 후 엔터!" v-on:keyup.enter="addTodo">
+            <span class="addbutton" v-on:click="addTodo">추가</span>
+        </div>
+        <ul id="todolist">
+            <li v-for="a in todolist" v-bind:class="checked(a.done)" v-on:click="doneToggle(a.id)">
+                <span>{{a.todo}}</span>
+                <span v-if="a.done">(완료)</span>
+                <span class="close" v-on:click.stop="deleteTodo(a.id)">&#x00D7;</span>
+            </li>                  
+        </ul>
+    </section>  
+    <script>
+        var vm = new Vue ({
+            el: "#todolistapp",
+            data: {
+                todo: "",
+                todolist: [
+                    {
+                        id: 1,
+                        todo: "영화보기",
+                        done: false
+                    },{
+                        id: 2,
+                        todo: "주말 산책",
+                        done: false
+                    },{
+                        id: 3,
+                        todo: "ES6 학습",
+                        done: false
+                    },{
+                        id: 4,
+                        todo: "잠실 야구장",
+                        done: false
+                    }
+                ]
+            },
+            methods: {
+                checked: function(done) {
+                    if(done) return {checked: true};
+                    else return {checked: false}; 
+                },
+                addTodo: function(e) {
+                    if(this.todo.trim() !== '') {
+                        this.todolist.push({
+                            //시간을 id에 대입 중복될 일이 없으므로 생성된 시간을 id로 많이 사용한다.
+                            id: new Date().getTime(), 
+                            todo: this.todo.trim(), 
+                            done: false
+                        });
+                        this.todo = "";
+                    }
+                },
+                deleteTodo: function(id) {
+                    // findIndex() 판별 함수를 만족하는 배열의 첫 번째 요소에 대한 인덱스를 반환. 만족하는 요소가 없으면 -1을 반환
+                    var index = this.todolist.findIndex(function(item) {
+                        return item.id === id;
+                    })
+                    this.todolist.splice(index,1);
+                },
+                doneToggle: function(id) {
+                    var index = this.todolist.findIndex(function(item) {
+                        return item.id === id;
+                    })
+                    this.todolist[index].done = !this.todolist[index].done;
+                }
+            }
+        })
+    </script>                              
+</body>
+</html>
