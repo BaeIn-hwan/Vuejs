@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+      <meta charset="utf-8">
+      <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+      <div id="app1">
+            <h3 style="white-space: pre-line;">
+                  1. 입력창을 하나 만들고 1부터 100까지 숫자 중 짝수를 입력했을 경우에만 v-bind:class를
+                  활용하여 배경색이 변하도록 만들어주세요. 그리고 입력창 옆에 ok.png 이미지가 나오도록 하세요.
+            </h3>
+            <div>
+                  <input type="number" v-model.number="setNumber" placeholder="0" :style="styles.vertical">
+                  <img src="../images/ok.png" alt="체크이미지" v-if="checkNumber.img" :style="[styles.vertical, styles.input]">
+                  <p v-show="checkNumber.even">현재값 : {{setNumber}} , 짝수 : {{checkNumber.even}}</p>
+            </div>
+      </div>
+      <script>
+            var data1={
+                  setNumber:0,
+                  styles : {
+                        vertical : {
+                              verticalAlign : 'middle'
+                        },
+                        input : {
+                              width:25+'px',
+                              height:25+'px'
+                        }
+                  }
+            };
+            var app1 = new Vue({
+                  el:'#app1',
+                  data : data1,
+                  computed:{
+                        checkNumber: function() {
+                              var obj = this;
+                              var returnValue = {
+                                    img : false,
+                                    even : false
+                              }
+                              if( (1 <= obj.setNumber && obj.setNumber <= 100 ) && obj.setNumber % 2 == 0 ) {
+                                    returnValue.img = true;
+                                    returnValue.even = true;
+                              }
+                              return returnValue;
+                        }
+                  }
+            })
+      </script>
+      
+      <div id="app2">
+            <h3 style="white-space: pre-line;">
+                  2. 좋아하는 모형의 도형을 하나 만들고, 텍스트 입력창을 만들어주세요.
+                  그리고 입력창에 원하는 색상을 하나씩 입력할 때마다 도형의 색상도 바뀌도록 만들어주세요.
+                  (ex. 입력창에 red 입력시 도형색상도 red로 변화됨)
+            </h3>
+            <div>
+                  <div class="house" :style="[styles.house, styles.transition]">
+                        <span :style="[styles.roof, styles.transition]"></span>
+                  </div>
+                  <p>색상을 영어로 입력해주세요.</p>
+                  <label>변경할색상 : <input type="text" v-model="setColor" @keyup.enter="changeColor"></label>
+                  <p>적용색상 로그 : {{colorLog}}</p>
+            </div>
+      </div>
+      <script>
+            var data2={
+                  setColor : "",
+                  colorLog : [],
+                  styles : {
+                        transition: {
+                              transition : '1s ease'
+                        },
+                        house : {
+                              position:'relative',
+                              marginTop:'50px',
+                              width:'100px',
+                              height:'100px',
+                              background:'yellow'
+                        },
+                        roof : {
+                              content:"",
+                              position:'absolute',
+                              bottom:'100%',
+                              left:0,
+                              right:0,
+                              width:0,
+                              height:0,
+                              border:'1px solid yellow',
+                              borderStyle:'solid',
+                              borderColor:'transparent transparent yellow transparent',
+                              'borderWidth':'50px',
+                        }
+                  }
+            };
+            var app2 = new Vue({
+                  el:'#app2',
+                  data : data2,
+                  methods : {
+                        changeColor : function(e) {
+                              this.styles.house.background = this.setColor;
+                              this.styles.roof.borderColor = `transparent transparent ${this.setColor} transparent`;
+                              this.colorLog.push(this.setColor);
+                        }
+                  }
+            })
+      </script>
+      
+      <div id="app3">
+            <h3 style="white-space: pre-line;">
+                  3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.
+            </h3>
+            <comp-button :style="styles.setButton" :btn-text="text" :options="{mouseEnter : mouseenter, mouseLeave : mouseleave}">
+                  
+            </comp-button>
+      </div>
+      <script>
+            var data3={
+                  text:"",
+                  text1:'버튼인가요?',
+                  text2:'버튼이네요.',
+                  isHover : false,
+                  styles : {
+                        setButton : [],
+                        button : {
+                              width:'100px',
+                              height:'50px',
+                              background:'skyblue',
+                              border:'1px solid blue',
+                              borderColor:'blue',
+                              color:'black',
+                              transition:'.5s ease'
+                        },
+                        hoverButton : {
+                              background:'red',
+                              borderColor:'darkred',
+                              color:'white'
+                        }
+                  }
+            };
+            Vue.component('comp-button',{
+                  props:['btnText', 'options'],
+                  template:'<button v-on:mouseenter="mouseEnter" v-on:mouseleave="mouseLeave">{{btnText}}</button>',
+                
+                  // data : function(e){
+                  //       console.log(e.$attrs.options);
+                  //       return {
+                  //             options:e.$attrs.options
+                  //       }
+                  // },
+                  methods: {
+                        mouseEnter : function(e) {
+                              if(typeof this.options['mouseEnter'] == 'function') {
+                                    this.options.mouseEnter();
+                              }
+                              
+                        },
+                        mouseLeave : function(e) {
+                              if(typeof this.options['mouseLeave'] == 'function') {
+                                    this.options.mouseLeave();
+                              }
+                        }
+                  }
+                  
+            })
+            var app3 = new Vue({
+                  el:'#app3',
+                  data : data3,
+                  created : function() {
+                        this.text = this.text1;
+                        this.styles.setButton = [
+                              this.styles.button
+                        ]
+                  },
+                  methods : {
+                        mouseenter: function(e) {
+                              this.styles.setButton.push(this.styles.hoverButton);
+                              this.text = this.text2;
+                        },
+                        mouseleave: function(e) {
+                              this.styles.setButton.pop();
+                              this.text = this.text1;
+                        }
+                  }
+            })
+      </script>
+      
+      
+      
+<script></script>
+</body>
+</html>
