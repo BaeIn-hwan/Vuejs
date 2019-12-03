@@ -327,7 +327,6 @@
                 },
                 doneToggle: function(id) {
                     var index = this.todolist.findIndex(function(item) {
-                        console.log(item)
                         return item.id === id;
                     })
                     this.todolist[index].done = !this.todolist[index].done;
