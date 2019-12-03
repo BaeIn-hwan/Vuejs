@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <style>
+        ul, li {
+            list-style-type: none;
+        }
+        .change {
+            background: lightpink;
+        }
+        .styleChange {
+            background: mediumspringgreen;
+            border: 1px dashed #333333;
+        }
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+    <div id="self1">
+        <input type="text" placeholder="끝낼 날짜 입력" v-model="todoData.endDate">
+        <input type="text" placeholder="해야할 일 입력" v-model="todoData.name">
+        <button @click="addTodoList">추가</button>
+        <ul v-if="fetches.add === true">
+            <li v-for="(todo, index) in todoList" :style="todoStyle.normal">
+                <span>시작 날짜 : {{todo.startDate}} / 끝나는 날짜: {{todo.endDate}}</span><br>
+                <span>할일 : {{todo.name}}</span>
+                <button :class="todoCheck" @click="completeTodo">완료</button>
+            </li>
+        </ul>
+        <span v-else>loading..</span>
+    </div>
+    <script>
+        var answerself = new Vue ({
+            el: "#self1",
+            data: {
+                fetches: {
+                    add: false
+                },
+                todoCheck: {
+
+                },
+                todoStyle: {
+                    normal: {
+                        background: "yellow",
+                        fontWeight: "bold"
+                    },
+                    complete: {
+                        background: "lightgray",
+                        color: "#fff",
+                        textDecoration: "line-through"
+                    }
+                },
+                inputTodo: null,
+                todoData: {
+                    startDate: null,
+                    endDate: null,
+                    name: null,
+                    done: false
+                },
+                todoList: []
+            },
+            methods: {
+                addTodoList: function () {
+                    var today = new Date();
+                    this.todoData.startDate = (today.getMonth() + 1) + "월" + today.getDate() + "일";
+                    this.todoList.push(this.todoData);
+                    this.fetches.add = true;
+                },
+                completeTodo: function () {
+
+
+                }
+            }
+        })
+    </script>
+    <dl id="test1">
+        <dt>
+            1. 입력창을 하나 만들고 1부터 100까지 숫자 중 짝수를 입력했을 경우에만 v-bind:class를
+            활용하여 배경색이 변하도록 만들어주세요. 그리고 입력창 옆에 ok.png 이미지가 나오도록 하세요.
+        </dt>
+        <dd>
+            <h4>bgChange 함수의 return으로 처리</h4>
+            <input type="text" v-model.number="inputNum" :class="bgChange">
+            <figure v-show="bgChange.change === true" :style="dpIB">
+                <img src="../images/ok.png" alt="ok" :style="okimgSize">
+            </figure>
+            <br>
+            <h4>inputNum2를 watch 메소드를 사용하여 처리</h3>
+            <input type="text" v-model="inputNum2" :class="bgChange2">
+            <figure v-show="request.change === true" :style="dpIB">
+                <img src="../images/ok.png" alt="ok" :style="okimgSize">
+            </figure>
+        </dd>
+    </dl>
+    <script>
+        var answer1 = new Vue({
+            el: "#test1",
+            data: {
+                inputNum: null,
+                inputNum2: null,
+                bgChange2: null,
+                request: {
+                    change: false
+                },
+                okimgSize: {
+                    width: "40px",
+                    height: "40px"
+                },
+                dpIB: {
+                    display: "inline-block"
+                }
+            },
+            computed: {
+                bgChange: function () {
+                    if (this.inputNum % 2 == 0) {
+                        return {
+                            change: true
+                        }
+                    } else {
+                        return {
+                            change: false
+                        }
+                    }
+                }
+            },
+            watch: {
+                inputNum2: function (v) {
+                    var num = Number(v);
+                    if (num % 2 == 0) {
+                        this.bgChange2 = 'change';
+                        this.request.change = true;
+                    } else {
+                        this.bgChange2 = 'ori';
+                        this.request.change = false;
+                    }
+                }
+            }
+        })
+    </script>
+    <dl id="test2">
+        <dt>
+            2. 좋아하는 모형의 도형을 하나 만들고, 텍스트 입력창을 만들어주세요.
+            그리고 입력창에 원하는 색상을 하나씩 입력할 때마다 도형의 색상도 바뀌도록 만들어주세요.
+            (ex. 입력창에 red 입력시 도형색상도 red로 변화됨)
+        </dt>
+        <dd>
+            <input type="text" v-model="inputColor" placeholder="색상을 입력해주세요.">
+            <span :style="circle"></span>
+        </dd>
+    </dl>
+    <script>
+        var answer2 = new Vue({
+            el: "#test2",
+            data: {
+                inputColor: null,
+                circle: {
+                    display: "inline-block",
+                    width: "100px",
+                    height: "100px",
+                    border: "2px solid navy",
+                    borderRadius: "50%",
+                    background: null
+                }
+            },
+            watch: {
+                inputColor: function (val) {
+                    this.circle.background = val;
+                }
+            }
+        });
+    </script>
+    <dl id="test3">
+        3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.
+        </dt>
+        <dt>
+        <dd>
+            <button @mouseenter="styleChange($event)" @mouseout="styleChange($event)">마우스를 올려주세요~!</button>
+        </dd>
+    </dl>
+    <script>
+        var answer3 = new Vue({
+            el: "#test3",
+            methods: {
+                styleChange: function (e) {
+                    if (e.type == "mouseenter") {
+                        e.target.classList.add("styleChange");
+
+                    } else {
+                        e.target.classList.remove("styleChange")
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
