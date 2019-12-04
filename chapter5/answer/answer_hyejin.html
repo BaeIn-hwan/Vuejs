@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+      <meta charset="utf-8">
+      <title>Chapter05</title>
+      <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>   
+      
+      <style>
+            #chapter05 {padding: 40px;}
+            section + section {margin-top: 50px;}
+            section h2 {font-size: 16px; font-weight: bold;}
+            section .box {padding:10px 30px; background: #eee;}
+            [v-cloak] {display: none;}
+
+            .egg {
+                width: 126px;
+                height: 160px;
+                margin-top: 30px;
+                background-color: #ffc000;
+                border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+                transition: ".5s";
+            }
+        </style>
+</head>
+<body>
+
+    <div id="chapter05">
+        
+        <section id="task01">
+            <h2>
+                1. 입력창을 하나 만들고 1부터 100까지 숫자 중 짝수를 입력했을 경우에만 v-bind:class를 
+                활용하여 배경색이 변하도록 만들어주세요. 그리고 입력창 옆에 ok.png 이미지가 나오도록 하세요.
+            </h2>
+            <div>
+                <input type="text" v-model.number="task01.inputNum" :style="inputStyle">
+                <img src="../images/ok.png" alt="ok이미지" v-show="task01Result.okey" :style="okeyStyle">
+            </div>
+        </section>
+        
+        <section id="task02">
+            <h2>
+                2. 좋아하는 모형의 도형을 하나 만들고, 텍스트 입력창을 만들어주세요. 
+                그리고 입력창에 원하는 색상을 하나씩 입력할 때마다 도형의 색상도 바뀌도록 만들어주세요.
+                (ex. 입력창에 red 입력시 도형색상도 red로 변화됨)
+            </h2>
+            <div>
+                <input type="text" v-on:input="changeColor.backgroundColor = $event.target.value">
+                <div class="egg" v-bind:style="changeColor"></div>
+            </div>
+        </section>
+        
+        <section id="task03">
+            <h2>
+                3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.
+            </h2>
+            <div>
+                
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+
+        var model = {
+            // task01
+            task01 : {
+                inputNum : 0
+            },
+            inputStyle : {
+                width: "200px",
+                height: "50px",
+                padding: "0 10px",
+                fontSize: "18px"
+            },
+            okeyStyle : {
+                display: "inline-block",
+                width: "50px",
+                height: "50px",
+                verticalAlign: "middle",
+            },
+
+            // task02
+            changeColor: {
+		    	backgroundColor: ''
+		    },
+        }
+
+        var chapter05 = new Vue({
+            el : "#chapter05",
+            data : model,
+            computed : {
+
+                task01Result : function(){
+                    const $this = this.task01;
+
+                    if($this.inputNum >= 1 && $this.inputNum <= 100 && $this.inputNum % 2 !== 1) {
+                        return {
+                            okey : true
+                        }
+                    } else {
+                        return {
+                            okey : false
+                        }
+                    }
+                },
+            },
+
+        })
+    
+    </script>
+
+</body>
+</html>
