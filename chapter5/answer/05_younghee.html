@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter5. 스타일</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script> 
+    <style>
+    #answer1,
+    #answer2,
+    #answer3,
+    #answer4{
+        background-color: #eee;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    .okimg {
+        width: 18px; 
+        height: 18px;
+        top: 5px;
+        position: relative;
+    }
+    .even {
+        background-color: palevioletred;
+        color: #fff;
+    }
+    .circle{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+    }
+    .red {
+        background-color: red;
+    }
+    .green {
+        background-color: green;
+    }
+    .blue {
+        background-color: blue;
+    }
+    .white{
+        background-color: white;
+    }
+    .btn{
+        width: 200px;
+        padding: 10px;
+    }
+    .bgcolor{
+        background-color: orange;
+    }
+    .on {color: green;}
+
+    .off {color: red;}
+    </style>
+</head>
+<body>
+    <section id="answer1">
+        <h3>
+            1. 입력창을 하나 만들고 1부터 100까지 숫자 중 짝수를 입력했을 경우에만 v-bind:class를 
+                활용하여 배경색이 변하도록 만들어주세요. 그리고 입력창 옆에 ok.png 이미지가 나오도록 하세요.
+        </h3>
+        <div>
+            <input type="text" class="score" v-model.even="score" v-bind:class="color">
+            <img src="../images/ok.png" class="okimg" v-show="color.even">
+        </div>
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#answer1",
+            data: {
+                score: 1
+            },
+            computed: {
+                color: function() {
+                    if(this.score % 2 != 0 || this.score == '' )
+                        return {
+                            even: false
+                        };
+                    else 
+                        return {
+                            even: true
+                        };
+                }
+            }
+        })
+    </script>
+    
+    <section id="answer2">
+        <h3>
+            2. 좋아하는 모형의 도형을 하나 만들고, 텍스트 입력창을 만들어주세요. 
+            그리고 입력창에 원하는 색상을 하나씩 입력할 때마다 도형의 색상도 바뀌도록 만들어주세요.
+            (ex. 입력창에 red 입력시 도형색상도 red로 변화됨)
+            입력가능한 색상은 red,green,blue 세가지다.
+        </h3>
+        <input type="text" v-model="bgcolor">
+        <p class="circle" :class="circlebg"></p>
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#answer2",
+            data: {
+                bgcolor:''
+            },
+            computed:{
+                circlebg: function(){
+                    if(this.bgcolor == 'red')
+                        return{
+                            red: true
+                        };
+                    else if(this.bgcolor == 'green')
+                        return{
+                            green: true
+                        };
+                    else if(this.bgcolor == 'blue')
+                        return{
+                            blue: true
+                        }
+                    else if(this.bgcolor == '' )
+                        return{
+                            white: true
+                        }
+                }
+            }
+        })
+    </script>
+
+    <section id="answer3">
+        <h3>3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.</h3>
+        <button v-bind:style="btn" @mouseover="over" @mouseout="out">
+            마우스를 올려주세요.
+        </button>
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#answer3",
+            data: {
+                btn: {backgroundColor: 'black', color: 'white', border:'none', width: '200px', textAlign: 'center', padding:'10px'}
+            },
+            methods: {
+                over : function() {
+                    this.btn.backgroundColor = "blue";
+                    this.btn.color = "pink";
+                },
+                out : function() {
+                    this.btn.backgroundColor = 'green';
+                    this.btn.color = 'black';
+                }
+            }
+        })
+    </script>
+    
+    <section id="answer4">
+        <h3>3-1. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.</h3>
+        <template id="button">
+            <button @click="change" @mouseover="over" @mouseout="out" class="btn"> {{ text }} </button>
+        </template>
+
+        <div id="overbutton">
+            <my-component v-bind:class="bgcolor"></my-component>
+        </div>  
+        
+    </section>
+    <script>
+        Vue.component('my-component', {
+            template: '#button',
+            data: function(){
+                return{
+                    text: '마우스를 올려주세요.'
+                }
+            },
+            methods:{
+                change: function(){
+                    this.text = "흠";
+                },
+                over : function() {
+                    this.btn.backgroundColor = 'blue';
+                    this.btn.color = "pink";
+                },
+                out : function() {
+                    this.btn.backgroundColor = 'black';
+                }
+            }
+        });
+        new Vue({
+            el:"#overbutton",
+            data: {
+                bgcolor: {bgcolor: false}
+            }
+        });
+    </script>
+
+</body>
+</html>
