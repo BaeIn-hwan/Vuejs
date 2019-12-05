@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        #ques01 .on{background: #DDD;}
+    </style>
+</head>
+<body>
+    <div class="sec">
+        <p>1. 입력창을 하나 만들고 1부터 100까지 숫자 중 짝수를 입력했을 경우에만 v-bind:class를<br> 활용하여 배경색이 변하도록 만들어주세요. 그리고 입력창 옆에 ok.png 이미지가 나오도록 하세요.</p>
+
+        <div id="ques01">
+            <input type="text" v-model.numnber="insertNumber" @keyup.enter="evenNumber" :class="active">
+            <img src="https://raw.githubusercontent.com/BaeIn-hwan/Vuejs/master/chapter5/images/ok.png" alt="" style="width: 21px; vertical-align: middle;" v-show="test">
+        </div>
+
+        <script>
+            const awsn01 = new Vue({
+                el: "#ques01",
+                data: {
+                    insertNumber: 0,
+                    test: false,
+                    active: {
+                        on: false,
+                    }
+                },
+                methods: {
+                    evenNumber(e) {
+                        const num = Number(this.insertNumber);
+
+                        if ( (num >= 1 && num <= 100) && num % 2 == 0 ) {
+                            this.test = true;
+                            this.active.on = true;
+                        } else {                            
+                            this.test = false;
+                            this.active.on = false;
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+
+    <div class="sec">
+        <p>2. 좋아하는 모형의 도형을 하나 만들고, 텍스트 입력창을 만들어주세요.<br> 그리고 입력창에 원하는 색상을 하나씩 입력할 때마다 도형의 색상도 바뀌도록 만들어주세요.<br> (ex. 입력창에 red 입력시 도형색상도 red로 변화됨)</p>
+
+        <div id="ques02">
+            <input type="text" v-model="insertColor" @keyup.enter="colorChange">
+            <span class="circle" :style="abc"></span>
+        </div>
+        
+        <script>
+            const awsn02 = new Vue({
+                el: "#ques02",
+                data: {
+                    insertColor: "",
+                    abc: {
+                        display: "block",
+                        width: "100px",
+                        height: "100px",
+                        border: "1px solid #000",
+                        background: "#FFF",
+                        borderRadius: '50%',
+                    }
+                },
+                methods: {
+                    colorChange(e) {
+                        this.abc.background = this.insertColor;
+                    }
+                }
+            });
+        </script>
+    </div>
+
+    <div class="sec">
+        <p>3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.</p>
+
+        <div id="ques03">
+            <test-btn :style="btnStyle"></test-btn>
+        </div>
+
+        <script>
+            Vue.component('test-btn', {
+                template: '<button type="button" @mouseover.stop="overBtn" @mouseout.stop="outBtn">버튼</button>',
+                methods: {
+                    overBtn() {
+                        this.$el.style.background = "#82bf8a";
+                    },
+                    outBtn() {
+                        this.$el.style.background = "";
+                    }
+                }
+            });
+
+            const awsn03 = new Vue({
+                el: "#ques03",
+                data: {
+                    btnStyle: {
+                        width: "100px",
+                        height: "100px",
+                        border: "1px solid #000"
+                    }
+                },
+            });
+        </script>
+    </div>
+</body>
+</html>
