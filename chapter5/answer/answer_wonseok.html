@@ -1,0 +1,156 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>챕터 5</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+
+    <style>
+        .simple1 input{height:30px;}
+        .simple1 img{width:30px;vertical-align:middle;}
+        .simple1 .okok{background: pink;}
+        .mybox{width:200px;height:250px;position:relative;border:3px solid #333;border-radius: 50%;}
+        .mybox:before{
+            content:"";
+            display:block;
+            width:10px;
+            height: 10px;
+            position:absolute;
+            top:50px;
+            left:20px;
+            border-radius: 50%;
+            background:#333;
+        }
+        .mybox:after{
+            content:"";
+            display:block;
+            width:10px;
+            height: 10px;
+            position:absolute;
+            top:50px;
+            right:20px;
+            border-radius: 50%;
+            background:#333;
+        }
+        .mybox span{
+            width:37px;
+            height:37px;
+            position:absolute;
+            bottom:40px;
+            left:50%;
+            transform: translateX(-50%);
+            border:3px solid #333;
+            background:#333;
+            border-radius: 50%;
+        }
+       
+    </style>
+</head>
+
+<body>
+    <section>
+        <article id="test01">
+            <h2>
+                1. 입력창을 하나 만들고 1부터 100까지 숫자 중 짝수를 입력했을 경우에만 v-bind:class를 
+                활용하여 배경색이 변하도록 만들어주세요. 그리고 입력창 옆에 ok.png 이미지가 나오도록 하세요.
+            </h2>
+            <div id="simple1">
+                <h3>[예제 05-07] 계산형 속성, 메서드를 이용한 스타일 적용</h3>
+                <div>
+                    <p>1부터 100까지만 입력 가능합니다.</p>
+                    <div class="simple1">
+                        <!-- v-bind:class="info"에 의해 info 계산형 속성이 바인딩 되고 score값에 따라 warning: true/false를 리턴 -->
+                        점수: <input type="text" class="score" v-model.number="score" v-bind:class="info">
+                        <img src="../images/error.jpg" class="warnimage" v-show="info.warning" />
+                        <img src="../images/ok.png" class="okimage" v-show="info.okok" />
+                    </div>
+                </div>
+            </div>
+            <script>
+                var vm = new Vue ({
+                    el: "#simple1",
+                    data: {
+                        score: ''
+                    },
+                    computed: {
+                        info: function() {
+                            if(this.score >= 1 && this.score <= 100 )
+                                if(this.score % 2 == 0){
+                                    return {
+                                        warning: false,
+                                        okok : true
+                                    }
+                                }else{
+                                    return {
+                                        warning: false,
+                                        okok : false
+                                    }
+                                }
+                            else (this.score != '' || this.score > 100)
+                                return {
+                                    warning: true,
+                                    okok : false
+                                }
+                            
+                        }
+                    }
+                })
+                
+            </script>    
+        </article>
+
+        <article id="test02">
+            <h2>
+                2. 좋아하는 모형의 도형을 하나 만들고, 텍스트 입력창을 만들어주세요. 
+                그리고 입력창에 원하는 색상을 하나씩 입력할 때마다 도형의 색상도 바뀌도록 만들어주세요.
+                (ex. 입력창에 red 입력시 도형색상도 red로 변화됨)
+            </h2>
+            <div id="simple2">
+                <div class="mybox" v-bind:style="{backgroundColor:[colorText]}">
+                    <span></span>
+                </div>
+                <span>보노보노에게 컬러를 입혀주세요</span> <input type="text" v-model="colorText" />   
+                
+            </div>
+            <script>
+                var vm = new Vue ({
+                    el: "#simple2",
+                    data: {
+                        colorText:''
+                    }
+                })
+            </script>  
+        </article>
+
+        <article id="test03">
+            <h2>
+                3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.
+            </h2>
+            <div id="simple3">
+                <button id="a" class="mybox" v-bind:style="style1" @mouseover.stop="overEvent" @mouseout.stop="outEvent"><span></span></button>
+            </div>
+            <script>
+                var vm = new Vue ({
+                    el: "#simple3",
+                    data: {
+                        style1: {backgroundColor: 'aqua'}
+                    },
+                    methods: {
+                        overEvent : function(e) {
+                            this.style1.backgroundColor = "purple";
+                            this.style1.color = "yellow";
+                        },
+                        outEvent : function(e) {
+                            this.style1.backgroundColor = 'aqua';
+                            this.style1.color = 'black';
+                        }
+                    }
+                })
+            </script> 
+        </article>
+    </section>
+
+</body>
+</html>
