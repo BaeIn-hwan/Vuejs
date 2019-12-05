@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script> 
+</head>
+<style>
+    section {
+        margin-bottom:  100px;
+        font-size: 14px;
+    }
+    .question1 {
+        width: 200px;
+        height: 30px;
+        padding: 0 10px;
+        border: 1px solid #888;
+    }
+    .question01wrapper {
+        width: 500px;
+        padding: 20px;
+    }
+    .status {
+        background: orange;
+    }
+    img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+    }
+    .circle {
+        width: 100px;
+        height: 100px;
+        border: 1px solid #ddd;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    .blue {
+        background: #0000ff;
+    }
+    .red {
+        background: #ff0000;
+    }
+    .yellow {
+        background: #ffff00;
+    }
+    .purple {
+        background: #9b00e0;
+    }
+    .green {
+        background: green;
+    }    
+    .pink {
+        background: #ff7e8f;
+    }
+    .buttonbg {
+        background: skyblue;
+    }
+</style>
+<body>
+    <div class="wrapper" style="padding: 20px">
+        <h1>Chapter5. 스타일</h1>
+        <section id="question01">
+            <h3>
+                1. 입력창을 하나 만들고 1부터 100까지 숫자 중 짝수를 입력했을 경우에만 v-bind:class를<br> 
+                활용하여 배경색이 변하도록 만들고 입력창 옆에 ok.png 이미지가 나오도록 하세요.
+            </h3>
+            <!-- v-bind:class="클래스명" / v-bind:class="{ 클래스명: 조건 }" -->
+            <div class="question01wrapper" v-bind:class="number">
+                <input type="number" v-model.number="inputNumber" placeholder="숫자를 입력하세요" class="question1">
+                <img src="../images/ok.png" v-show="number.status" alt="">
+            </div>
+            <p v-html="number.status" style="font-size:20px;margin-left:20px"></p>        
+        </section>
+        <script>
+            var test01 = new Vue ({
+                el: "#question01",
+                data: {
+                    inputNumber: null,
+                },
+                computed: {
+                    number: function() {
+                        if(1 <= this.inputNumber && this.inputNumber<= 100 && this.inputNumber % 2 == 0) {
+                            return {
+                                status:true
+                            }
+                        } else {
+                            return {
+                                status:false
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+        <section id="question02">
+            <h3>
+                2. 좋아하는 모형의 도형을 하나 만들고, 텍스트 입력창을 만들어주세요.<br> 
+                그리고 입력창에 원하는 색상을 하나씩 입력할 때마다 도형의 색상도 바뀌도록 만들어주세요.
+            </h3>
+            <div class="circle" :class="color"></div>
+            색상을 입력하세요: <input type="text" v-model="color">
+        </section>
+        <script>
+            var test02 = new Vue ({
+                el: "#question02",
+                data: {
+                    colorInput: null,
+                    color: 'pink'
+                },
+            });
+        </script>
+        <section id="question03">
+            <h3>
+                3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.
+            </h3>
+            <div>
+                <button @mouseover="mouseover" @mouseleave="mouseleave" :style="btnStyle">{{message}}</button>
+            </div>
+        </section>
+        <script>
+            var test03 = new Vue ({
+                el: "#question03",
+                data: {
+                    message: "버튼버튼",
+                    btnStyle: {
+                        width: "200px",
+                        height: "50px",
+                        backgroundColor: "skyblue"
+                    }
+                },
+                methods:{
+                    mouseover: function() {
+                        this.btnStyle.backgroundColor = "green";
+                        this.message = "마우스를 올렸습니다";
+                    },
+                    mouseleave: function() {
+                        this.btnStyle.backgroundColor = "yellow";
+                        this.message = "마우스가 내려갔습니다";
+                    }                    
+                }
+            })
+        </script>        
+    </div>
+</body>
+</html>
