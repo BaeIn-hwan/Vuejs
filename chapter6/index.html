@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter6. 컴포넌트 기초</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script> 
+    <style>
+        #example1,
+        #example2,
+        #example3,
+        #example4,
+        #example5,
+        #example6,
+        #example7
+        {
+            background-color: #eee;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        #list{
+            width: 400px;
+            border:1px solid black;
+            border-collapse: collapse;
+        }
+        #list td, #list #th{
+            border: 1px solid black;
+            text-align: center;
+        }
+        #list > thead > tr{
+            color: yellow;
+            background-color: purple;
+        }
+    </style>     
+</head>
+<body>
+    <h1>Chapter6. 컴포넌트 기초</h1>
+
+    <section id="example1">
+        <h3>예제1- 컴포넌트 사용하기</h3>
+        <hello-component></hello-component>
+        <hello-component></hello-component>
+        <hello-component></hello-component>
+    </section>
+    <script>
+        Vue.component('hello-component',{
+            template : '<div>hello world</div>',
+        });
+        var vm1 = new Vue({
+            el : '#example1'
+        })
+    </script>
+
+    <section id="example2">
+        <h3>예제2- 템플릿 문자열 분리</h3>
+        <template id="helloTemplate">
+            <div>hello world!!!!</div>
+        </template>
+
+        <hello-component></hello-component>
+    </section>
+    <script>
+        Vue.component('hello-component',{
+            template : '#helloTemplate',
+        });
+        var vm2 = new Vue({
+            el : '#example2'
+        })
+    </script>   
+
+
+    <section id="example3">
+        <h3>예제 3</h3>
+        <template id="timeTemplate">
+            <div>
+                <span>{{nowTS}}</span>
+                <button v-on:click="timeClick">현재 시간</button>
+            </div>
+        </template>
+        <div id="time">
+            <time-component></time-component>
+            <time-component></time-component>
+        </div>
+    </section>
+    <script>
+        Vue.component("time-component",{
+            template : "#timeTemplate",
+            data : function(){
+                return { nowTS : 0}
+            },
+            methods : {
+                timeClick : function(e){
+                    this.nowTS = (new Date()).getTime();
+                }
+            }
+        });
+        new Vue({
+            el : "#time",
+        })
+    </script>  
+    
+    <section id="example4">
+        <template id="listTemplate">
+            <li>{{message}}</li>
+        </template>
+        <div id='hello'>
+            <ul>
+                <list-component message="hello"></list-component>
+                <list-component message="씬짜오"></list-component>
+                <list-component message="니하오마"></list-component>
+            </ul>
+        </div>
+    </section>
+    <script>
+        Vue.component('list-component',{
+            template:'#listTemplate',
+            props : ['message']
+        });
+        new Vue({
+            el: "#hello"
+        })
+    </script> 
+
+    <section id="example5">
+        <template id="listTemplate">
+            <li>{{message}}</li>
+        </template>
+        <div id='app'>
+            <ul>
+                <list-component message="hello" count='100'></list-component>
+                <list-component message="씬짜오" count='21'></list-component>
+                <list-component message="니하오마"></list-component>
+                <list-component count='1000'></list-component>
+            </ul>
+        </div>
+    </section>
+    <script>
+        Vue.component('list-component',{
+            template:'#listTemplate',
+            props : {
+                message :{type:String, default:'안녕하세요'},
+                count : {type:Number, required:true}
+            }
+        });
+        var vm = new Vue({
+            el: "#app"
+        })
+    </script>  
+    
+
+    <section id="example6">
+        <template id="contactTemplate">
+            <div>
+                <table id="list">
+                    <thead>
+                        <tr>
+                            <th>번호</th><th>이름</th><th>주소</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contacts">
+                        <tr v-for="contact in contacts">
+                            <td>{{contact.no}}</td>
+                            <td>{{contact.name}}</td>
+                            <td>{{contact.address}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <div id="app2">
+            <h3>예방접종</h3>
+            <hr/>
+            <h4>1차 대상자: 5월 1~3일</h4>
+            <contactlist-component :contacts="list1"></contactlist-component>
+            <h4>2차 대상자: 5월 13일~15일</h4>
+            <contactlist-component :contacts="list2"></contactlist-component>
+        </div>
+    </section>
+    <script>
+        Vue.component('contactlist-component', {
+            template : '#contactTemplate',
+            props : [ 'contacts' ]
+        });
+        var vm = new Vue({
+            el : '#app2',
+            data : {
+                list1:[
+                    {"no":97,"name":"주영희","address":"서울"},
+                    {"no":96,"name":"주영희","address":"서울"},
+                    {"no":95,"name":"주영희","address":"서울"}
+                ],
+                list2:[
+                    {"no":87,"name":"주영희","address":"서울"},
+                    {"no":86,"name":"주영희","address":"서울"}
+                ]
+            }
+        });
+    </script>
+    
+
+
+    <section id="example7">
+       <!-- 첫 번째 자식 컴포넌트 시작-->
+        <template id="child1Template">
+            <div>
+                <button v-on:click="clickEvent">child1 button!!</button>
+                <div>{{currentTime}}</div>
+            </div>
+        </template>
+        <!-- 첫 번째 자식 컴포넌트 끝 -->
+
+        <!-- 두 번째 자식 컴포넌트 시작 -->
+        <template id="child2Template">
+            <ul>
+                <li v-for="t in timelist">{{t}}</li>
+            </ul>
+        </template>
+        <!-- 두 번째 자식 컴포넌트 끝-->
+
+        <div id="localtime">
+            <child1-component></child1-component>
+            <hr/>
+            <child2-component></child2-component>
+        </div>
+    </section>
+    <script>
+        var eventBus = new Vue();
+
+        Vue.component('child1-component',{
+            template:"#child1Template",
+            data: function(){
+                return {currentTime:''};
+            },
+            methods:{
+                clickEvent : function(){
+                    var d = new Date();
+                    var t = d.toLocaleTimeString() + " " + d.getMilliseconds() + "ms";
+                    eventBus.$emit('click',t);
+                    this.currentTime = t;
+                }
+            }
+        });
+        Vue.component('child2-component',{
+            template : '#child2Template',
+            data : function(){
+                return {
+                    timelist:[]
+                };
+            },
+            created : function(){
+                eventBus.$on('click',this.child1Click);
+            },
+            methods : {
+                child1Click : function(time){
+                    this.timelist.push(time);
+                }
+            }
+        });
+        Vue.config.devtools = true;
+        new Vue({
+            el : "#localtime",
+        });      
+    </script>
+ 
+</body>
+</html>
