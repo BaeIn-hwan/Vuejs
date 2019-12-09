@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <style>
+        ul, li {
+            list-style-type: none;
+        }
+
+    </style>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+    <dl id="test1">
+        <dt>
+            1. 기본적인 컴포넌트를 사용하여 오늘은 목요일입니다. 가 노출되게 하세요.
+        </dt>
+        <dd>
+            <div id="today">
+                <today-component></today-component>
+            </div>
+        </dd>
+        <dd>
+            <div id="today2">
+                <today2-component></today2-component>
+            </div>
+            <template id="todaytemplate">
+                <span>오늘은 목요일2입니다.</span>
+            </template>
+        </dd>
+    </dl>
+    <script>
+        Vue.component("today-component", {
+            template: "<p>오늘은 목요일입니다.</p>"
+        });
+        Vue.component("today2-component", {
+            template: "#todaytemplate"
+        });
+        const answer1 = new Vue({
+            el: "#test1"
+        })
+    </script>
+
+    <dl id="test2">
+        <dt>
+            2. 버튼을 클릭하면 현재 시간과 요일이 나오게 만들어주세요.
+        </dt>
+        <dd>
+            <div id="test">
+                <span>{{now}}</span>
+                <current-component></current-component>
+            </div>
+        </dd>
+    </dl>
+    <script>
+        const answer2 = new Vue({
+            el: "#test2",
+
+        })
+        Vue.component("current-component", {
+            template: "<button @click='timestamp'>현재시간은?</button>",
+            data: function ( ) {
+                return {
+                    now: null,
+                }
+            },
+            props: {
+                clickEvent: {
+                    type: Function
+                }
+            },
+            methods: {
+                timestamp: function () {
+                    alert(2)
+                }
+            }
+        })
+    </script>
+    <dl id="test3">
+        <dt>
+            3.3.컴포넌트 이벤트 버스를 사용하여 임의로 현재 클릭수를 지정하고 플러스 버튼 클릭시 화면에 클릭수가 증가하는 것을 보여주고, 마이너스 버튼을 클릭하면 현재클릭수가 감소하도록 만들어주세요.
+            ex) 현재 클릭수 : 2
+            마이너스 버튼 클릭시 -> 현재클릭수 : 1
+            플러스 버튼 클릭시 -> 현재클릭수 : 3
+        </dt>
+        <dd>
+
+        </dd>
+    </dl>
+    <script>
+
+    </script>
+</body>
+</html>
