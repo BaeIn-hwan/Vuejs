@@ -13,6 +13,11 @@
             background: mediumspringgreen;
             border: 1px dashed #333333;
         }
+        .done {
+            background: lightblue;
+            color: #fff;
+            text-decoration: line-through;
+        }
     </style>
     <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
@@ -20,12 +25,13 @@
     <div id="self1">
         <input type="text" placeholder="끝낼 날짜 입력" v-model="todoData.endDate">
         <input type="text" placeholder="해야할 일 입력" v-model="todoData.name">
-        <button @click="addTodoList">추가</button>
+        <button @click="addTodoList">추가</button> <br>
         <ul v-if="fetches.add === true">
-            <li v-for="(todo, index) in todoList" :style="todoStyle.normal">
+            <li v-for="(todo, index) in todoList" :class="checkdone(todo.done)">
                 <span>시작 날짜 : {{todo.startDate}} / 끝나는 날짜: {{todo.endDate}}</span><br>
                 <span>할일 : {{todo.name}}</span>
-                <button :class="todoCheck" @click="completeTodo">완료</button>
+                <button :class="todoCheck" @click="completetodo(todo.id)" v-html="msg(todo.done)">완료</button>
+                <button @click="deltodo(todo.id)">x</button>
             </li>
         </ul>
         <span v-else>loading..</span>
@@ -53,6 +59,7 @@
                 },
                 inputTodo: null,
                 todoData: {
+                    id: null,
                     startDate: null,
                     endDate: null,
                     name: null,
@@ -63,13 +70,180 @@
             methods: {
                 addTodoList: function () {
                     var today = new Date();
-                    this.todoData.startDate = (today.getMonth() + 1) + "월" + today.getDate() + "일";
-                    this.todoList.push(this.todoData);
+                    this.todoList.push({
+                        id: today.getTime(),
+                        startDate: (today.getMonth() + 1) + "월" + today.getDate() + "일",
+                        endDate: this.todoData.endDate,
+                        name: this.todoData.name,
+                        done: false,
+                    });
+                    this.todoData.endDate = null;
+                    this.todoData.name = null;
                     this.fetches.add = true;
                 },
-                completeTodo: function () {
+                checkdone: function (done) {
+                    if (done) {
+                        return {
+                            done: true,
+                        }
+                    } else {
+                        return {
+                            done: false
+                        }
+                    }
+                },
+                completetodo: function ( id ) {
+                    const idx = this.todoList.findIndex(function(list) {
+                       return list.id === id;
+                    });
+                    this.todoList[idx].done = !this.todoList[idx].done;
+                },
+                msg: function (done) {
+                    if (done) {
+                        return "완료";
+                    } else {
+                        return "수행";
+                    }
+                },
+                deltodo: function (id) {
+                    console.log(id)
+                    const idx = this.todoList.findIndex(function(list) {
+                        return list.id === id;
+                    })
+                    this.todoList.splice(idx,1);
+                }
+            }
+        })
+    </script>
+    <section id="self3">
+        <div>
+            <h3>todo self3</h3>
+            <input type="text" v-model.trim="inputtodo" placeholder="입력해주세요" @keyup.enter="addtodo">
+            <button @click="addtodo">추가</button>
+        </div>
+        <ul>
+            <li v-for="(list, idx) in todolist" :class="checked(list.done)" @click="toggleClick(list.id)">
+                <span>{{list.id}}</span>
+                <span>{{list.task}}</span>
+                <span>{{list.done}}</span>
+            </li>
+        </ul>
+    </section>
+    <script>
+        var test = new Vue({
+            el: "#self3",
+            data: {
+                inputtodo: null,
+                todolist: [
+                    {
+                        id: 1,
+                        task: "해야할일",
+                        done: true,
+                    }
+                ]
+            },
+            methods: {
+                addtodo: function ( ){
+                    var current = new Date().getTime();
+                    this.todolist.push({
+                        id: current,
+                        task: this.inputtodo,
+                        done: false
+                    });
+                },
+                checked: function(done) {
+                    if (done) {
+                        return {
+                            done: true,
+                        }
+                    } else {
+                        return {
+                            done: false
+                        }
+                    }
+                },
+                toggleClick: function (id) {
+                    const targetIdx = this.todolist.findIndex(function(item) {
+                        return item.id === id;
+                    });
+                    console.log(targetIdx) // todolist에서 true 나온 index번호
+                    this.todolist[targetIdx].done = !this.todolist[targetIdx].done;
+                }
+            }
+        })
+    </script>
+    <section id="todolistapp">
+        <div>
+            <p>Todo List App</p>
+            <input type="text" class="input" id="task" v-model.trim="todo" placeholder="입력 후 엔터!" v-on:keyup.enter="addTodo">
+            <span class="addbutton" v-on:click="addTodo">추가</span>
+        </div>
+        <ul id="todolist">
+            <li v-for="a in todolist" v-bind:class="checked(a.done)" v-on:click="doneToggle(a.id)">
+                <span>{{a.todo}}</span>
+                <span v-if="a.done">(완료)</span>
+                <span class="close" v-on:click.stop="deleteTodo(a.id)">&#x00D7;</span>
+            </li>
+        </ul>
+    </section>
+    <script>
+        var vm = new Vue ({
+            el: "#todolistapp",
+            data: {
+                todo: "",
+                todolist: [
+                    {
+                        id: 1,
+                        todo: "영화보기",
+                        done: false
+                    },{
+                        id: 2,
+                        todo: "주말 산책",
+                        done: false
+                    },{
+                        id: 3,
+                        todo: "ES6 학습",
+                        done: false
+                    },{
+                        id: 4,
+                        todo: "잠실 야구장",
+                        done: false
+                    }
+                ]
+            },
+            methods: {
+                checked: function(done) {
+                    if(done) return {checked: true};
+                    else return {checked: false};
+                },
+                addTodo: function(e) {
+                    if(this.todo.trim() !== '') {
+                        this.todolist.push({
+                            //시간을 id에 대입 중복될 일이 없으므로 생성된 시간을 id로 많이 사용한다.
+                            id: new Date().getTime(),
+                            todo: this.todo.trim(),
+                            done: false
+                        });
+                        this.todo = "";
+                    }
+                },
+                deleteTodo: function(id) {
+                    // findIndex() 판별 함수를 만족하는 배열의 첫 번째 요소에 대한 인덱스를 반환. 만족하는 요소가 없으면 -1을 반환
+                    var index = this.todolist.findIndex(function(item) {
 
+                        console.log(item.id === id);
+                        return item.id === id;
+                    })
+                    console.log(index)
+                    this.todolist.splice(index,1);
+                },
+                doneToggle: function(id) {
+                    var index = this.todolist.findIndex(function(item) {
 
+                        return item.id === id;
+                    })
+                    console.log(this.todolist[index].done);
+                    this.todolist[index].done = !this.todolist[index].done;
                 }
             }
         })
