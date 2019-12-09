@@ -202,6 +202,10 @@ data 옵션에 객체를 직접 지정하면 오류가 발생하며, 정상적�
             <button v-on:click="timeClick">현재 시간</button>
         </div>
     </template>
+   <div id="app">
+        <time-component></time-component>
+        <time-component></time-component>
+   </div>
     <script>
         Vue.component("time-component",{
            template : "#time-component",
@@ -210,7 +214,7 @@ data 옵션에 객체를 직접 지정하면 오류가 발생하며, 정상적�
            },
            methods : {
                timeClick : function(e){
-                   this.nowTS = (nes Date()).getTime();
+                   this.nowTS = (new Date()).getTime();
                }
            }
         });
