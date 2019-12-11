@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter6. 컴포넌트 기초</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script> 
+    <style>
+    #answer1,
+    #answer2,
+    #answer3,
+    #answer4{
+        background-color: #eee;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    </style>
+</head>
+<body>
+    <h1>Chapter6. 컴포넌트 기초</h1>
+    <section id="answer1">
+        <h3>
+            1. 기본적인 컴포넌트를 사용하여 오늘은 목요일입니다. 가 노출되게 하세요.
+        </h3>
+        <today-component></today-component>
+
+        <template id='tday'>
+            <p>오늘은 목요일 입니다.</p>
+        </template>
+        
+    </section>
+    <script>
+        Vue.component('today-component',{
+            template : '<div>오늘은 목요일 입니다.</div>',
+        });
+        Vue.component('tday-component',{
+            template : '#tday',
+        });
+        var vm1 = new Vue({
+            el : '#answer1'
+        })
+    </script>
+    
+    <section id="answer2">
+        <h3>
+            2. 버튼을 클릭하면 현재 시간과 요일이 나오게 만들어주세요.
+        </h3>
+        <template id="koreatimeTemplate">
+            <div>
+                <span>{{koreaTime}}</span>
+                <button v-on:click="ktimeClick">현재 시간</button>
+            </div>
+        </template>
+        <div id="time">
+            <koreatime-component></koreatime-component>
+        </div>
+    </section>
+    <script>
+        Vue.component("koreatime-component",{
+            template : "#koreatimeTemplate",
+            data : function(){
+                return { koreaTime : ""};
+            },
+            methods : {
+                ktimeClick : function(){
+                    var d = new Date();
+                    var weekday=['일','월','화','수','목','금','토'];
+                    var t = d.toLocaleTimeString();
+                   
+                    this.koreaTime = t + weekday[d.getDay()] + "요일";
+                }
+            }
+        });
+        new Vue({
+            el : "#time",
+        })
+    </script>  
+
+
+
+    <section id="answer3">
+        <h3>
+            3.컴포넌트 이벤트 버스를 사용하여 임의로 현재 클릭수를 지정하고 플러스 버튼 클릭시 화면에 클릭수가 증가하는 것을 보여주고, 마이너스 버튼을 클릭하면 현재클릭수가 감소하도록 만들어주세요.<br>
+            ex) 현재 클릭수 : 2 <br>마이너스 버튼 클릭시 -> 현재클릭수 : 1 <br>플러스 버튼 클릭시 -> 현재클릭수 : 3 
+        </h3>
+        <div>
+            <current-component></current-component>
+            <plus-component></plus-component>
+            <minus-component></minus-component>
+        </div>
+
+        <div>
+            
+        </div>
+    </section>
+    <script>
+        var eventBus = new Vue();
+        Vue.component('current-component',{
+            template: "<p>현재 클릭수 {{count}}</p>",
+            data: function(){
+                return{ count : 2}
+            },
+            created : function(){
+                eventBus.$on('minus',()=>{
+                    if(this.count >= 1){
+                        this.count -= 1;
+                    }
+                }),
+                eventBus.$on('plus',()=>{
+                    this.count += 1;
+                })
+            },
+        });
+        Vue.component('plus-component',{
+            template : "<button @click='plus'>플러스</button>",
+            methods : {
+                plus(){
+                    eventBus.$emit('plus');
+                }
+            }
+        });
+        Vue.component('minus-component',{
+            template : "<button @click='minus'>마이너스</button>",
+            methods : {
+                minus(){
+                    eventBus.$emit('minus');
+                }
+            }
+        });
+        new Vue({
+            el : '#answer3',
+        });
+    </script>
+    
+   
+
+</body>
+</html>
