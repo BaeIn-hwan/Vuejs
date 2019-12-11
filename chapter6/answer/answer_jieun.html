@@ -11,6 +11,24 @@
     <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
 </head>
 <body>
+    <div>
+        **정리
+        1. Vue.component()를 만들면 new Vue({ el: "" })은 Vue.component 보다 뒤에 와야한다.
+        ==> 이유 : dom로드 될 시 template이 없는 상태.
+
+        2. el 은 컴포넌트를 감싸고 있는 그 부모여야한다.
+            <div id="here">
+                <test-component></test-component>
+            </div>
+
+            Vue.component("test-component", {});
+            new Vue({el: "#here"})
+
+        3. eventBus를 사용하면 제이쿼리처럼 on, emit(==trigger) 등 이벤트를 줄 수 있다.
+        ==> 하지만 잘 모르겠다.
+
+        4. 컴포넌트에 :나 속성을 주면 new Vue()에서 컨트롤 할 수 있다.
+    </div>
     <dl id="test1">
         <dt>
             1. 기본적인 컴포넌트를 사용하여 오늘은 목요일입니다. 가 노출되게 하세요.
@@ -46,35 +64,66 @@
             2. 버튼을 클릭하면 현재 시간과 요일이 나오게 만들어주세요.
         </dt>
         <dd>
-            <div id="test">
-                <span>{{now}}</span>
+            <template id="timeTemplate">
+                <div>
+                    <span>{{now}}</span>
+                    <button v-on:click='timeStamp'>현재?</button>
+                </div>
+            </template>
+            <div id="templateUse">
                 <current-component></current-component>
             </div>
         </dd>
     </dl>
     <script>
-        const answer2 = new Vue({
-            el: "#test2",
-
-        })
         Vue.component("current-component", {
-            template: "<button @click='timestamp'>현재시간은?</button>",
-            data: function ( ) {
+            template: "#timeTemplate",
+//            template: "<button v-on:click='timeStamp'>현재시간은?</button>",
+
+            data: function () {
                 return {
                     now: null,
                 }
             },
-            props: {
-                clickEvent: {
-                    type: Function
-                }
-            },
+
             methods: {
-                timestamp: function () {
-                    alert(2)
+                timeStamp: function (e) {
+                    console.log(e.target);
+                    const date = new Date();
+                    const current = date.getHours() + "시" + date.getMinutes() + "분";
+                    let day = "";
+
+                    switch (date.getDay()) {
+                        case 1:
+                            day = "월요일"
+                            break;
+                        case 2:
+                            day = "화요일"
+                            break;
+                        case 3:
+                            day = "수요일"
+                            break;
+                        case 4:
+                            day = "목요일"
+                            break;
+                        case 5:
+                            day = "금요일"
+                            break;
+                        case 6:
+                            day = "토요일"
+                            break;
+                        case 7:
+                            day = "일요일"
+                            break;
+                    }
+
+                    this.now = day + " " + current;
                 }
             }
-        })
+        });
+        const answer2 = new Vue({
+            el: "#templateUse",
+        });
     </script>
     <dl id="test3">
         <dt>
@@ -84,11 +133,44 @@
             플러스 버튼 클릭시 -> 현재클릭수 : 3
         </dt>
         <dd>
+            <template id="countTemplate">
+                <div>
+                    <span>{{clickCount}}</span>
+                    <button v-on:click="minusClick">minus</button>
+                    <button v-on:click="plusClick">plus</button>
+                </div>
+            </template>
+
+            <div id="resultClick">
+                <count-component></count-component>
+
+            </div>
 
         </dd>
     </dl>
     <script>
+        const eventBus = new Vue();
 
+        Vue.component("count-component", {
+            template: "#countTemplate",
+            data: function (){
+                return {clickCount: 2}
+            },
+            methods: {
+                minusClick: function (e) {
+                    this.clickCount = Number(this.clickCount) - 1;
+                    eventBus.$on("click",this.clickCount);
+                    console.log(eventBus)
+                },
+                plusClick: function (e) {
+                    this.clickCount = Number(this.clickCount) + 1;
+                    eventBus.$on("click",this.clickCount);
+                }
+            }
+        });
+        new Vue({
+            el: "#resultClick"
+        });
     </script>
 </body>
 </html>
