@@ -159,7 +159,10 @@
             methods: {
                 minusClick: function (e) {
                     this.clickCount = Number(this.clickCount) - 1;
-                    eventBus.$on("click",this.clickCount);
+//                    eventBus.$on("click");
+                    //잘모르겠다....................
+                    //eventBus를 사용하지 않아도 잘됨..........
+                    //eventBus를 왜쓰나요............
                     console.log(eventBus)
                 },
                 plusClick: function (e) {
