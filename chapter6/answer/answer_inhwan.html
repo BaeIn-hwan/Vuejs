@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div class="sec">
+        <p>1. 기본적인 컴포넌트를 사용하여 오늘은 목요일입니다. 가 노출되게 하세요.</p>
+
+        <div id="ques01">
+            <hello-world></hello-world>
+        </div>
+
+        <script>
+            Vue.component('hello-world',{
+                template : '<div>오늘은 목요일입니다.</div>',
+            });
+
+            const awsn01 = new Vue({
+                el: "#ques01",
+            });
+        </script>
+    </div>
+
+    <div class="sec">
+        <p>2. 버튼을 클릭하면 현재 시간과 요일이 나오게 만들어주세요.</p>
+
+        <template id='timeTemplate'>
+            <div>
+                <button type="button" @click="timeClick">현재 시간</button>
+                <p>{{nowTime}}</p>
+            </div>
+        </template>
+
+        <div id="ques02">
+            <time-component></time-component>
+        </div>
+        
+        <script>
+            Vue.component('time-component', {
+                template : '#timeTemplate',
+                data : function() {
+                    return { nowTime : 0 }
+                },
+                methods : {
+                    timeClick : function(e) {
+                        const weekArr = ['일', '월', '화', '수', '목', '금', '토'];
+                        const week = new Date().getDay();
+                        
+                        this.nowTime = `${new Date().toLocaleTimeString()} ${weekArr[week]}요일`
+                    }
+                }
+            })
+
+            const awsn02 = new Vue({
+                el: "#ques02",
+            });
+        </script>
+    </div>
+
+    <div class="sec">
+        <p>
+            3.3.컴포넌트 이벤트 버스를 사용하여 임의로 현재 클릭수를 지정하고 플러스 버튼 클릭시 화면에 클릭수가 증가하는 것을 보여주고, 마이너스 버튼을 클릭하면 현재클릭수가 감소하도록 만들어주세요.<br>
+            ex) 현재 클릭수 : 2 <br>
+            마이너스 버튼 클릭시 -> 현재클릭수 : 1 <br>
+            플러스 버튼 클릭시 -> 현재클릭수 : 3
+        </p>
+
+        <template id="buttonTemplate">
+            <div>
+                <button type="button" @click="plusEvent">더하기</button>
+                <button type="button" @click="minusEvent">뻬기</button>
+            </div>
+        </template>
+
+        <template id="viewTemplate">
+            <span>Number : {{number}}</span>
+        </template>
+        
+        <div id="ques03">
+            <button-template></button-template>
+            <view-template></view-template>
+        </div>
+
+        <script>
+           var eventBus = new Vue();
+
+            Vue.component("button-template", {
+                template: "#buttonTemplate",
+                methods: {
+                    plusEvent: function(e) {
+                        eventBus.$emit('clickEvent', 1)
+                    },
+                    minusEvent: function(e) {
+                        eventBus.$emit('clickEvent', -1)
+                    }
+                }
+            })
+
+            Vue.component("view-template", {
+                template: "#viewTemplate",
+                data: function() {
+                    return { number: Math.round(Math.random() * 10) }
+                },
+                created: function() {
+                    eventBus.$on('clickEvent', this.test);
+                },
+                methods: {
+                    test: function(num) {
+                        this.number += num;
+                    }
+                }
+            })
+
+            const awsn03 = new Vue({
+                el: "#ques03"
+            });
+        </script>
+    </div>
+</body>
+</html>
