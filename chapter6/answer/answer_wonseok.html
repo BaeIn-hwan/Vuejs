@@ -1,0 +1,139 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>챕터 6</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+
+    <style>
+      h2,h3,h4,h5{font-size:16px;}
+       
+    </style>
+</head>
+
+<body>
+    <section>
+        <article id="test01">
+            <h2>
+                1. 기본적인 컴포넌트를 사용하여 오늘은 목요일입니다. 가 노출되게 하세요.
+            </h2>
+            <div id="simple1">
+                <div>
+                    <day-component></day-component>
+                    <day-component></day-component>
+                    <day-component></day-component>
+                </div>
+            </div>
+            <script>
+                Vue.component('day-component',{
+                    template : '<div>오늘은 {{today}} 입니다.</div>', //<div>오늘은 <span v-text="today"></span> 입니다.</div>'
+                    data : function(){
+                        var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+                        var day = new Date().getDay();
+                        var dayLabel = week[day];
+                        return {today : dayLabel}
+                    },
+                });
+                var v = new Vue({
+                    el : '#simple1'
+                })
+            </script>   
+        </article>
+
+        <article id="test02">
+            <h2>
+                2. 버튼을 클릭하면 현재 시간과 요일이 나오게 만들어주세요. 
+            </h2>
+            <template id="timeTemplate">
+                <div>
+                    
+                    <button v-on:click="timeClick">현재 시간</button>
+                    <span>{{nowTS}}</span>
+                </div>
+            </template>
+            <div id="time">
+                <time-component></time-component>
+            </div>
+            <script>
+                var eventBus = new Vue();
+
+                Vue.component("time-component",{
+                    template : "#timeTemplate",
+                    data : function(){
+                        return { nowTS : ''}
+                    },
+                    methods : {
+                        timeClick : function(){
+                            //this.nowTS = (new Date()).getTime();
+                            var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+                            var d = new Date();
+                            var day = d.getDay();
+                            var dayLabel = week[day];
+                            var t = dayLabel + " " + d.toLocaleTimeString();
+                            eventBus.$emit('click',t);
+                            this.nowTS = t;
+                        }
+                    }
+                });
+                new Vue({
+                    el : "#time",
+                })
+            </script>  
+        </article>
+
+        <article id="test03">
+            <h2>
+                3.3.컴포넌트 이벤트 버스를 사용하여 임의로 현재 클릭수를 지정하고 플러스 버튼 클릭시 화면에 클릭수가 증가하는 것을 보여주고, 마이너스 버튼을 클릭하면 현재클릭수가 감소하도록 만들어주세요.
+            </h2>
+            <h3>
+                <pre>
+                    ex) 현재 클릭수 : 2 
+                    마이너스 버튼 클릭시 -> 현재클릭수 : 1 
+                    플러스 버튼 클릭시 -> 현재클릭수 : 3 
+                </pre>
+            </h3>
+            <section id="event-bus">
+            <!-- 첫 번째 자식 컴포넌트 시작-->
+                <template id="click1">
+                    <div>
+                        <button v-on:click="clickEvent">현재클릭수</button>
+                        <div>{{click_i}}</div>
+                    </div>
+                </template>
+                <!-- 첫 번째 자식 컴포넌트 끝 -->
+        
+                <!-- 두 번째 자식 컴포넌트 시작 -->
+                <template id="click2">
+                    <div>
+                        <button v-on:click="clickEvent"> - </button>
+                        <div>{{click_m}}</div>
+                    </div>
+                </template>
+                <!-- 두 번째 자식 컴포넌트 끝-->
+                <!-- 세 번째 자식 컴포넌트 시작 -->
+                <template id="click3">
+                    <div>
+                        <button v-on:click="clickEvent"> + </button>
+                        <div>{{click_a}}</div>
+                    </div>
+                </template>
+                <!-- 세 번째 자식 컴포넌트 끝-->
+        
+                <div id="click-index">
+                    <click1-component></click1-component>
+                    <hr/>
+                    <click2-component></click2-component>
+                    <hr/>
+                    <click3-component></click3-component>
+                </div>
+            </section>
+            <script>
+                
+            </script>
+        </article>
+    </section>
+
+</body>
+</html>
