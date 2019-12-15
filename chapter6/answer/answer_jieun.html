@@ -133,47 +133,67 @@
             플러스 버튼 클릭시 -> 현재클릭수 : 3
         </dt>
         <dd>
-            <template id="countTemplate">
+            <template id="btnTemplate">
                 <div>
-                    <span>{{clickCount}}</span>
                     <button v-on:click="minusClick">minus</button>
                     <button v-on:click="plusClick">plus</button>
                 </div>
             </template>
-
+            <template id="countTemplate">
+                <div>
+                    <span>{{clickCount}}</span>
+                </div>
+            </template>
             <div id="resultClick">
+                <btn-component></btn-component>
                 <count-component></count-component>
-
             </div>
 
         </dd>
     </dl>
     <script>
-        const eventBus = new Vue();
+        const eBus = new Vue();
 
-        Vue.component("count-component", {
-            template: "#countTemplate",
-            data: function (){
-                return {clickCount: 2}
+        Vue.component("btn-component", {
+            template: "#btnTemplate",
+            data: function () {
+                return {
+                    count: 0,
+                }
             },
             methods: {
-                minusClick: function (e) {
-                    this.clickCount = Number(this.clickCount) - 1;
-//                    eventBus.$on("click");
-                    //잘모르겠다....................
-                    //eventBus를 사용하지 않아도 잘됨..........
-                    //eventBus를 왜쓰나요............
-                    console.log(eventBus)
+                plusClick: function () {
+                    this.count++;
+                    eBus.$emit("event-count", this.count);
                 },
-                plusClick: function (e) {
-                    this.clickCount = Number(this.clickCount) + 1;
-                    eventBus.$on("click",this.clickCount);
+                minusClick: function () {
+                    this.count--;
+                    eBus.$emit("event-count", this.count);
                 }
             }
         });
-        new Vue({
+
+        Vue.component("count-component", {
+            template: "#countTemplate",
+            data: function () {
+                return {
+                    clickCount: 0,
+                }
+            },
+            created: function () {
+                eBus.$on("event-count", this.countChange);
+            },
+            methods: {
+                countChange: function (count) {
+                    this.clickCount = count;
+                }
+            }
+
+        })
+
+        const answer3 = new Vue({
             el: "#resultClick"
-        });
+        })
     </script>
 </body>
 </html>
