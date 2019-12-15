@@ -195,5 +195,100 @@
             el: "#resultClick"
         })
     </script>
+
+    <!--<section id="self1">-->
+        <!--<template id="listTemplate">-->
+            <!--<li>{{message}}</li>-->
+        <!--</template>-->
+        <!--<div id="appself1">-->
+            <!--<ul>-->
+                <!--<list-component message="hello" :lcount=6></list-component>-->
+                <!--<list-component message="nihao" :lcount=8></list-component>-->
+                <!--<list-component :lcount=5></list-component>-->
+                <!--<list-component message="gonnichiwa" :lcount=4></list-component>-->
+                <!--<list-component message="hola" :lcount=3></list-component>-->
+                <!--<list-component :lcount=1></list-component>-->
+                <!--<list-component :lcount=2></list-component>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</section>-->
+    <!--<script>-->
+        <!--Vue.component("list-component", {-->
+            <!--template: "#listTemplate",-->
+            <!--props: {-->
+                <!--message: {-->
+                    <!--type: String,-->
+                    <!--default: "안녕하세요"-->
+                <!--},-->
+                <!--lcount: {-->
+                    <!--type: Number,-->
+                    <!--required: true-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
+        <!--const answer4 = new Vue({-->
+            <!--el: "#appself1"-->
+        <!--})-->
+    <!--</script>-->
+    <section id="self5">
+        <template id="contactTemplate">
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>번호</th><th>이름</th><th>주소</th>
+                    </tr>
+                    </thead>
+                    <tbody id="contacts">
+                        <tr>
+                            <td>1124</td>
+                        </tr>
+                        <tr v-for="contact in contactlisttype">
+                            <td>{{contact.no}}</td>
+                            <td>{{contact.name}}</td>
+                            <td>{{contact.address}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <h3>예방접종</h3>
+        <dl id="result5">
+            <dt>1차 대상자 5월 1~3일</dt>
+            <dd v-for="list in list1">
+                <span>{{list.no}}</span>
+                <span>{{list.name}}</span>
+                <span>{{list.address}}</span>
+            </dd>
+            <dd>
+                <contactlist-component :contactlisttype="list1"></contactlist-component>
+            </dd>
+            <dt>2차 대상자 5월 1~3일</dt>
+            <dd>
+                <contactlist-component :contactlisttype="list2"></contactlist-component>
+            </dd>
+        </dl>
+    </section>
+
+    <script>
+        Vue.component("contactlist-component", {
+            template: "#contactTemplate",
+            props: ["contactlisttype"]
+        })
+        const answer5 = new Vue({
+            el: "#result5",
+            data: {
+                list1:[
+                    {"no":97,"name":"주영희","address":"서울"},
+                    {"no":96,"name":"주영희","address":"서울"},
+                    {"no":95,"name":"주영희","address":"서울"}
+                ],
+                list2:[
+                    {"no":87,"name":"주영희","address":"서울"},
+                    {"no":86,"name":"주영희","address":"서울"}
+                ]
+            }
+        })
+    </script>
 </body>
 </html>
