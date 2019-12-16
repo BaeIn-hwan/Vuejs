@@ -245,9 +245,104 @@ console.log(r1);
 ```
 
 ## 7.8 컬렉션
+> Set, Map, WeekSet, WeekMap 이라는 컬렉션을 이용하여 데이터를 다룰 떄 도움을 줄 수 있습니다. <br>
+```javascript
+//Set은 중복을 허용하지 않으며, 합집합, 교집합과 같은 다양한 집합 연산을 제공합니다.
+//합집합은 중복제외를 이용하고, 교집합, 차집합은 배열의 filter 메소드를 이용합니다.
+var s1 = new Set();
+s1.add("사과");
+s1.add("배");
+s1.add("사과");
+s1.add("포도");
+console.log(s1);
+
+//합집합
+var john = new Set(["사과", "포도", "배"]);
+var susan = new Set(["파인애플", "키위", "배"]);
+var union = new Set([...john.values(), ...susan.values()]);
+console.log(union);
+
+//교집합
+var intersection = new Set([...john.values()].filter(e => susan.has(e)));
+console.log(intersection);
+
+//차집합
+var diff = new Set([...john.values()].filter(e => !susan.has(e)));
+```
+> 맵(Map)은 키-값 쌍의 집합체이며, 키는 고유값이어야합니다.
+```javascript
+let teams = new Map();
+teams.set('LG', '트윈스');
+teams.set('삼성', '라이온스');
+teams.set('NC', '다이노스');
+teams.set('기아', '타이거스');
+teams.set('한화', '이글스');
+teams.set('롯데', '자이언츠');
+
+console.log(teams.has("SK"));
+console.log(teams.get("LG"));
+/*  key       value
+0: {"LG" => "트윈스"}
+1: {"삼성" => "라이온스"}
+2: {"NC" => "다이노스"}
+3: {"기아" => "타이거스"}
+4: {"한화" => "이글스"}
+5: {"롯데" => "자이언츠"}
+*/
+```
 
 ## 7.9 클래스
+> 이전 버전(ES5, ES5.1)까지는 클래스가 제공되지 않아 함수를 이용해서 유사클래스(Pseudo Class)를 사용했습니다. <br>
+하지만 ES2015에서는 공식적으로 클래스를 지원합니다.
+```javascript
+class Person {
+    constructor(name, tel, address) {
+        this.name = name;
+        this.tel = tel;
+        this.address = address;
+        if (Person.count) {
+            Person.count++;
+        }else {
+            Person.count = 1;
+        }
+    }
 
+    static getPersonCount() {
+        return Person.count;
+    }
+
+    toString() {
+        return `name=${this.name}, tel=${this.tel}, address=${this.address}`;
+    }
+}
+
+var p1 = new Person('이몽룡', '010-222-3332', '경기도');
+var p2 = new Person('홍길동', '010-222-3333', '서울');
+console.log(p1.toString());
+console.log(Person.getPersonCount());
+
+//다른 프로그래밍 언어의 클래스와 유사하게 정적 메서드(Static Method), 인스턴스 메서드(Instance Method), 생성자(Cunstructor)를 모두 잘 지원하고 있습니다. 또한 ES2015 클래스에서는 상속도 지원합니다.
+
+class Employee extends Person {
+    constructor (name, tel, address, empno, dept) {
+        super(name, tel, address);
+        this.empno = empno;
+        this.dept = dept;
+    }
+
+    toString() {
+        return super.toString() + `, empno=${this.empno}, dept=${this.dept}`;
+    }
+    getEmpInfo() {
+        return `${this.empno} : ${this.name}은 ${this.dept} 부서입니다.`;
+    }
+}
+
+let e1 = new Employee("이몽룡", "010-222-2121", "서울시", "A12311", "회계팀");
+console.log(e1.getEmpInfo());
+console.log(e1.toString());
+console.log(Person.getPersonCount());
+```
 ## 7.10 모듈
 <b><필수>해당 예제는 babel src-d build 를 사용하여 트랜스파일한 뒤 
 트랜스파일된 코드를 이용해 실행하세요.</b>

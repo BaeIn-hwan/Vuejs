@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <p>x1. 두개의 숫자를 입력 받고 두개의 숫자 사이의 모든 홀수의 합을 구하시오.
+    예) 2 와 10 이렇게 두개의 숫자를 입력하면 3, 5, 7 의 합을 구함</p>
+    <label>입력1 : <input type="number" v-model="num1"></label>
+    <label>입력2 : <input type="number" v-model="num2"></label>
+    <p v-if="num1 != 0 && num2 != 0">{{sumNumber()}}</p>
+    
+    <p>2. 라이프 사이클 훅 에 대해서 설명 하시고 실행되는 순서대로 나열하세요</p>
+    <p>
+        beforeCreate
+    
+        created
+    
+        beforeMount
+    
+        mounted
+    
+        beforeUpdate
+    
+        updated
+    
+        beforeDestroy
+    
+        destroyed
+    </p>
+
+    <p>3. 이름을 입력받으면 그 사람의 정보가 나오도록 하세요. ( 정보는 최소 3명 이상으로 합니다.)<br>
+    정보 (이름 소속팀 나이)<br>
+      ** 하단에 프로그레스바가 노출되었다가 노출되게 해주세요.
+    </p>
+    
+    
+    4. get과 set메서드를 이용하여 300,000 을 입력하면 300000 , 
+       300000 을 입력하면 300,000 을 리턴, 
+       문자열을 입력하면 0을 리턴하시오.
+    
+      </div>
+<script>
+  var data = {
+    num1:0,
+    num2:0,
+    sumNumber : function(){
+      var min=0, max=0, sum=0;
+      if(num1 >= num2){
+        max=num1;
+        min=num2;
+      }else{
+        max=num2;
+        min=num1;
+      }
+      for(var i=1; i < max ; i+=2){
+        if(i > min)
+          sum+=i;
+      }
+        return sum;
+    }
+  };
+  new Vue({
+    el:'#app',
+    data : data,
+
+
+  })
+</script>    
+</body>
+</html>

@@ -8,4 +8,32 @@ answer폴더 == 답 올려두는 곳
 그 외 html == 예시들 실제로 해본 테스트 파일
 //
 
+/* 이번 내용은 html보다는 콘솔에 적용되는 것이 많아 html은 생략하였습니다. */
 
+1. 다음의 함수들을 화살표함수로 작성하세요.
+
+function add(a, b) {
+    return a + b;
+}
+console.log(add(4,5));
+
+function squaredNubmer(num) {
+    return Math.pow(num);
+}
+
+function factorial(num) {
+    if(num == 0) 
+        return 1;
+    else 
+        return num * factorial(num -1);
+}
+
+2. 클래스를 이용하여 스터디 멤버의 간단한 프로필을 생성하세요.
+2-1. 해당 멤버에게 메서드를 실행하여 이름을 console에 출력하세요.
+2-2. 생성한 데이터를 memberList라는 정적메서드를 생성&이용하여 멤버를 배열로 묶어서 console에 출력하세요.
+
+3. promise를 이용하여 아래의 값이 5보다 클경우 제곱의 수를 console에 출력하고 작을경우 해당 값을 그대로 호출하도록 작성하세요.
+1) promise 객체는 1번만 생성
+2) then은 최소 두번 이상 쓸것
+
+var rand = Math.round(Math.random() * 10);  // 0 ~ 10까지
