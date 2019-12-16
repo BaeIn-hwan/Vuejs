@@ -20,6 +20,15 @@
                 border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
                 transition: ".5s";
             }
+            .boxcolor {
+                background-color: orange;
+            }
+            .center {
+                width: 200px;
+                height: 100px;
+                line-height: 100px;
+                text-align: center;
+            }
         </style>
 </head>
 <body>
@@ -54,13 +63,21 @@
                 3. Vue 컴포넌트를 이용해 버튼에 마우스를 올리면 스타일이 변경되도록 해주세요.
             </h2>
             <div>
-                
-            </div>
+                <center-box v-bind:class="boxstyle"></center-box>
+            </div>  
         </section>
 
     </div>
 
     <script>
+        Vue.component('center-box', {
+            template: '<div class="center" v-on:mouseover="mouseOver">중앙에 위치</div>',
+            methods : {
+                mouseOver : function() {
+                    boxstyle.boxcolor = false;
+                }
+            }
+        });
 
         var model = {
             // task01
@@ -83,7 +100,12 @@
             // task02
             changeColor: {
 		    	backgroundColor: ''
-		    },
+            },
+
+            // task03
+            boxstyle: {
+                boxcolor: true
+            }
         }
 
         var chapter05 = new Vue({
@@ -105,7 +127,6 @@
                     }
                 },
             },
-
         })
     
     </script>
