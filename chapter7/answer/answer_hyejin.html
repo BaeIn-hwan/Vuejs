@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+      <meta charset="utf-8">
+      <title>Chapter06</title>
+      <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>   
+      
+      <style>
+            #chapter05 {padding: 40px;}
+            section + section {margin-top: 50px;}
+            section h2 {font-size: 16px; font-weight: bold;}
+            section .box {padding:10px 30px; background: #eee;}
+            [v-cloak] {display: none;}
+        </style>
+</head>
+<body>
+
+    <div id="chapter07">
+        <section id="task01">
+            <h2>
+                1. 다음의 함수들을 화살표함수로 작성하세요.
+            </h2>
+            <div>
+                <pre>
+                    function add(a, b) {
+                        return a + b;
+                    }
+                    console.log(add(4,5));
+
+                    function squaredNubmer(num) {
+                        return Math.pow(num);
+                    }
+
+                    function factorial(num) {
+                        if(num == 0) 
+                            return 1;
+                        else 
+                            return num * factorial(num -1);
+                    }
+                </pre>
+
+                <pre>
+                    [화살표 함수]
+
+                    const add = (a, b) => {
+                        return a + b;
+                    }
+                    console.log(add(4,5));
+
+                    const squaredNubmer = (num) => Math.pow(num);
+
+                    const factorial = (num) => num==0 ? 1 : factorial(num -1);
+                </pre>
+            </div>
+
+        </section>
+        
+        <section id="task02">
+            <h2>
+                2. 클래스를 이용하여 스터디 멤버의 간단한 프로필을 생성하세요.
+                2-1. 해당 멤버에게 메서드를 실행하여 이름을 console에 출력하세요.
+                2-2. 생성한 데이터를 memberList라는 정적메서드를 생성&이용하여 멤버를 배열로 묶어서 console에 출력하세요.
+
+                var rand = Math.round(Math.random() * 10);  // 0 ~ 10까지
+            </h2>
+            <div>
+                class Person {
+                    constructor (name, tel, address) {
+                        this.name = name;
+                        this.tel = tel;
+                        this.address = address;
+                        if (Person.count) {
+                            Person.count++;
+                        }else {
+                            Person.count = 1;
+                        }
+                    }
+                
+                    static getPersonCount() {
+                        return Person.count;
+                    }
+                
+                    infoName() {
+                        return `${this.name}`;
+                    }
+                }
+                
+                let p1 = new Person('변요한', '010-1111-1111', '서울');
+                let p2 = new Person('김강우', '010-2222-2222', '대전');
+                let p3 = new Person('강하늘', '010-3333-3333', '대구');
+                let p4 = new Person('류준열', '010-4444-4444', '부산');
+                let p5 = new Person('조진웅', '010-5555-5555', '여수');
+                
+                console.log(p1.infoName());
+                console.log(Person.getPersonCount());
+                
+                class Employee extends Person {
+                    constructor (name, tel, address) {
+                        super(name, tel, address);
+                    }
+                
+                    getEmpInfo() {
+                        return `${this.name}`;
+                    }
+                }
+                
+                let e1 = new Employee("유혜진", "010-0000-0000", "신도림");
+                console.log(e1.getEmpInfo());
+                console.log(Person.getPersonCount());
+                
+            </div>
+        </section>
+        
+        <section id="task03">
+            <h2>
+                3. promise를 이용하여 아래의 값이 5보다 클경우 제곱의 수를 console에 출력하고 작을경우 해당 값을 그대로 호출하도록 작성하세요.
+                1) promise 객체는 1번만 생성
+                2) then은 최소 두번 이상 쓸것
+            </h2>
+            <script>
+            </script>
+        </section>
+
+    </div>
+
+</body>
+</html>
