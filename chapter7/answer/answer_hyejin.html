@@ -20,27 +20,24 @@
             <h2>
                 1. 다음의 함수들을 화살표함수로 작성하세요.
             </h2>
-            <div>
-                <pre>
-                    function add(a, b) {
-                        return a + b;
-                    }
-                    console.log(add(4,5));
+            <script>
+                    // function add(a, b) {
+                    //     return a + b;
+                    // }
+                    // console.log(add(4,5));
 
-                    function squaredNubmer(num) {
-                        return Math.pow(num);
-                    }
+                    // function squaredNubmer(num) {
+                    //     return Math.pow(num);
+                    // }
 
-                    function factorial(num) {
-                        if(num == 0) 
-                            return 1;
-                        else 
-                            return num * factorial(num -1);
-                    }
-                </pre>
-
-                <pre>
-                    [화살표 함수]
+                    // function factorial(num) {
+                    //     if(num == 0) 
+                    //         return 1;
+                    //     else 
+                    //         return num * factorial(num -1);
+                    // }
+                    
+                    // 화살표 함수
 
                     const add = (a, b) => {
                         return a + b;
@@ -50,8 +47,7 @@
                     const squaredNubmer = (num) => Math.pow(num);
 
                     const factorial = (num) => num==0 ? 1 : factorial(num -1);
-                </pre>
-            </div>
+            </script>
 
         </section>
         
@@ -63,7 +59,7 @@
 
                 var rand = Math.round(Math.random() * 10);  // 0 ~ 10까지
             </h2>
-            <div>
+            <script>
                 class Person {
                     constructor (name, tel, address) {
                         this.name = name;
@@ -90,7 +86,7 @@
                 let p3 = new Person('강하늘', '010-3333-3333', '대구');
                 let p4 = new Person('류준열', '010-4444-4444', '부산');
                 let p5 = new Person('조진웅', '010-5555-5555', '여수');
-                
+
                 console.log(p1.infoName());
                 console.log(Person.getPersonCount());
                 
@@ -108,7 +104,7 @@
                 console.log(e1.getEmpInfo());
                 console.log(Person.getPersonCount());
                 
-            </div>
+            </script>
         </section>
         
         <section id="task03">
