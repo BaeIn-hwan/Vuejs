@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter7. ES2015</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        section{
+            margin-bottom: 20px;
+            background-color:#eee;
+            padding: 10px;
+        }
+    </style> 
+</head>
+<body>
+    <section>
+        <h3>1. 다음의 함수들을 화살표함수로 작성하세요.</h3>
+        
+    </section>
+    <script>
+        let add = (a,b) => a+b;
+        console.log(add(4,5));
+
+        let squaredNubmer = (num) => Math.pow(num);
+
+        let factorial = (num) => num==0 ? 1 : factorial(num -1);
+    </script>
+
+    <section id="answer2">
+        <h3>
+            2. 클래스를 이용하여 스터디 멤버의 간단한 프로필을 생성하세요.<br/>
+            2-1. 해당 멤버에게 메서드를 실행하여 이름을 console에 출력하세요.<br/>
+            2-2. 생성한 데이터를 memberList라는 정적메서드를 생성&이용하여 멤버를 배열로 묶어서 console에 출력하세요.
+        </h3>
+        <table>
+            <tbody>
+                <template v-for="(phonenum, index) in phonelist">
+                    <tr>
+                        <td>{{phonenum.no}}</td>
+                        <td>{{phonenum.name}}</td>
+                        <td>{{phonenum.sex}}</td>
+                        <td>{{phonenum.phone}}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </section>
+    <script>
+        // var vm = {
+        //     phonelist: [
+        //         {no:1, name : "양원석", sex : "남", phone: "010-111-0000"},
+        //         {no:2, name : "전정호", sex : "남", phone: "010-222-0000"},
+        //         {no:3, name : "김민수", sex : "남", phone: "010-333-0000"},
+        //         {no:4, name : "유혜진", sex : "여", phone: "010-444-0000"},
+        //         {no:5, name : "전동엽", sex : "남", phone: "010-000-0000"},
+        //         {no:6, name : "배인환", sex : "남", phone: "010-666-0000"},
+        //         {no:7, name : "신지은", sex : "여", phone: "010-000-0000"},
+        //         {no:8, name : "윤경아", sex : "여", phone: "010-000-0000"},
+        //         {no:9, name : "주영희", sex : "여", phone: "010-000-0000"}
+        //     ]
+        // };
+        // var list = new Vue({
+        //     el : "#answer2",
+        //     data: vm
+        // });
+
+        class profile {
+            constructor(name,sex,phone){
+                this.name = name;
+                this.sex = sex;
+                this.phone = phone;
+                if (profile.count){
+                    profile.count++;
+                }else{
+                    profile.count = 1;
+                }
+            }
+            static getprofilecount(){
+                return profile.count;
+            }
+            toProfile() {
+                return `name=${this.name}, sex=${this.sex}, phone=${this.phone}`;
+            }
+        }
+
+        var p1 = new Person('주영희', '010-222-3332', '경기도');
+        var p2 = new Person('주영희', '010-222-3333', '서울');
+        console.log(p1.toProfile());
+        console.log(Person.getprofilecount());
+
+        class Employee extends Person {
+            constructor (name, sex, phone) {
+                super(name, sex, phone);
+            }
+
+            toProfile() {
+                return `name=${this.name}, sex=${this.sex}, phone=${this.phone}`;
+            }
+            getEmpInfo() {
+                return `${this.empno} : ${this.name}은 ${this.dept} 부서입니다.`;
+            }
+        }
+
+        let e1 = new Employee("주영희", "010-222-2121", "경기도");
+        console.log(e1.getEmpInfo());
+        console.log(e1.toProfile());
+        console.log(Person.getprofilecount());
+    </script>
+</body>
+</html>
