@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p>1. 다음의 함수들을 화살표함수로 작성하세요.</p>
+
+    <script>
+        add = (a, b) => {
+            return a + b;
+        }
+
+        console.log(add(4,5));
+
+        squaredNubmer = (num1, num2) => {
+            return Math.pow(num1, num2);
+        }
+
+        console.log(squaredNubmer(2, 3))
+
+        factorial = (num) => {
+            if ( num == 0 ) return 1;
+            else return num * factorial(num -1);
+        }
+
+        console.log(factorial(3))
+
+    </script>
+
+    <p>2. 클래스를 이용하여 스터디 멤버의 간단한 프로필을 생성하세요.</p>
+    <p>2-1. 해당 멤버에게 메서드를 실행하여 이름을 console에 출력하세요.</p>
+    <p>2-2. 생성한 데이터를 memberList라는 정적메서드를 생성&이용하여 멤버를 배열로 묶어서 console에 출력하세요.</p>
+
+    <script>
+        let memberArr = [];
+
+        class Person {
+            constructor(name, tel, address) {
+                this.name = name;
+                this.tel = tel;
+                this.address = address;
+                memberArr.push(`${this.name}, ${this.tel}, ${this.address}`);
+            }
+
+            static memberList() {
+                return memberArr;
+            }
+        }
+
+        const p1 = new Person('이몽룡', '010-1111-1111', '경기도');
+        const p2 = new Person('홍길동', '010-2222-2222', '서울');
+
+        console.log(p1)
+        console.log(p2)
+
+        console.log(Person.memberList());
+    </script>
+
+    <p>3. promise를 이용하여 아래의 값이 5보다 클경우 제곱의 수를 console에 출력하고 작을경우 해당 값을 그대로 호출하도록 작성하세요.</p>
+    <p>1) promise 객체는 1번만 생성</p>
+    <p>2) then은 최소 두번 이상 쓸것</p>
+
+    <script>
+        const anws03 = new Promise(function( resolve, reject ) {
+            const rand = Math.round(Math.random() * 10);
+
+            if ( rand > 5 ) resolve(rand);
+            else reject(rand);
+        })
+
+        anws03.then(( i ) => {
+            console.log('5보다 큼 : ', Math.pow(i, 2));
+        }).catch(( i ) => {
+            console.log('5보다 작음 : ', i);
+        });
+
+        Promise.resolve(Math.round(Math.random() * 10))
+            .then(( num ) => {
+                return new Promise(( resolve, reject ) => {
+                    setTimeout(() => {
+                        if ( num > 5 ) resolve(num);
+                        else reject(num);
+                    }, 0);
+                });
+            })
+            .then(( num ) => {
+                console.log('5 UP :', Math.pow(num, 2))
+                return num;
+            })
+            .catch(( num ) => {
+                console.log('5 DOWN :', num);
+            });
+    </script>
+</body>
+</html>
