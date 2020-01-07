@@ -12,7 +12,7 @@ CHAPTER 05 스타일 - 윤경아(2019/11/28)
 
 CHAPTER 06 컴포넌트 기초 - 주영희(2019/12/09)
 
-CHAPTER 07 ECMAScript 2015 - ㅇㅇㅇ(2019/00/00)
+CHAPTER 07 ECMAScript 2015 - 전동엽 (2019/00/00)
 
 CHAPTER 08 Vue CLI 도구 - ㅇㅇㅇ(2019/00/00)
 
