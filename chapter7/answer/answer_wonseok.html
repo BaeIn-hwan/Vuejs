@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter7. ES2015</title>
+   <script src="./js/answer_wonseok.js"></script>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+        h2,h3,h4,h5{font-size:16px;}
+         
+      </style> 
+</head>
+<body>
+    <section>
+        <article id="test01">
+            <h2>
+                1. 다음의 함수들을 화살표함수로 작성하세요.
+                <pre>
+                    function add(a, b) {
+                        return a + b;
+                    }
+                    console.log(add(4,5));
+
+                    function squaredNubmer(num) {
+                        return Math.pow(num);
+                    }
+
+                    function factorial(num) {
+                        if(num == 0) 
+                            return 1;
+                        else 
+                            return num * factorial(num -1);
+                    }
+                </pre>
+            </h2>
+            <script>
+                let add = (a,b) => a+b;
+                console.log(add(4,5));
+
+                let squaredNubmer = (num) => Math.pow(num,8);
+                console.log()
+
+                let factorial = (num) => {
+                    if(num == 0) 
+                        return 1;
+                    else 
+                        return num * factorial(num -1);
+                } 
+            </script>
+        </article>
+    </section>
+</body>
+</html>
