@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chapter7. ES2015</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script> 
+</head>
+<body>
+    <script>
+                
+        //1. 다음의 함수들을 화살표함수로 작성하세요.
+
+        // function add(a, b) {
+        //     return a + b;
+        // }
+        
+        var add = (a, b) => a+b;
+
+        //console.log(add(4,5));
+
+        function squaredNubmer(num) {
+            return Math.pow(num, 2);
+        }
+
+        var squaredNubmer = num => Math.pow(num, 2);
+
+        function factorial(num) {
+            if(num == 0) 
+                return 1;
+            else 
+                return num * factorial(num -1);
+        }
+
+        var squaredNubmer = num => {
+            if(num == 0) 
+                return 1;
+            else 
+                return num * factorial(num -1);
+        }
+
+        //2. 클래스를 이용하여 스터디 멤버의 간단한 프로필을 생성하세요.
+        class Profile {
+            constructor(name, team, tel) {
+                this.name  = name;
+                this.team = team;
+                this.tel = tel;
+
+                if(Profile.list) {
+                    Profile.list.push(this);
+                }else {
+                    Profile.list = [this];
+                }
+
+                Profile.size = Profile.list.length;
+            }
+
+            static memberList() {
+                return this.list;
+            }
+
+            getName() {
+                return this.name;
+            }
+        }
+
+        var m1 = new Profile('전동엽', '개발본부', '010-3331-5215');
+        var m2 = new Profile('양원석', '기술연구소', '010-5136-3687');
+        var m3 = new Profile('신지은', '개발본부', '010-2998-5593');
+        var m4 = new Profile('유혜진', '개발본부', '010-9228-8486');
+        var m5 = new Profile('전정호', '개발본부', '010-6236-9518');
+        var m6 = new Profile('윤경아', '개발본부', '010-7192-3554');
+        var m7 = new Profile('주영희', '기술연구소', '010-3816-0963');
+        var m8 = new Profile('김민수', '개발본부', '010-4212-3327');
+        var m9 = new Profile('배인환', '개발본부', '010-4306-0308');
+        
+        //2-1. 해당 멤버에게 메서드를 실행하여 이름을 console에 출력하세요.
+        console.log(m1.getName());
+        console.log(m2.getName());
+        console.log(m3.getName());
+        console.log(m4.getName());
+        console.log(m5.getName());
+        console.log(m6.getName());
+        console.log(m7.getName());
+        console.log(m8.getName());
+        console.log(m9.getName());
+
+        //2-2. 생성한 데이터를 memberList라는 정적메서드를 생성&이용하여 멤버를 배열로 묶어서 console에 출력하세요.
+        console.log(Profile.memberList());
+
+        //3. promise를 이용하여 아래의 값이 5보다 클경우 제곱의 수를 console에 출력하고 작을경우 해당 값을 그대로 호출하도록 작성하세요.
+        //1) promise 객체는 1번만 생성
+        //2) then은 최소 두번 이상 쓸것
+       
+        var rand = Math.round(Math.random() * 10) + 50;  // 0 ~ 10까지    
+
+        new Promise(function(resolve, reject) {
+            setTimeout(function(){
+                if(rand > 5) {
+                    resolve(rand);
+                }else {
+                    reject(rand);
+                }
+            }, 3000);
+            console.log('3초 뒤에 답을 봅니다.');
+        }).then(function(num) {
+            return Math.pow(num, 2);
+        }).then(function(num) {
+            console.log(`답은 ${num} 입니다.`);
+        }).catch(function(num) {
+            console.log(`아쉽지만 작은 답은 ${num}입니다`);
+        })
+    </script>
+</body>
+</html>
