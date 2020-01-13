@@ -25,15 +25,3 @@ export default {
     components : { InputTodo, List }
 }
 </script>
-```
-
-마지막 단계로 Todolist 컴포넌트를 main.js에서 렌더링 합니다.
-```javascript
-import Vue from 'vue'
-import TodoList from './components/TodoList.vue'
-
-Vue.config.productionTip = false
-
-new Vue({
-  render: h => h(TodoList)
-}).$mount('#app')
