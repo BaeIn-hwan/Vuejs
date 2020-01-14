@@ -7,7 +7,113 @@
     <title>Chapter7. ES2015</title>
     <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script> 
 </head>
+<style>
+    h2 {
+        font-size: 25px;
+    }
+    pre {
+        font-size: 18px;
+        font-family: sans-serif;
+        font-weight: normal;
+    }
+</style>
 <body>
-    
+    <h2>Chapter7. ES2015</h2>
+    <p style="color:brown; font-weight: bold">** console창 확인</p>
+    <section>
+        <pre>
+    1. 다음의 함수들을 화살표함수로 작성하세요.
+        </pre>
+        <script>
+            // function add(a, b) {
+            //     return a + b;
+            // }
+            // console.log(add(4,5));
+
+            // function squaredNubmer(num) {
+            //     return Math.pow(num);
+            // }
+
+            // function factorial(num) {
+            //     if(num == 0) 
+            //         return 1;
+            //     else 
+            //         return num * factorial(num -1);
+            // } 
+            let add = (a,b) => a+b;
+            let squaredNubmer = (num) => Math.pow(num);
+            let factorial = (num) => num == 0 ? 1 : num * (num -1);
+            console.log(add(2,5));
+            console.log(squaredNubmer(5));
+            console.log(factorial(5));
+        </script>
+    </section>
+    <section>
+        <pre>
+    2. 클래스를 이용하여 스터디 멤버의 간단한 프로필을 생성하세요.<br>
+    2-1. 해당 멤버에게 메서드를 실행하여 이름을 console에 출력하세요.<br>
+    2-2. 생성한 데이터를 memberList라는 정적메서드를 생성&이용하여 멤버를 배열로 묶어서 console에 출력하세요.
+        </pre>
+        <script>
+            class members {
+                constructor(name,tel,team) {
+                    this.name = name;
+                    this.tel = tel;
+                    this.team = team;
+                    if(members.list) {
+                        members.list.push(this);
+                    }  else {
+                        members.count = [this];
+                    }
+                }
+                //클래스 자체에 할당된 메소드 > 정적메소드(static) 클래스를 통해 호출해야 한다.
+                static memberList() {
+                    return members.count;
+                }
+            }
+            var m1 = new members('윤경아','개발본부','111-1111-1111');
+            var m2 = new members('전동엽','개발본부','222-2222-1111');
+            var m3 = new members('신지은','개발본부','333-3333-1111');
+            var m4 = new members('유혜진','개발본부','444-4444-1111');
+
+            console.log(m1.name);
+            console.log(m2.name);
+            console.log(m3.name);
+            console.log(m4.name);
+            console.log(members.memberList());
+        </script>
+    </section>
+    <section>
+        <pre>
+    3. promise를 이용하여 아래의 값이 5보다 클경우 제곱의 수를 console에 출력하고 작을경우 해당 값을 그대로 호출하도록 작성하세요.
+        1) promise 객체는 1번만 생성
+        2) then은 최소 두번 이상 쓸것
+
+    var rand = Math.round(Math.random() * 10);  // 0 ~ 10까지
+        </pre>
+        <script>
+            var p = new Promise(function(resolve, reject){
+                setTimeout (function(){
+                    var rand = Math.round(Math.random() * 10);
+                    var isValid = rand > 5
+                    if(isValid) {
+                        //then 메서드에 등록된 함수
+                        resolve(rand);
+                    } else {
+                        //catch메서드에 등록된 함수
+                        reject(rand);
+                    }
+                }, 1000);
+            })
+
+            p.then(function(rand) {
+                console.log(Math.sqrt(rand));
+            }).then(function(rand) {
+                console.log("답은" + Math.sqrt(rand) + "입니다");
+            }).catch(function(rand) {
+                console.log(rand)
+            });
+        </script>
+    </section>
 </body>
 </html>
