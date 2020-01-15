@@ -1,0 +1,35 @@
+<template>
+    <div id="app">
+        <div class="mainTitle">
+            <h2>To Do List</h2>
+        </div>
+        <todo-list :todoList="todoList" :showListLength="showListLength"></todo-list>
+    </div>
+</template>
+
+<script>
+
+import TodoList from './components/TodoList'
+
+export default {
+  name: 'app',
+  components: {
+    TodoList
+  },
+  data() {
+    return {
+      todoList: [
+        {id: 1, todo: '아침 먹기'},
+        {id: 2, todo: '점심 먹기'},
+        {id: 3, todo: '저녁 먹기'}
+      ]
+    }
+  },
+  methods: {
+    showListLength() {
+      const length = this.todoList.length
+      alert(length)
+    }
+  }
+}
+</script>
