@@ -39,7 +39,7 @@ Chapter09. 컴포넌트 심화
 >App.vue 컴포넌트를 화면에 담기 위해 main.js를 사용하며 main.js는 다음과 같다. App 컴포넌트를 렌더링한 결과물을 #app인 요소에 출력한다. 
 ```javascript
 import Vue form 'vue'
-import App form './App.vue'
+import App form answer.vue
 
 Vue.config.productionTip = false
 
@@ -619,7 +619,7 @@ ul.menu a {
 main.js 소스 
 ```javascript
 import Vue from 'vue'
-//import App from './App.vue'
+answer.vue
 import App from './AppNamed.vue'
 
 Vue.config.productionTip = false
