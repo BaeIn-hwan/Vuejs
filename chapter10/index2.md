@@ -1,12 +1,27 @@
 ##  axios 기본 세팅하기
 
-1. answer2에서 cmd창을 켠다
-2. vue create 이름  // 파일생성하기
-3. cd 이름            //해당 파일로 넘어간다 (cd 는 폴더 이동)
+1. answer2에서 cmd창을 켠다   
+2. vue create 내파일이름    // 파일생성하기
+  ** 우리는 vue 실행하기 위한 Vue Cli는 전역으로 이미 설치한 상태입니다 npm i -g @vue/cli
+3. cd 내파일이름            //해당 파일로 넘어간다 (cd 는 폴더 이동)
 4. npm install --save axios // axios 다운로드한다.
-5. npm run serve // 시작!
+5. npm run serve            // 시작! localhost:8080 접속
 
-
+여기까지 내 파일 구조
+├── README.md
+├── babel.config.js
+├── package-lock.json
+├── package.json    
+├── public
+│   ├── favicon.ico
+│   └── index.html
+└── src
+    ├── App.vue
+    ├── assets
+    │   └── logo.png
+    ├── components
+    │   └── HelloWorld.vue
+    └── main.js
 
 # 추가 세팅
 1. 콘솔제거 - package.json 
