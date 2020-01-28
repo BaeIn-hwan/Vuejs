@@ -1,7 +1,7 @@
 <template>
     <div class="todoLists">
       <ul>
-        <li v-for="todo in todoItems" v-bind:key="todo.idx" @click="todoStatus(todo)">{{todo.list}}</li>
+        <li v-for="todo in todoItems" v-bind:key="todo.idx" @click="todoStatus(todo, index)">{{todo.list}}</li>
       </ul>
     </div>
 </template>
@@ -30,8 +30,8 @@ export default {
             });
         },
         todoStatus(todo) {
-            todo.state = todo.state === 'active'?'done':'active';
-        },
+          this.todoItems.splice(this.todoItems.indexOf(todo),1)
+        }
     }
 }
 </script>
