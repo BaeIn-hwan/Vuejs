@@ -1,6 +1,7 @@
 <template>
     <div class="todoLists">
       <ul>
+        <!--컴포넌트에서 v-for을 사용할때 key값이 필요-->
         <li v-for="todo in todoItems" v-bind:key="todo.idx" @click="todoStatus(todo, index)">{{todo.list}}</li>
       </ul>
     </div>
@@ -19,10 +20,7 @@ export default {
         }
     },
     methods: {
-        listTodo() {
-            //todo.state가 active인것만 걸러내서 return
-            return this.todoItems.filter(todo => todo.state === 'active');
-        },
+      //emit 메소드로 보냈던 todoInput 데이터 값을 받아 addTodoList 이벤트 실행 
         addTodoList(todoInput) {
              this.todoItems.push({
                 list: todoInput,
