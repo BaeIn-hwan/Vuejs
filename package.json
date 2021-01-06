@@ -26,6 +26,6 @@
     "stage-2"
   ],
   "dependencies": {
-    "axios": "^0.19.1"
+    "axios": "^0.21.1"
   }
 }
